@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: be-template-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin123}
+      POSTGRES_DB: ${POSTGRES_DB:-template_db}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - be-template-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  go-api:
+    build:
+      context: ./go
+      dockerfile: Dockerfile
+    container_name: be-template-go-api
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-admin123}@postgres:5432/${POSTGRES_DB:-template_db}?sslmode=disable
+      PORT: ${GO_API_PORT:-8080}
+      JWT_SECRET: ${JWT_SECRET:-your-secret-key-change-in-production}
+    ports:
+      - "${GO_API_PORT:-8080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - be-template-network
+
+  ts-api:
+    build:
+      context: ./typescript
+      dockerfile: Dockerfile
+    container_name: be-template-ts-api
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-admin123}@postgres:5432/${POSTGRES_DB:-template_db}?sslmode=disable
+      PORT: ${TS_API_PORT:-3000}
+      JWT_SECRET: ${JWT_SECRET:-your-secret-key-change-in-production}
+    ports:
+      - "${TS_API_PORT:-3000}:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - be-template-network
+
+  react-admin:
+    build:
+      context: ./react-admin
+      dockerfile: Dockerfile
+    container_name: be-template-react-admin
+    environment:
+      REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:3000}
+    ports:
+      - "${REACT_ADMIN_PORT:-3001}:80"
+    depends_on:
+      - ts-api
+    networks:
+      - be-template-network
+
+volumes:
+  postgres_data:
+
+networks:
+  be-template-network:
+    driver: bridge

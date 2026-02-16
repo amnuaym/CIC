@@ -1,0 +1,56 @@
+# General
+.DS_Store
+.env
+.env.local
+*.log
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go/bin/
+go/pkg/
+vendor/
+
+# Node / TypeScript
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+.pnpm-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# React
+.cache/
+coverage/
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Docker
+*.env.docker
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Database
+*.db
+*.sqlite
+
+# Certificates (example certs should not be in repo in production)
+# Uncomment if you want to ignore all certs:
+# *.pem
+# *.key
+# *.crt
