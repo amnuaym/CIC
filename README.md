@@ -92,7 +92,7 @@ docker-compose up
 This will start:
 - PostgreSQL database on port 5432 (if running locally)
 - Go API on port 8080
-- TypeScript API on port 3000 (optional)
+- (Optional) TypeScript API (manual setup, not started by docker-compose; see ./typescript/README.md)
 - React Admin on port 3000 (via nginx on port 80)
 - Keycloak on port 8081 (for OAuth)
 - Nginx reverse proxy on port 80
