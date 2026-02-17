@@ -487,22 +487,22 @@ POST /api/v1/customers/{id}/anonymize
 | POST | /api/auth/login | Login user |
 | GET | /api/auth/oauth/google | OAuth Google login |
 | GET | /api/auth/oauth/callback | OAuth callback |
-| **User Management** |
+| **User Management** | | |
 | GET | /api/users/me | Get current user (JWT) |
-| **Legacy Posts** |
+| **Legacy Posts** | | |
 | GET | /api/posts | List all posts (JWT) |
 | POST | /api/posts | Create new post (JWT) |
 | GET | /api/posts/:id | Get specific post (JWT) |
 | PUT | /api/posts/:id | Update post (JWT) |
 | DELETE | /api/posts/:id | Delete post (JWT) |
 | GET | /api/v1/posts | List posts (API Key) |
-| **CIC Customers** |
+| **CIC Customers** | | |
 | POST | /api/v1/customers | Create customer |
 | GET | /api/v1/customers/search | Search customers |
 | GET | /api/v1/customers/{id} | Get customer |
 | PATCH/PUT | /api/v1/customers/{id} | Update customer |
 | POST | /api/v1/customers/{id}/anonymize | Anonymize customer (PDPA) |
-| **Customer Sub-Resources** |
+| **Customer Sub-Resources** | | |
 | POST | /api/v1/customers/{id}/addresses | Add address |
 | GET | /api/v1/customers/{id}/addresses | Get addresses |
 | POST | /api/v1/customers/{id}/identities | Add identity |
