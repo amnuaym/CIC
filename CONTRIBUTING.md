@@ -1,6 +1,6 @@
-# Contributing to Backend Template
+# Contributing to Customer Information Center (CIC)
 
-Thank you for your interest in contributing to the Backend Template project! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to the Customer Information Center (CIC) project! This document provides guidelines and instructions for contributing.
 
 ## Table of Contents
 
@@ -22,12 +22,12 @@ This project adheres to a code of conduct that we expect all contributors to fol
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/BE-Template.git
-   cd BE-Template
+   git clone https://github.com/YOUR_USERNAME/CIC.git
+   cd CIC
    ```
 3. **Add upstream remote**:
    ```bash
-   git remote add upstream https://github.com/amnuaym/BE-Template.git
+   git remote add upstream https://github.com/amnuaym/CIC.git
    ```
 4. **Set up your development environment**:
    ```bash
@@ -46,7 +46,7 @@ This project adheres to a code of conduct that we expect all contributors to fol
 
 ### Before You Start
 
-1. Check existing [issues](https://github.com/amnuaym/BE-Template/issues) and [pull requests](https://github.com/amnuaym/BE-Template/pulls)
+1. Check existing [issues](https://github.com/amnuaym/CIC/issues) and [pull requests](https://github.com/amnuaym/CIC/pulls)
 2. Create or comment on an issue to discuss your planned changes
 3. Wait for feedback before starting major work
 
@@ -358,8 +358,8 @@ If you have questions about contributing:
 
 ## License
 
-By contributing to this project, you agree that your contributions will be licensed under the MIT License.
+By contributing to this project, you agree that your contributions will be licensed under the GNU General Public License v3.0.
 
 ---
 
-Thank you for contributing to Backend Template! 🎉
+Thank you for contributing to Customer Information Center (CIC)! 🛡️
