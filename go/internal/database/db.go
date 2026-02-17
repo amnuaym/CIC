@@ -14,11 +14,11 @@ func NewDB() (*sql.DB, error) {
 	if dbURL == "" {
 		dbURL = fmt.Sprintf(
 			"postgres://%s:%s@%s:%s/%s?sslmode=disable",
-			getEnvOrDefault("POSTGRES_USER", "admin"),
-			getEnvOrDefault("POSTGRES_PASSWORD", "admin123"),
-			getEnvOrDefault("POSTGRES_HOST", "localhost"),
-			getEnvOrDefault("POSTGRES_PORT", "5432"),
-			getEnvOrDefault("POSTGRES_DB", "template_db"),
+			getEnvOrDefault("POSTGRES_USER", ""),
+			getEnvOrDefault("POSTGRES_PASSWORD", ""),
+			getEnvOrDefault("POSTGRES_HOST", ""),
+			getEnvOrDefault("POSTGRES_PORT", ""),
+			getEnvOrDefault("POSTGRES_DB", ""),
 		)
 	}
 

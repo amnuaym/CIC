@@ -1,0 +1,374 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/v1/customers": {
+            "post": {
+                "description": "Create a new customer with the input payload",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Create a new customer",
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Customer"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/customers/search": {
+            "get": {
+                "description": "Search customers by query parms",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Search customers",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Customer"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/customers/{id}": {
+            "get": {
+                "description": "Get a customer by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Get a customer",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Customer"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Update a customer by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Update a customer",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Customer"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/customers/{id}/anonymize": {
+            "post": {
+                "description": "Anonymize a customer by ID (Right to be Forgotten)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Anonymize a customer",
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            }
+        },
+        "/api/v1/customers/{id}/consents": {
+            "get": {
+                "description": "Get all consents for a customer",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "consents"
+                ],
+                "summary": "Get consents",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Consent"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Grant or update consent for a topic",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "consents"
+                ],
+                "summary": "Manage consent",
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Consent"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/customers/{id}/relationships": {
+            "get": {
+                "description": "Get all relationships for a customer",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "relationships"
+                ],
+                "summary": "Get customer relationships",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Relationship"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Add a relationship between customers",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "relationships"
+                ],
+                "summary": "Add a relationship",
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Relationship"
+                        }
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "description": "Returns the status of the API",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "health"
+                ],
+                "summary": "Check API Health",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "domain.Consent": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "customer_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "is_granted": {
+                    "type": "boolean"
+                },
+                "timestamp": {
+                    "type": "string"
+                },
+                "topic": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.Customer": {
+            "type": "object",
+            "properties": {
+                "clv": {
+                    "type": "number"
+                },
+                "company_name": {
+                    "description": "Juristic Fields",
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "date_of_birth": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "description": "Personal Fields",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "industry_code": {
+                    "type": "string"
+                },
+                "is_high_value": {
+                    "type": "boolean"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "last_transaction_date": {
+                    "type": "string"
+                },
+                "membership_tier": {
+                    "type": "string"
+                },
+                "nationality": {
+                    "type": "string"
+                },
+                "points_balance": {
+                    "type": "number"
+                },
+                "portfolio_size": {
+                    "type": "number"
+                },
+                "preferred_channel": {
+                    "type": "string"
+                },
+                "registration_date": {
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Business Profile",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/domain.CustomerStatus"
+                        }
+                    ]
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/domain.CustomerType"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.CustomerStatus": {
+            "type": "string",
+            "enum": [
+                "ACTIVE",
+                "INACTIVE",
+                "SUSPENDED",
+                "DECEASED",
+                "BLACKLISTED"
+            ],
+            "x-enum-varnames": [
+                "StatusActive",
+                "StatusInactive",
+                "StatusSuspended",
+                "StatusDeceased",
+                "StatusBlacklist"
+            ]
+        },
+        "domain.CustomerType": {
+            "type": "string",
+            "enum": [
+                "PERSONAL",
+                "JURISTIC"
+            ],
+            "x-enum-varnames": [
+                "TypePersonal",
+                "TypeJuristic"
+            ]
+        },
+        "domain.Relationship": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "from_customer_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "to_customer_id": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

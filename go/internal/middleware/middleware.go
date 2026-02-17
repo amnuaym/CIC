@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/amnuaym/be-template/go/internal/auth"
+	"github.com/amnuaym/cic/go/internal/auth"
 )
 
 type contextKey string

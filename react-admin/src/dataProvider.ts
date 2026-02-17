@@ -14,16 +14,16 @@ const httpClient = (url: string, options: fetchUtils.Options = {}) => {
   return fetchUtils.fetchJson(url, options);
 };
 
-const baseDataProvider = simpleRestProvider(`${API_URL}/api`, httpClient);
+const baseDataProvider = simpleRestProvider(`${API_URL}/api/v1`, httpClient);
 
 export const dataProvider: DataProvider = {
   ...baseDataProvider,
-  
+
   // Customize getList to handle pagination properly
-  getList: (resource, params) => {
-    const { page, perPage } = params.pagination;
-    const { field, order } = params.sort;
-    
+  getList: (resource, _params) => {
+    // const { page, perPage } = params.pagination;
+    // const { field, order } = params.sort;
+
     return httpClient(`${API_URL}/api/${resource}`)
       .then(({ json }) => {
         // If the API doesn't return pagination info, create it
@@ -45,14 +45,14 @@ export const dataProvider: DataProvider = {
     httpClient(`${API_URL}/api/${resource}`, {
       method: 'POST',
       body: JSON.stringify(params.data),
-    }).then(({ json }) => ({ data: { ...params.data, id: json.id } })),
+    }).then(({ json }) => ({ data: { ...params.data, id: json.id } as any })),
 
   // Customize update
   update: (resource, params) =>
     httpClient(`${API_URL}/api/${resource}/${params.id}`, {
       method: 'PUT',
       body: JSON.stringify(params.data),
-    }).then(({ json }) => ({ data: { ...params.data, id: params.id } })),
+    }).then(() => ({ data: { ...params.data, id: params.id } as any })),
 
   // Customize delete
   delete: (resource, params) =>

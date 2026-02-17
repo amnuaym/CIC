@@ -5,9 +5,12 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/amnuaym/be-template/go/internal/auth"
-	"github.com/amnuaym/be-template/go/internal/middleware"
-	"github.com/amnuaym/be-template/go/internal/models"
+	"github.com/amnuaym/cic/go/internal/adapter/handler"
+	"github.com/amnuaym/cic/go/internal/adapter/repository"
+	"github.com/amnuaym/cic/go/internal/auth"
+	"github.com/amnuaym/cic/go/internal/core/service"
+	"github.com/amnuaym/cic/go/internal/middleware"
+	"github.com/amnuaym/cic/go/internal/models"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 )
@@ -38,7 +41,47 @@ func SetupRoutes(router *mux.Router, db *sql.DB) {
 	protected.HandleFunc("/posts/{id}", h.UpdatePost).Methods("PUT")
 	protected.HandleFunc("/posts/{id}", h.DeletePost).Methods("DELETE")
 
-	// API Key protected routes
+	// CIC Dependencies
+	auditRepo := repository.NewAuditRepository(db)
+	auditService := service.NewAuditService(auditRepo) // Pass as struct pointer, but interface expects? Check signature
+
+	customerRepo := repository.NewCustomerRepository(db)
+	addressRepo := repository.NewAddressRepository(db)
+	identityRepo := repository.NewIdentityRepository(db)
+	relationshipRepo := repository.NewRelationshipRepository(db)
+	consentRepo := repository.NewConsentRepository(db)
+
+	customerService := service.NewCustomerService(customerRepo, addressRepo, identityRepo, relationshipRepo, consentRepo, auditService)
+	customerHandler := handler.NewCustomerHandler(customerService)
+
+	// CIC Routes (v1)
+	v1 := router.PathPrefix("/api/v1").Subrouter()
+	
+	// Customers
+	v1.HandleFunc("/customers", customerHandler.CreateCustomer).Methods("POST")
+	v1.HandleFunc("/customers/search", customerHandler.SearchCustomers).Methods("GET")
+	v1.HandleFunc("/customers/{id}", customerHandler.GetCustomer).Methods("GET")
+	v1.HandleFunc("/customers/{id}", customerHandler.UpdateCustomer).Methods("PATCH", "PUT")
+	v1.HandleFunc("/customers/{id}/anonymize", customerHandler.AnonymizeCustomer).Methods("POST")
+
+	
+	// Sub-resources: Addresses
+	v1.HandleFunc("/customers/{id}/addresses", customerHandler.AddAddress).Methods("POST")
+	v1.HandleFunc("/customers/{id}/addresses", customerHandler.GetAddresses).Methods("GET")
+	
+	// Sub-resources: Identities
+	v1.HandleFunc("/customers/{id}/identities", customerHandler.AddIdentity).Methods("POST")
+	v1.HandleFunc("/customers/{id}/identities", customerHandler.GetIdentities).Methods("GET")
+
+	// Sub-resources: Relationships
+	v1.HandleFunc("/customers/{id}/relationships", customerHandler.AddRelationship).Methods("POST")
+	v1.HandleFunc("/customers/{id}/relationships", customerHandler.GetRelationships).Methods("GET")
+
+	// Sub-resources: Consents
+	v1.HandleFunc("/customers/{id}/consents", customerHandler.ManageConsent).Methods("POST")
+	v1.HandleFunc("/customers/{id}/consents", customerHandler.GetConsents).Methods("GET")
+
+	// API Key protected routes (Existing)
 	apiKeyRouter := router.PathPrefix("/api/v1").Subrouter()
 	apiKeyRouter.Use(middleware.APIKeyAuth(db))
 	
@@ -46,6 +89,12 @@ func SetupRoutes(router *mux.Router, db *sql.DB) {
 }
 
 // HealthCheck returns the API health status
+// @Summary Check API Health
+// @Description Returns the status of the API
+// @Tags health
+// @Produce  json
+// @Success 200 {object} map[string]string
+// @Router /health [get]
 func (h *Handler) HealthCheck(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, map[string]string{
 		"status": "healthy",

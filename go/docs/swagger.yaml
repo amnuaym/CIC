@@ -1,0 +1,247 @@
+definitions:
+  domain.Consent:
+    properties:
+      created_at:
+        type: string
+      customer_id:
+        type: string
+      id:
+        type: string
+      is_granted:
+        type: boolean
+      timestamp:
+        type: string
+      topic:
+        type: string
+      version:
+        type: string
+    type: object
+  domain.Customer:
+    properties:
+      clv:
+        type: number
+      company_name:
+        description: Juristic Fields
+        type: string
+      created_at:
+        type: string
+      date_of_birth:
+        type: string
+      deleted_at:
+        type: string
+      first_name:
+        description: Personal Fields
+        type: string
+      id:
+        type: string
+      industry_code:
+        type: string
+      is_high_value:
+        type: boolean
+      last_name:
+        type: string
+      last_transaction_date:
+        type: string
+      membership_tier:
+        type: string
+      nationality:
+        type: string
+      points_balance:
+        type: number
+      portfolio_size:
+        type: number
+      preferred_channel:
+        type: string
+      registration_date:
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/domain.CustomerStatus'
+        description: Business Profile
+      title:
+        type: string
+      type:
+        $ref: '#/definitions/domain.CustomerType'
+      updated_at:
+        type: string
+    type: object
+  domain.CustomerStatus:
+    enum:
+    - ACTIVE
+    - INACTIVE
+    - SUSPENDED
+    - DECEASED
+    - BLACKLISTED
+    type: string
+    x-enum-varnames:
+    - StatusActive
+    - StatusInactive
+    - StatusSuspended
+    - StatusDeceased
+    - StatusBlacklist
+  domain.CustomerType:
+    enum:
+    - PERSONAL
+    - JURISTIC
+    type: string
+    x-enum-varnames:
+    - TypePersonal
+    - TypeJuristic
+  domain.Relationship:
+    properties:
+      created_at:
+        type: string
+      from_customer_id:
+        type: string
+      id:
+        type: string
+      role:
+        type: string
+      to_customer_id:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/customers:
+    post:
+      consumes:
+      - application/json
+      description: Create a new customer with the input payload
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.Customer'
+      summary: Create a new customer
+      tags:
+      - customers
+  /api/v1/customers/{id}:
+    get:
+      description: Get a customer by ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Customer'
+      summary: Get a customer
+      tags:
+      - customers
+    patch:
+      consumes:
+      - application/json
+      description: Update a customer by ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Customer'
+      summary: Update a customer
+      tags:
+      - customers
+  /api/v1/customers/{id}/anonymize:
+    post:
+      description: Anonymize a customer by ID (Right to be Forgotten)
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: Anonymize a customer
+      tags:
+      - customers
+  /api/v1/customers/{id}/consents:
+    get:
+      description: Get all consents for a customer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Consent'
+            type: array
+      summary: Get consents
+      tags:
+      - consents
+    post:
+      consumes:
+      - application/json
+      description: Grant or update consent for a topic
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.Consent'
+      summary: Manage consent
+      tags:
+      - consents
+  /api/v1/customers/{id}/relationships:
+    get:
+      description: Get all relationships for a customer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Relationship'
+            type: array
+      summary: Get customer relationships
+      tags:
+      - relationships
+    post:
+      consumes:
+      - application/json
+      description: Add a relationship between customers
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.Relationship'
+      summary: Add a relationship
+      tags:
+      - relationships
+  /api/v1/customers/search:
+    get:
+      description: Search customers by query parms
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Customer'
+            type: array
+      summary: Search customers
+      tags:
+      - customers
+  /health:
+    get:
+      description: Returns the status of the API
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Check API Health
+      tags:
+      - health
+swagger: "2.0"

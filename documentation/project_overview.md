@@ -9,6 +9,7 @@ This repository provides a complete, production-ready backend application templa
 ### 1. Backend APIs
 
 #### Go API (Port 8080)
+
 - **Framework**: Gorilla Mux
 - **Language**: Go 1.21+
 - **Features**:
@@ -24,6 +25,7 @@ This repository provides a complete, production-ready backend application templa
 **Files**: 14 Go files including handlers, auth, middleware, models, and tests
 
 #### TypeScript API (Port 3000)
+
 - **Framework**: Express.js
 - **Language**: TypeScript 5.3+
 - **Features**:
@@ -42,6 +44,7 @@ This repository provides a complete, production-ready backend application templa
 ### 2. Admin Dashboard
 
 #### React Admin (Port 3001)
+
 - **Framework**: React Admin 4.16+
 - **Build Tool**: Vite
 - **Features**:
@@ -58,6 +61,7 @@ This repository provides a complete, production-ready backend application templa
 ### 3. Database
 
 #### PostgreSQL 15
+
 - **Schema**: Comprehensive database schema with:
   - Users table with OAuth support
   - Roles and permissions
@@ -65,16 +69,18 @@ This repository provides a complete, production-ready backend application templa
   - Sessions management
   - Posts (example content table)
   - Proper indexes and foreign keys
-  
+
 **Files**: 1 SQL initialization script with complete schema
 
 ### 4. Testing
 
 #### Unit Tests
+
 - **Go**: 12 test cases covering auth and API handlers
 - **TypeScript**: Jest-based tests for auth utilities and API endpoints
 
 #### End-to-End Tests
+
 - **Framework**: Playwright
 - **Coverage**:
   - API health checks (both Go and TypeScript)
@@ -88,13 +94,15 @@ This repository provides a complete, production-ready backend application templa
 ### 5. DevOps
 
 #### Docker Support
+
 - **docker-compose.yml**: Complete orchestration for all services
 - **Dockerfiles**: Optimized multi-stage builds for:
   - Go API (scratch-based, minimal size)
   - TypeScript API (Node Alpine)
   - React Admin (nginx Alpine)
-  
+
 #### CI/CD Pipeline
+
 - **GitHub Actions**: Complete workflow including:
   - Go tests and build
   - TypeScript tests, linting, and build
@@ -132,18 +140,21 @@ This repository provides a complete, production-ready backend application templa
 ## Code Quality
 
 ### Go Backend
+
 - ✅ All tests passing (12/12)
 - ✅ Proper error handling
 - ✅ Clean package structure
 - ✅ No external dependencies in core logic
 
 ### TypeScript Backend
+
 - ✅ Full TypeScript strict mode
 - ✅ Comprehensive type definitions
 - ✅ Jest test framework configured
 - ✅ ESLint configuration
 
 ### React Admin
+
 - ✅ TypeScript support
 - ✅ Material-UI components
 - ✅ Vite for fast builds
@@ -152,11 +163,13 @@ This repository provides a complete, production-ready backend application templa
 ## Authentication & Security
 
 ### Multiple Authentication Methods
+
 1. **JWT Tokens**: For web/mobile applications
 2. **API Keys**: For service-to-service communication
 3. **OAuth**: Placeholder structure for Google OAuth
 
 ### Security Features
+
 - Password hashing with bcrypt (10 rounds)
 - JWT with expiration (24 hours)
 - CORS configuration
@@ -168,6 +181,7 @@ This repository provides a complete, production-ready backend application templa
 ## API Endpoints
 
 ### Public Endpoints
+
 - `GET /health` - Health check
 - `POST /api/auth/register` - User registration
 - `POST /api/auth/login` - User login
@@ -175,6 +189,7 @@ This repository provides a complete, production-ready backend application templa
 - `GET /api/auth/oauth/callback` - OAuth callback
 
 ### Protected Endpoints (JWT)
+
 - `GET /api/users/me` - Get current user
 - `GET /api/posts` - List posts
 - `POST /api/posts` - Create post
@@ -183,11 +198,13 @@ This repository provides a complete, production-ready backend application templa
 - `DELETE /api/posts/:id` - Delete post
 
 ### API Key Endpoints
+
 - `GET /api/v1/posts` - List posts (with API key)
 
 ## Database Schema
 
 ### Tables
+
 1. **users** - User accounts with OAuth support
 2. **roles** - User roles (admin, user)
 3. **user_roles** - User-role relationships
@@ -196,6 +213,7 @@ This repository provides a complete, production-ready backend application templa
 6. **posts** - Example content table
 
 ### Features
+
 - UUID primary keys
 - Proper foreign key constraints
 - Indexes on frequently queried columns
@@ -205,6 +223,7 @@ This repository provides a complete, production-ready backend application templa
 ## Quick Start Commands
 
 ### Using Docker (Recommended)
+
 ```bash
 ./start.sh
 # or
@@ -212,6 +231,7 @@ docker-compose up
 ```
 
 ### Manual Setup
+
 ```bash
 # Go Backend
 cd go && go run main.go
@@ -229,6 +249,7 @@ cd e2e-tests && npm install && npm test
 ## Environment Configuration
 
 All services use environment variables from `.env` file:
+
 - Database credentials
 - API ports
 - JWT secrets
@@ -256,6 +277,7 @@ cd e2e-tests && npm test
 ## Production Readiness
 
 ### ✅ Ready for Production
+
 - Multi-stage Docker builds
 - Environment-based configuration
 - Security best practices
@@ -265,6 +287,7 @@ cd e2e-tests && npm test
 - Graceful shutdown
 
 ### ⚠️ Before Production
+
 - Change default JWT_SECRET
 - Use strong database passwords
 - Enable SSL/TLS for database
@@ -275,18 +298,18 @@ cd e2e-tests && npm test
 
 ## Technology Stack
 
-| Component | Technology | Version |
-|-----------|-----------|---------|
-| Go Backend | Go | 1.21+ |
-| TypeScript Backend | Node.js | 18+ |
-| Frontend | React | 18+ |
-| Admin UI | React Admin | 4.16+ |
-| Database | PostgreSQL | 15+ |
-| Testing | Playwright | 1.41+ |
-| Testing | Jest | 29+ |
-| Container | Docker | 20.10+ |
-| Orchestration | Docker Compose | 2.0+ |
-| CI/CD | GitHub Actions | - |
+| Component          | Technology     | Version |
+| ------------------ | -------------- | ------- |
+| Go Backend         | Go             | 1.21+   |
+| TypeScript Backend | Node.js        | 18+     |
+| Frontend           | React          | 18+     |
+| Admin UI           | React Admin    | 4.16+   |
+| Database           | PostgreSQL     | 15+     |
+| Testing            | Playwright     | 1.41+   |
+| Testing            | Jest           | 29+     |
+| Container          | Docker         | 20.10+  |
+| Orchestration      | Docker Compose | 2.0+    |
+| CI/CD              | GitHub Actions | -       |
 
 ## Project Structure Highlights
 
@@ -340,6 +363,7 @@ BE-Template/
 ## Next Steps for Users
 
 1. **Clone and Setup**
+
    ```bash
    git clone https://github.com/amnuaym/BE-Template.git
    cd BE-Template
@@ -366,7 +390,7 @@ BE-Template/
 
 ## License
 
-MIT License - See LICENSE file
+GNU GPLv3 License - See LICENSE file
 
 ## Support
 

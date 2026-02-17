@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS audit_logs;
+DROP TABLE IF EXISTS consents;
+DROP TABLE IF EXISTS relationships;
+DROP TABLE IF EXISTS identities;
+DROP TABLE IF EXISTS addresses;
+DROP TABLE IF EXISTS customers;
+
+DROP TYPE IF EXISTS customer_status;
+DROP TYPE IF EXISTS customer_type;
+DROP EXTENSION IF EXISTS "uuid-ossp";
