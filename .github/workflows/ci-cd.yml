@@ -33,6 +33,7 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: '1.21'
+          cache-dependency-path: go/go.sum
       
       - name: Install dependencies
         working-directory: ./go
@@ -74,12 +75,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: typescript/package-lock.json
       
       - name: Install dependencies
         working-directory: ./typescript
-        run: npm ci
+        run: npm install
       
       - name: Run linter
         working-directory: ./typescript
@@ -106,12 +105,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: react-admin/package-lock.json
       
       - name: Install dependencies
         working-directory: ./react-admin
-        run: npm ci
+        run: npm install
       
       - name: Build
         working-directory: ./react-admin
@@ -149,10 +146,11 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: '1.21'
+          cache-dependency-path: go/go.sum
       
       - name: Install TypeScript API dependencies
         working-directory: ./typescript
-        run: npm ci
+        run: npm install
       
       - name: Build TypeScript API
         working-directory: ./typescript
@@ -160,7 +158,7 @@ jobs:
       
       - name: Install React Admin dependencies
         working-directory: ./react-admin
-        run: npm ci
+        run: npm install
       
       - name: Build React Admin
         working-directory: ./react-admin
@@ -168,7 +166,7 @@ jobs:
       
       - name: Install E2E test dependencies
         working-directory: ./e2e-tests
-        run: npm ci
+        run: npm install
       
       - name: Install Playwright browsers
         working-directory: ./e2e-tests
