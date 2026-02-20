@@ -1,0 +1,42 @@
+graph TD
+    subgraph "Clients (Users & Apps)"
+        Staff[Staff Dashboard <br/> React Admin + TypeScript]
+        MobileApp[Mobile App / External Client]
+    end
+
+    subgraph "Internal Systems"
+        LegacyApp[Other Internal Service]
+    end
+
+    subgraph "Security Layer (API Gateway)"
+        Gateway["API Gateway <br/> Nginx / Kong <br/> (Rate Limiting)"]
+        Auth[Identity Provider <br/> Keycloak]
+    end
+
+    subgraph "CIC - Customer Information Center"
+        API[CIC Core API Service <br/> Go / Golang]
+        Validator[Data Validation Engine]
+        PDPA[PDPA / Consent Module]
+        Audit[Audit Log Service]
+    end
+
+    subgraph "Data Layer"
+        DB[(PostgreSQL <br/>)]
+        Replication[(Secondary DB <br/> Disaster Recovery)]
+    end
+
+    %% Flows
+    Staff -- "1. Login (OAuth)" --> Auth
+    Staff -- "2. Access Data (Token)" --> Gateway
+    
+    MobileApp -- "1. Login (OAuth)" --> Auth
+    MobileApp -- "2. Access Data (Token)" --> Gateway
+
+    LegacyApp -- "Mutual TLS (Certificate)" --> Gateway
+
+    Gateway -- "Rate Limit Check" --> API
+    API --> Validator
+    API --> PDPA
+    API -- "Read/Write" --> DB
+    DB -. "Async Replication" .-> Replication
+    API -- "Write Audit (Add/Move/Change)" --> Audit

@@ -4,7 +4,9 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export const authProvider: AuthProvider = {
   login: async ({ username, password }) => {
-    const request = new Request(`${API_URL}/api/auth/login`, {
+    // API_URL might be http://localhost:80/api/v1, but auth is at /api/auth/login
+    const baseUrl = API_URL.replace(/\/v1\/?$/, '');
+    const request = new Request(`${baseUrl}/auth/login`, {
       method: 'POST',
       body: JSON.stringify({ username, password }),
       headers: new Headers({ 'Content-Type': 'application/json' }),

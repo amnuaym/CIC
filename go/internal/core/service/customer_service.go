@@ -7,6 +7,7 @@ import (
 
 	"github.com/amnuaym/cic/go/internal/core/domain"
 	"github.com/amnuaym/cic/go/internal/core/ports"
+	"github.com/amnuaym/cic/go/internal/utils/validation"
 	"github.com/google/uuid"
 )
 
@@ -16,6 +17,7 @@ type customerService struct {
 	identityRepo     ports.IdentityRepository
 	relationshipRepo ports.RelationshipRepository
 	consentRepo      ports.ConsentRepository
+	userRepo         ports.UserRepository
 	auditService     AuditService
 }
 
@@ -25,6 +27,7 @@ func NewCustomerService(
 	iRepo ports.IdentityRepository,
 	rRepo ports.RelationshipRepository,
 	cnRepo ports.ConsentRepository,
+	uRepo ports.UserRepository,
 	audit AuditService,
 ) *customerService {
 	return &customerService{
@@ -33,6 +36,7 @@ func NewCustomerService(
 		identityRepo:     iRepo,
 		relationshipRepo: rRepo,
 		consentRepo:      cnRepo,
+		userRepo:         uRepo,
 		auditService:     audit,
 	}
 }
@@ -60,16 +64,74 @@ func (s *customerService) UpdateCustomer(ctx context.Context, c *domain.Customer
 	return err
 }
 
-func (s *customerService) DeleteCustomer(ctx context.Context, id uuid.UUID) error {
-	err := s.customerRepo.Delete(ctx, id)
+func (s *customerService) DeleteCustomer(ctx context.Context, id, userID uuid.UUID) error {
+	// Note: We should ideally update the DeletedBy field in the repo.
+	// The repo Delete method needs to accept userID or we do an update first?
+	// Let's assume repo.Delete handles it or we update first.
+	// Since repo.Delete is likely a soft delete setting deleted_at = NOW(),
+	// we should update it to also set deleted_by = userID.
+	// I will assume repo.Delete signature change will handle this.
+	
+	err := s.customerRepo.Delete(ctx, id, userID)
 	if err == nil {
-		s.auditService.Log(ctx, id, "CUSTOMER", "DELETE", "SYSTEM", "Deleted Customer", "")
+		s.auditService.Log(ctx, id, "CUSTOMER", "DELETE", userID.String(), "Deleted Customer", "")
 	}
 	return err
 }
 
 func (s *customerService) SearchCustomers(ctx context.Context, query string) ([]*domain.Customer, error) {
 	return s.customerRepo.Search(ctx, query)
+}
+
+func (s *customerService) ListCustomers(ctx context.Context, limit, offset int) ([]*domain.Customer, error) {
+	return s.customerRepo.List(ctx, limit, offset)
+}
+
+func (s *customerService) ListDeletedCustomers(ctx context.Context, limit, offset int) ([]*domain.Customer, error) {
+	return s.customerRepo.ListDeleted(ctx, limit, offset)
+}
+
+func (s *customerService) RestoreCustomer(ctx context.Context, id, userID uuid.UUID) error {
+	// 1. Get Customer to see who deleted it
+	customer, err := s.customerRepo.GetByID(ctx, id)
+	if err != nil {
+		return err
+	}
+	
+	if customer.DeletedBy == nil {
+		// If no one tracked as deleter, maybe allow admin or anyone? 
+		// For strictness, let's say only if we know who deleted it, strict rules apply.
+		// If nil, maybe legacy data? Allow restore? 
+		// Let's assume allow for now if legacy, or restrict. 
+		// User requirement: "allowed only the user who delete the record to restore and their supervisor only"
+		// If DeletedBy is nil, we can't verify. Fail safe: allow Admin? 
+		// Handler doesn't check role for restore.
+		// Let's require DeletedBy to be present for this specific restricted logic.
+		// But for legacy support, if DeletedBy is nil, we might block.
+		return errors.New("cannot restore record with unknown deleter")
+	}
+
+	// 2. Check if Restorer is the Deleter
+	if *customer.DeletedBy == userID {
+		// Allowed
+	} else {
+		// 3. Check if Restorer is the Supervisor of the Deleter
+		// Need to get Deleter's profile to check supervisor_id
+		deleter, err := s.userRepo.GetByID(ctx, *customer.DeletedBy)
+		if err != nil {
+			return errors.New("failed to verify deleter identity")
+		}
+		
+		if deleter.SupervisorID == nil || *deleter.SupervisorID != userID {
+			return errors.New("forbidden: only the deleter or their supervisor can restore")
+		}
+	}
+
+	err = s.customerRepo.Restore(ctx, id)
+	if err == nil {
+		s.auditService.Log(ctx, id, "CUSTOMER", "RESTORE", userID.String(), "Restored Customer", "")
+	}
+	return err
 }
 
 func (s *customerService) AnonymizeCustomer(ctx context.Context, id uuid.UUID) error {
@@ -124,6 +186,11 @@ func (s *customerService) RemoveAddress(ctx context.Context, id uuid.UUID) error
 // --- Identities ---
 
 func (s *customerService) AddIdentity(ctx context.Context, i *domain.Identity) error {
+	if i.Type == "National ID" {
+		if err := validation.ValidateThaiID(i.Number); err != nil {
+			return err
+		}
+	}
 	return s.identityRepo.Create(ctx, i)
 }
 

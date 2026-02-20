@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/amnuaym/cic/go/internal/core/domain"
+	"github.com/amnuaym/cic/go/internal/models"
 	"github.com/google/uuid"
 )
 
@@ -11,8 +12,10 @@ type CustomerRepository interface {
 	Create(ctx context.Context, customer *domain.Customer) error
 	GetByID(ctx context.Context, id uuid.UUID) (*domain.Customer, error)
 	Update(ctx context.Context, customer *domain.Customer) error
-	Delete(ctx context.Context, id uuid.UUID) error // Soft delete
+	Delete(ctx context.Context, id, userID uuid.UUID) error // Soft delete
+	Restore(ctx context.Context, id uuid.UUID) error
 	List(ctx context.Context, limit, offset int) ([]*domain.Customer, error)
+	ListDeleted(ctx context.Context, limit, offset int) ([]*domain.Customer, error)
 	Search(ctx context.Context, query string) ([]*domain.Customer, error)
 }
 
@@ -38,4 +41,8 @@ type RelationshipRepository interface {
 type ConsentRepository interface {
 	Create(ctx context.Context, consent *domain.Consent) error
 	ListByCustomerID(ctx context.Context, customerID uuid.UUID) ([]*domain.Consent, error)
+}
+
+type UserRepository interface {
+	GetByID(ctx context.Context, id uuid.UUID) (*models.User, error)
 }

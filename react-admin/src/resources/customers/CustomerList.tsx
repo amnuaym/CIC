@@ -1,7 +1,40 @@
-import { List, Datagrid, TextField, DateField, SelectField, SearchInput } from 'react-admin';
+import { 
+    List, Datagrid, TextField, DateField, SelectField, SearchInput, 
+    BooleanInput, useRecordContext, useDataProvider, useNotify, useRefresh, 
+    Button
+} from 'react-admin';
+import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
+
+const RestoreButton = () => {
+    const record = useRecordContext();
+    const dataProvider = useDataProvider();
+    const notify = useNotify();
+    const refresh = useRefresh();
+
+    if (!record || !record.deleted_at) return null;
+
+    const handleClick = (e: any) => {
+        e.stopPropagation();
+        dataProvider.restore('customers', { id: record.id })
+            .then(() => {
+                notify('Customer restored');
+                refresh();
+            })
+            .catch((e: any) => {
+                notify('Error: ' + e.message, { type: 'warning' });
+            });
+    };
+
+    return (
+        <Button label="Restore" onClick={handleClick} color="primary">
+            <RestoreFromTrashIcon />
+        </Button>
+    );
+};
 
 const customerFilters = [
-    <SearchInput source="q" alwaysOn />
+    <SearchInput source="q" alwaysOn />,
+    <BooleanInput source="deleted" label="Show Deleted (Trash)" />
 ];
 
 export const CustomerList = () => (
@@ -22,6 +55,7 @@ export const CustomerList = () => (
                 { id: 'BLACKLISTED', name: 'Blacklisted' },
             ]} />
             <DateField source="created_at" />
+            <RestoreButton />
         </Datagrid>
     </List>
 );

@@ -46,22 +46,27 @@ func SetupRoutes(router *mux.Router, db *sql.DB) {
 	auditService := service.NewAuditService(auditRepo) // Pass as struct pointer, but interface expects? Check signature
 
 	customerRepo := repository.NewCustomerRepository(db)
+	userRepo := repository.NewUserRepository(db)
 	addressRepo := repository.NewAddressRepository(db)
 	identityRepo := repository.NewIdentityRepository(db)
 	relationshipRepo := repository.NewRelationshipRepository(db)
 	consentRepo := repository.NewConsentRepository(db)
 
-	customerService := service.NewCustomerService(customerRepo, addressRepo, identityRepo, relationshipRepo, consentRepo, auditService)
+	customerService := service.NewCustomerService(customerRepo, addressRepo, identityRepo, relationshipRepo, consentRepo, userRepo, auditService)
 	customerHandler := handler.NewCustomerHandler(customerService)
 
 	// CIC Routes (v1)
 	v1 := router.PathPrefix("/api/v1").Subrouter()
+	v1.Use(middleware.JWTAuth)
 	
 	// Customers
+	v1.HandleFunc("/customers", customerHandler.ListCustomers).Methods("GET")
 	v1.HandleFunc("/customers", customerHandler.CreateCustomer).Methods("POST")
 	v1.HandleFunc("/customers/search", customerHandler.SearchCustomers).Methods("GET")
 	v1.HandleFunc("/customers/{id}", customerHandler.GetCustomer).Methods("GET")
 	v1.HandleFunc("/customers/{id}", customerHandler.UpdateCustomer).Methods("PATCH", "PUT")
+	v1.HandleFunc("/customers/{id}", customerHandler.DeleteCustomer).Methods("DELETE")
+	v1.HandleFunc("/customers/{id}/restore", customerHandler.RestoreCustomer).Methods("POST")
 	v1.HandleFunc("/customers/{id}/anonymize", customerHandler.AnonymizeCustomer).Methods("POST")
 
 	
@@ -116,8 +121,8 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 
 	var user models.User
 	var passwordHash string
-	query := `SELECT id, email, username, password_hash FROM users WHERE username = $1 AND is_active = true`
-	err := h.DB.QueryRow(query, req.Username).Scan(&user.ID, &user.Email, &user.Username, &passwordHash)
+	query := `SELECT id, email, username, password_hash, role FROM users WHERE username = $1 AND is_active = true`
+	err := h.DB.QueryRow(query, req.Username).Scan(&user.ID, &user.Email, &user.Username, &passwordHash, &user.Role)
 	if err != nil {
 		respondError(w, http.StatusUnauthorized, "Invalid credentials")
 		return
@@ -128,7 +133,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := auth.GenerateJWT(user.ID, user.Username, user.Email)
+	token, err := auth.GenerateJWT(user.ID, user.Username, user.Email, user.Role)
 	if err != nil {
 		respondError(w, http.StatusInternalServerError, "Failed to generate token")
 		return
@@ -160,14 +165,15 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var userID uuid.UUID
-	query := `INSERT INTO users (email, username, password_hash) VALUES ($1, $2, $3) RETURNING id`
-	err = h.DB.QueryRow(query, req.Email, req.Username, passwordHash).Scan(&userID)
+	defaultRole := "user"
+	query := `INSERT INTO users (email, username, password_hash, role) VALUES ($1, $2, $3, $4) RETURNING id`
+	err = h.DB.QueryRow(query, req.Email, req.Username, passwordHash, defaultRole).Scan(&userID)
 	if err != nil {
 		respondError(w, http.StatusConflict, "User already exists")
 		return
 	}
 
-	token, err := auth.GenerateJWT(userID, req.Username, req.Email)
+	token, err := auth.GenerateJWT(userID, req.Username, req.Email, defaultRole)
 	if err != nil {
 		respondError(w, http.StatusInternalServerError, "Failed to generate token")
 		return
@@ -179,6 +185,7 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 			"id":       userID,
 			"email":    req.Email,
 			"username": req.Username,
+			"role":     defaultRole,
 		},
 	})
 }

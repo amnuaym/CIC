@@ -12,6 +12,8 @@ type User struct {
 	Email         string     `json:"email"`
 	Username      string     `json:"username"`
 	PasswordHash  *string    `json:"-"`
+	Role          string     `json:"role"`
+	SupervisorID  *uuid.UUID `json:"supervisor_id,omitempty"`
 	OAuthProvider *string    `json:"oauth_provider,omitempty"`
 	OAuthID       *string    `json:"oauth_id,omitempty"`
 	IsActive      bool       `json:"is_active"`

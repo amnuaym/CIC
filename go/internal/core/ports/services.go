@@ -11,8 +11,11 @@ type CustomerService interface {
 	CreateCustomer(ctx context.Context, customer *domain.Customer) error
 	GetCustomer(ctx context.Context, id uuid.UUID) (*domain.Customer, error)
 	UpdateCustomer(ctx context.Context, customer *domain.Customer) error
-	DeleteCustomer(ctx context.Context, id uuid.UUID) error
+	DeleteCustomer(ctx context.Context, id, userID uuid.UUID) error
+	RestoreCustomer(ctx context.Context, id, userID uuid.UUID) error
 	SearchCustomers(ctx context.Context, query string) ([]*domain.Customer, error)
+	ListCustomers(ctx context.Context, limit, offset int) ([]*domain.Customer, error)
+	ListDeletedCustomers(ctx context.Context, limit, offset int) ([]*domain.Customer, error)
 	AnonymizeCustomer(ctx context.Context, id uuid.UUID) error
 
 	AddAddress(ctx context.Context, address *domain.Address) error

@@ -14,7 +14,7 @@ const httpClient = (url: string, options: fetchUtils.Options = {}) => {
   return fetchUtils.fetchJson(url, options);
 };
 
-const baseDataProvider = simpleRestProvider(`${API_URL}/api/v1`, httpClient);
+const baseDataProvider = simpleRestProvider(API_URL, httpClient);
 
 export const dataProvider: DataProvider = {
   ...baseDataProvider,
@@ -24,7 +24,7 @@ export const dataProvider: DataProvider = {
     // const { page, perPage } = params.pagination;
     // const { field, order } = params.sort;
 
-    return httpClient(`${API_URL}/api/${resource}`)
+    return httpClient(`${API_URL}/${resource}`)
       .then(({ json }) => {
         // If the API doesn't return pagination info, create it
         const data = Array.isArray(json) ? json : [];
@@ -37,26 +37,32 @@ export const dataProvider: DataProvider = {
 
   // Customize getOne to handle responses properly
   getOne: (resource, params) =>
-    httpClient(`${API_URL}/api/${resource}/${params.id}`)
+    httpClient(`${API_URL}/${resource}/${params.id}`)
       .then(({ json }) => ({ data: json })),
 
   // Customize create
   create: (resource, params) =>
-    httpClient(`${API_URL}/api/${resource}`, {
+    httpClient(`${API_URL}/${resource}`, {
       method: 'POST',
       body: JSON.stringify(params.data),
     }).then(({ json }) => ({ data: { ...params.data, id: json.id } as any })),
 
   // Customize update
   update: (resource, params) =>
-    httpClient(`${API_URL}/api/${resource}/${params.id}`, {
+    httpClient(`${API_URL}/${resource}/${params.id}`, {
       method: 'PUT',
       body: JSON.stringify(params.data),
     }).then(() => ({ data: { ...params.data, id: params.id } as any })),
 
   // Customize delete
   delete: (resource, params) =>
-    httpClient(`${API_URL}/api/${resource}/${params.id}`, {
+    httpClient(`${API_URL}/${resource}/${params.id}`, {
       method: 'DELETE',
     }).then(() => ({ data: { id: params.id } as any })),
+
+  // Custom restore method
+  restore: (resource: string, params: { id: string | number }) =>
+    httpClient(`${API_URL}/${resource}/${params.id}/restore`, {
+      method: 'POST',
+    }).then(({ json }) => ({ data: json })),
 };

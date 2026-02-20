@@ -1,3 +1,4 @@
+basePath: /
 definitions:
   domain.Consent:
     properties:
@@ -100,10 +101,35 @@ definitions:
       to_customer_id:
         type: string
     type: object
+host: localhost:8080
 info:
-  contact: {}
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is the API for the Customer Information Center (CIC).
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: CIC API
+  version: "1.0"
 paths:
   /api/v1/customers:
+    get:
+      description: List customers with pagination
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Customer'
+            type: array
+      summary: List customers
+      tags:
+      - customers
     post:
       consumes:
       - application/json
@@ -119,6 +145,20 @@ paths:
       tags:
       - customers
   /api/v1/customers/{id}:
+    delete:
+      description: Soft delete a customer by ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete a customer
+      tags:
+      - customers
     get:
       description: Get a customer by ID
       produces:
@@ -214,6 +254,21 @@ paths:
       summary: Add a relationship
       tags:
       - relationships
+  /api/v1/customers/{id}/restore:
+    post:
+      description: Restore a soft-deleted customer by ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Restore a customer
+      tags:
+      - customers
   /api/v1/customers/search:
     get:
       description: Search customers by query parms

@@ -103,16 +103,16 @@ func (r *customerRepository) Update(ctx context.Context, c *domain.Customer) err
 	return err
 }
 
-func (r *customerRepository) Delete(ctx context.Context, id uuid.UUID) error {
+func (r *customerRepository) Delete(ctx context.Context, id, userID uuid.UUID) error {
 	// Soft Delete
-	query := `UPDATE customers SET deleted_at=NOW() WHERE id=$1`
-	_, err := r.db.ExecContext(ctx, query, id)
+	query := `UPDATE customers SET deleted_at=NOW(), deleted_by=$2 WHERE id=$1`
+	_, err := r.db.ExecContext(ctx, query, id, userID)
 	return err
 }
 
 func (r *customerRepository) List(ctx context.Context, limit, offset int) ([]*domain.Customer, error) {
 	query := `
-		SELECT id, type, first_name, last_name, company_name, status, created_at
+		SELECT id, type, first_name, last_name, company_name, status, created_at, deleted_at, deleted_by
 		FROM customers
 		WHERE deleted_at IS NULL
 		ORDER BY created_at DESC
@@ -127,7 +127,38 @@ func (r *customerRepository) List(ctx context.Context, limit, offset int) ([]*do
 	var customers []*domain.Customer
 	for rows.Next() {
 		c := &domain.Customer{}
-		if err := rows.Scan(&c.ID, &c.Type, &c.FirstName, &c.LastName, &c.CompanyName, &c.Status, &c.CreatedAt); err != nil {
+		if err := rows.Scan(&c.ID, &c.Type, &c.FirstName, &c.LastName, &c.CompanyName, &c.Status, &c.CreatedAt, &c.DeletedAt, &c.DeletedBy); err != nil {
+			return nil, err
+		}
+		customers = append(customers, c)
+	}
+	return customers, nil
+}
+
+func (r *customerRepository) Restore(ctx context.Context, id uuid.UUID) error {
+	query := `UPDATE customers SET deleted_at=NULL, deleted_by=NULL WHERE id=$1`
+	_, err := r.db.ExecContext(ctx, query, id)
+	return err
+}
+
+func (r *customerRepository) ListDeleted(ctx context.Context, limit, offset int) ([]*domain.Customer, error) {
+	query := `
+		SELECT id, type, first_name, last_name, company_name, status, created_at, deleted_at
+		FROM customers
+		WHERE deleted_at IS NOT NULL
+		ORDER BY deleted_at DESC
+		LIMIT $1 OFFSET $2
+	`
+	rows, err := r.db.QueryContext(ctx, query, limit, offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var customers []*domain.Customer
+	for rows.Next() {
+		c := &domain.Customer{}
+		if err := rows.Scan(&c.ID, &c.Type, &c.FirstName, &c.LastName, &c.CompanyName, &c.Status, &c.CreatedAt, &c.DeletedAt); err != nil {
 			return nil, err
 		}
 		customers = append(customers, c)
@@ -139,7 +170,7 @@ func (r *customerRepository) Search(ctx context.Context, queryStr string) ([]*do
 	// Simple search by name or company name
 	// In production, use Full Text Search or separate logic
 	sqlQuery := `
-		SELECT id, type, first_name, last_name, company_name, status, created_at
+		SELECT id, type, first_name, last_name, company_name, status, created_at, deleted_at
 		FROM customers
 		WHERE deleted_at IS NULL AND (
 			first_name ILIKE '%' || $1 || '%' OR
@@ -157,10 +188,12 @@ func (r *customerRepository) Search(ctx context.Context, queryStr string) ([]*do
 	var customers []*domain.Customer
 	for rows.Next() {
 		c := &domain.Customer{}
-		if err := rows.Scan(&c.ID, &c.Type, &c.FirstName, &c.LastName, &c.CompanyName, &c.Status, &c.CreatedAt); err != nil {
+		if err := rows.Scan(&c.ID, &c.Type, &c.FirstName, &c.LastName, &c.CompanyName, &c.Status, &c.CreatedAt, &c.DeletedAt); err != nil {
 			return nil, err
 		}
 		customers = append(customers, c)
 	}
 	return customers, nil
 }
+
+

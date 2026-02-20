@@ -22,6 +22,8 @@ services:
     build:
       context: ./react-admin
       dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:80/api/v1
     container_name: cic-react-admin
     environment:
       # API URL accessed by browser -> Gateway (localhost:80) -> Nginx -> cic-api

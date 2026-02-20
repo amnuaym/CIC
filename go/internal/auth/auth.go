@@ -17,6 +17,7 @@ type JWTClaims struct {
 	UserID   string `json:"user_id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
+	Role     string `json:"role"`
 	jwt.RegisteredClaims
 }
 
@@ -33,7 +34,7 @@ func CheckPasswordHash(password, hash string) bool {
 }
 
 // GenerateJWT generates a JWT token for a user
-func GenerateJWT(userID uuid.UUID, username, email string) (string, error) {
+func GenerateJWT(userID uuid.UUID, username, email, role string) (string, error) {
 	secret := os.Getenv("JWT_SECRET")
 	if secret == "" {
 		secret = "your-secret-key-change-in-production"
@@ -43,6 +44,7 @@ func GenerateJWT(userID uuid.UUID, username, email string) (string, error) {
 		UserID:   userID.String(),
 		Username: username,
 		Email:    email,
+		Role:     role,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
