@@ -1,38 +1,61 @@
 import { Admin, Resource } from 'react-admin';
 import { dataProvider } from './dataProvider';
 import { authProvider } from './authProvider';
-import PostIcon from '@mui/icons-material/Book';
-import UserIcon from '@mui/icons-material/Group';
-import { PostList, PostEdit, PostCreate } from './resources/posts';
+import PersonIcon from '@mui/icons-material/Person';
+import BusinessIcon from '@mui/icons-material/Business';
+import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
+import HistoryIcon from '@mui/icons-material/History';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import { IndividualList, IndividualEdit, IndividualCreate, IndividualShow } from './resources/individuals';
+import { JuristicList, JuristicEdit, JuristicCreate, JuristicShow } from './resources/juristic';
+import { ConsentList, ConsentShow } from './resources/consents';
+import { AuditLogList, AuditLogShow } from './resources/auditLogs';
 import { UserList, UserShow } from './resources/users';
-import { CustomerList, CustomerEdit, CustomerCreate, CustomerShow } from './resources/customers';
 
 const App = () => (
   <Admin
     dataProvider={dataProvider}
     authProvider={authProvider}
-    title="Backend Template Admin"
+    title="CIC Admin"
   >
     <Resource
-      name="customers"
-      list={CustomerList}
-      edit={CustomerEdit}
-      create={CustomerCreate}
-      show={CustomerShow}
-      icon={UserIcon}
+      name="individuals"
+      list={IndividualList}
+      edit={IndividualEdit}
+      create={IndividualCreate}
+      show={IndividualShow}
+      icon={PersonIcon}
+      options={{ label: 'Individuals' }}
     />
     <Resource
-      name="posts"
-      list={PostList}
-      edit={PostEdit}
-      create={PostCreate}
-      icon={PostIcon}
+      name="juristic"
+      list={JuristicList}
+      edit={JuristicEdit}
+      create={JuristicCreate}
+      show={JuristicShow}
+      icon={BusinessIcon}
+      options={{ label: 'Juristic' }}
+    />
+    <Resource
+      name="consents"
+      list={ConsentList}
+      show={ConsentShow}
+      icon={PrivacyTipIcon}
+      options={{ label: 'Consents' }}
+    />
+    <Resource
+      name="audit-logs"
+      list={AuditLogList}
+      show={AuditLogShow}
+      icon={HistoryIcon}
+      options={{ label: 'Audit Logs' }}
     />
     <Resource
       name="users"
       list={UserList}
       show={UserShow}
-      icon={UserIcon}
+      icon={AdminPanelSettingsIcon}
+      options={{ label: 'Users' }}
     />
   </Admin>
 );

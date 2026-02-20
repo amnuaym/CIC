@@ -82,11 +82,11 @@ func (r *identityRepository) Create(ctx context.Context, i *domain.Identity) err
 		expiry.Time = i.ExpiryDate
 		expiry.Valid = true
 	}
-	
+
 	err := r.db.QueryRowContext(ctx, query,
 		i.CustomerID, i.Type, i.Number, i.IssuanceCountry, expiry,
 	).Scan(&i.ID, &i.CreatedAt, &i.UpdatedAt)
-	
+
 	if err == nil && expiry.Valid {
 		i.ExpiryDate = expiry.Time
 	}
@@ -213,6 +213,26 @@ func (r *consentRepository) Create(ctx context.Context, c *domain.Consent) error
 func (r *consentRepository) ListByCustomerID(ctx context.Context, customerID uuid.UUID) ([]*domain.Consent, error) {
 	query := `SELECT * FROM consents WHERE customer_id = $1 ORDER BY timestamp DESC`
 	rows, err := r.db.QueryContext(ctx, query, customerID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var consents []*domain.Consent
+	for rows.Next() {
+		c := &domain.Consent{}
+		if err := rows.Scan(&c.ID, &c.CustomerID, &c.Topic, &c.Version, &c.IsGranted, &c.Timestamp, &c.CreatedAt); err != nil {
+			return nil, err
+		}
+		consents = append(consents, c)
+	}
+	return consents, nil
+}
+
+func (r *consentRepository) ListAll(ctx context.Context, limit, offset int) ([]*domain.Consent, error) {
+	query := `SELECT id, customer_id, topic, version, is_granted, timestamp, created_at
+		FROM consents ORDER BY timestamp DESC LIMIT $1 OFFSET $2`
+	rows, err := r.db.QueryContext(ctx, query, limit, offset)
 	if err != nil {
 		return nil, err
 	}

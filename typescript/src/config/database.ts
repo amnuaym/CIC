@@ -13,6 +13,7 @@ export const pool = new Pool({
   connectionTimeoutMillis: 2000,
 });
 
+/* istanbul ignore next */
 pool.on('error', (err) => {
   console.error('Unexpected error on idle client', err);
   process.exit(-1);

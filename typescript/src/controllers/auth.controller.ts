@@ -82,14 +82,14 @@ export const login = async (req: AuthRequest, res: Response): Promise<void> => {
   }
 };
 
-export const oauthGoogle = async (req: AuthRequest, res: Response): Promise<void> => {
+export const oauthGoogle = async (_req: AuthRequest, res: Response): Promise<void> => {
   res.status(501).json({
     message: 'OAuth implementation depends on your provider configuration',
     note: 'Configure OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET, and OAUTH_REDIRECT_URL in .env',
   });
 };
 
-export const oauthCallback = async (req: AuthRequest, res: Response): Promise<void> => {
+export const oauthCallback = async (_req: AuthRequest, res: Response): Promise<void> => {
   res.status(501).json({
     message: 'OAuth callback implementation depends on your provider configuration',
   });

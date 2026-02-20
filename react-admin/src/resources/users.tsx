@@ -7,14 +7,20 @@ import {
   DateField,
   Show,
   SimpleShowLayout,
+  SearchInput,
 } from 'react-admin';
 
+const userFilters = [
+  <SearchInput source="q" alwaysOn />,
+];
+
 export const UserList = () => (
-  <List>
+  <List filters={userFilters}>
     <Datagrid rowClick="show">
       <TextField source="id" />
       <TextField source="username" />
       <EmailField source="email" />
+      <TextField source="role" />
       <BooleanField source="is_active" />
       <DateField source="created_at" />
     </Datagrid>
@@ -27,10 +33,10 @@ export const UserShow = () => (
       <TextField source="id" />
       <TextField source="username" />
       <EmailField source="email" />
+      <TextField source="role" />
       <BooleanField source="is_active" />
-      <TextField source="oauth_provider" />
-      <DateField source="created_at" />
-      <DateField source="updated_at" />
+      <DateField source="created_at" showTime />
+      <DateField source="updated_at" showTime />
     </SimpleShowLayout>
   </Show>
 );

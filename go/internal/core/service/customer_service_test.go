@@ -2,11 +2,10 @@ package service
 
 import (
 	"context"
-	"errors"
 	"testing"
-	"time"
 
 	"github.com/amnuaym/cic/go/internal/core/domain"
+	"github.com/amnuaym/cic/go/internal/models"
 	"github.com/google/uuid"
 )
 
@@ -15,7 +14,8 @@ type mockCustomerRepo struct {
 	createFunc  func(ctx context.Context, c *domain.Customer) error
 	getByIDFunc func(ctx context.Context, id uuid.UUID) (*domain.Customer, error)
 	updateFunc  func(ctx context.Context, c *domain.Customer) error
-	deleteFunc  func(ctx context.Context, id uuid.UUID) error
+	deleteFunc  func(ctx context.Context, id, userID uuid.UUID) error
+	restoreFunc func(ctx context.Context, id uuid.UUID) error
 	searchFunc  func(ctx context.Context, query string) ([]*domain.Customer, error)
 }
 
@@ -28,14 +28,23 @@ func (m *mockCustomerRepo) GetByID(ctx context.Context, id uuid.UUID) (*domain.C
 func (m *mockCustomerRepo) Update(ctx context.Context, c *domain.Customer) error {
 	return m.updateFunc(ctx, c)
 }
-func (m *mockCustomerRepo) Delete(ctx context.Context, id uuid.UUID) error {
-	return m.deleteFunc(ctx, id)
+func (m *mockCustomerRepo) Delete(ctx context.Context, id, userID uuid.UUID) error {
+	return m.deleteFunc(ctx, id, userID)
+}
+func (m *mockCustomerRepo) Restore(ctx context.Context, id uuid.UUID) error {
+	if m.restoreFunc != nil {
+		return m.restoreFunc(ctx, id)
+	}
+	return nil
 }
 func (m *mockCustomerRepo) Search(ctx context.Context, query string) ([]*domain.Customer, error) {
 	return m.searchFunc(ctx, query)
 }
 func (m *mockCustomerRepo) List(ctx context.Context, limit, offset int) ([]*domain.Customer, error) {
-	return nil, nil // Not used in test
+	return nil, nil
+}
+func (m *mockCustomerRepo) ListDeleted(ctx context.Context, limit, offset int) ([]*domain.Customer, error) {
+	return nil, nil
 }
 
 // Mock AuditService
@@ -44,27 +53,66 @@ type mockAuditService struct {
 }
 
 func (m *mockAuditService) Log(ctx context.Context, entityID uuid.UUID, entityType, action, performedBy, changes, ip string) {
-	m.logFunc(ctx, entityID, entityType, action, performedBy, changes, ip)
+	if m.logFunc != nil {
+		m.logFunc(ctx, entityID, entityType, action, performedBy, changes, ip)
+	}
 }
 
-// Mock other repos (nil for now as not testing sub-resources)
-type mockSubRepo struct{}
-func (m *mockSubRepo) Create(ctx context.Context, a interface{}) error { return nil }
-// ... implement interfaces if needed, but for now passing nil might panic if service calls them.
-// Service only calls them in specific methods. We are testing CreateCustomer and AnonymizeCustomer.
-// CreateCustomer calls customerRepo.Create.
-// AnonymizeCustomer calls customerRepo.GetByID, Update, and addressRepo.Delete.
-// So we need mockAddressRepo.
-
+// Mock AddressRepo
 type mockAddressRepo struct {
 	deleteFunc func(ctx context.Context, id uuid.UUID) error
 }
-func (m *mockAddressRepo) Create(ctx context.Context, a *domain.Address) error { return nil }
-func (m *mockAddressRepo) ListByCustomerID(ctx context.Context, id uuid.UUID) ([]*domain.Address, error) { return nil, nil }
-func (m *mockAddressRepo) GetByID(ctx context.Context, id uuid.UUID) (*domain.Address, error) { return nil, nil }
-func (m *mockAddressRepo) Update(ctx context.Context, a *domain.Address) error { return nil }
-func (m *mockAddressRepo) Delete(ctx context.Context, id uuid.UUID) error { return m.deleteFunc(ctx, id) }
 
+func (m *mockAddressRepo) Create(ctx context.Context, a *domain.Address) error { return nil }
+func (m *mockAddressRepo) ListByCustomerID(ctx context.Context, id uuid.UUID) ([]*domain.Address, error) {
+	return nil, nil
+}
+func (m *mockAddressRepo) Delete(ctx context.Context, id uuid.UUID) error {
+	return m.deleteFunc(ctx, id)
+}
+
+// Mock IdentityRepo
+type mockIdentityRepo struct{}
+
+func (m *mockIdentityRepo) Create(ctx context.Context, i *domain.Identity) error { return nil }
+func (m *mockIdentityRepo) ListByCustomerID(ctx context.Context, id uuid.UUID) ([]*domain.Identity, error) {
+	return nil, nil
+}
+func (m *mockIdentityRepo) GetByNumber(ctx context.Context, number string) (*domain.Identity, error) {
+	return nil, nil
+}
+func (m *mockIdentityRepo) Delete(ctx context.Context, id uuid.UUID) error { return nil }
+
+// Mock RelationshipRepo
+type mockRelationshipRepo struct{}
+
+func (m *mockRelationshipRepo) Create(ctx context.Context, r *domain.Relationship) error { return nil }
+func (m *mockRelationshipRepo) ListByCustomerID(ctx context.Context, id uuid.UUID) ([]*domain.Relationship, error) {
+	return nil, nil
+}
+func (m *mockRelationshipRepo) Delete(ctx context.Context, id uuid.UUID) error { return nil }
+
+// Mock ConsentRepo
+type mockConsentRepo struct{}
+
+func (m *mockConsentRepo) Create(ctx context.Context, c *domain.Consent) error { return nil }
+func (m *mockConsentRepo) ListByCustomerID(ctx context.Context, id uuid.UUID) ([]*domain.Consent, error) {
+	return nil, nil
+}
+
+// Mock UserRepo
+type mockUserRepo struct {
+	getByIDFunc func(ctx context.Context, id uuid.UUID) (*models.User, error)
+}
+
+func (m *mockUserRepo) GetByID(ctx context.Context, id uuid.UUID) (*models.User, error) {
+	if m.getByIDFunc != nil {
+		return m.getByIDFunc(ctx, id)
+	}
+	return nil, nil
+}
+
+// --- Tests ---
 
 func TestCreateCustomer(t *testing.T) {
 	mockRepo := &mockCustomerRepo{
@@ -75,17 +123,16 @@ func TestCreateCustomer(t *testing.T) {
 	}
 	mockAudit := &mockAuditService{
 		logFunc: func(ctx context.Context, entityID uuid.UUID, entityType, action, performedBy, changes, ip string) {
-			// Verify log call
 			if action != "CREATE" {
 				t.Errorf("Expected action CREATE, got %s", action)
 			}
 		},
 	}
 
-	service := NewCustomerService(mockRepo, nil, nil, nil, nil, mockAudit)
-	
-	c := &domain.Customer{FirstName: "John", LastName: "Doe", Type: domain.CustomerTypePersonal}
-	err := service.CreateCustomer(context.Background(), c)
+	svc := NewCustomerService(mockRepo, nil, nil, nil, nil, nil, mockAudit)
+
+	c := &domain.Customer{FirstName: "John", LastName: "Doe", Type: domain.TypePersonal}
+	err := svc.CreateCustomer(context.Background(), c)
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
 	}
@@ -120,9 +167,9 @@ func TestAnonymizeCustomer(t *testing.T) {
 		},
 	}
 
-	service := NewCustomerService(mockRepo, mockAddress, nil, nil, nil, mockAudit)
+	svc := NewCustomerService(mockRepo, mockAddress, nil, nil, nil, nil, mockAudit)
 
-	err := service.AnonymizeCustomer(context.Background(), cid)
+	err := svc.AnonymizeCustomer(context.Background(), cid)
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
 	}
@@ -136,9 +183,9 @@ func TestAnonymizeCustomer_ActivePortfolio(t *testing.T) {
 		},
 	}
 
-	service := NewCustomerService(mockRepo, nil, nil, nil, nil, nil)
+	svc := NewCustomerService(mockRepo, nil, nil, nil, nil, nil, nil)
 
-	err := service.AnonymizeCustomer(context.Background(), cid)
+	err := svc.AnonymizeCustomer(context.Background(), cid)
 	if err == nil {
 		t.Errorf("Expected error for active portfolio")
 	}

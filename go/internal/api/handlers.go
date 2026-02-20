@@ -33,13 +33,8 @@ func SetupRoutes(router *mux.Router, db *sql.DB) {
 	// Protected routes with JWT
 	protected := router.PathPrefix("/api").Subrouter()
 	protected.Use(middleware.JWTAuth)
-	
+
 	protected.HandleFunc("/users/me", h.GetCurrentUser).Methods("GET")
-	protected.HandleFunc("/posts", h.ListPosts).Methods("GET")
-	protected.HandleFunc("/posts", h.CreatePost).Methods("POST")
-	protected.HandleFunc("/posts/{id}", h.GetPost).Methods("GET")
-	protected.HandleFunc("/posts/{id}", h.UpdatePost).Methods("PUT")
-	protected.HandleFunc("/posts/{id}", h.DeletePost).Methods("DELETE")
 
 	// CIC Dependencies
 	auditRepo := repository.NewAuditRepository(db)
@@ -54,11 +49,13 @@ func SetupRoutes(router *mux.Router, db *sql.DB) {
 
 	customerService := service.NewCustomerService(customerRepo, addressRepo, identityRepo, relationshipRepo, consentRepo, userRepo, auditService)
 	customerHandler := handler.NewCustomerHandler(customerService)
+	auditLogHandler := handler.NewAuditLogHandler(auditRepo)
+	consentHandler := handler.NewConsentHandler(consentRepo)
 
 	// CIC Routes (v1)
 	v1 := router.PathPrefix("/api/v1").Subrouter()
 	v1.Use(middleware.JWTAuth)
-	
+
 	// Customers
 	v1.HandleFunc("/customers", customerHandler.ListCustomers).Methods("GET")
 	v1.HandleFunc("/customers", customerHandler.CreateCustomer).Methods("POST")
@@ -69,11 +66,10 @@ func SetupRoutes(router *mux.Router, db *sql.DB) {
 	v1.HandleFunc("/customers/{id}/restore", customerHandler.RestoreCustomer).Methods("POST")
 	v1.HandleFunc("/customers/{id}/anonymize", customerHandler.AnonymizeCustomer).Methods("POST")
 
-	
 	// Sub-resources: Addresses
 	v1.HandleFunc("/customers/{id}/addresses", customerHandler.AddAddress).Methods("POST")
 	v1.HandleFunc("/customers/{id}/addresses", customerHandler.GetAddresses).Methods("GET")
-	
+
 	// Sub-resources: Identities
 	v1.HandleFunc("/customers/{id}/identities", customerHandler.AddIdentity).Methods("POST")
 	v1.HandleFunc("/customers/{id}/identities", customerHandler.GetIdentities).Methods("GET")
@@ -86,11 +82,22 @@ func SetupRoutes(router *mux.Router, db *sql.DB) {
 	v1.HandleFunc("/customers/{id}/consents", customerHandler.ManageConsent).Methods("POST")
 	v1.HandleFunc("/customers/{id}/consents", customerHandler.GetConsents).Methods("GET")
 
-	// API Key protected routes (Existing)
+	// Top-level: Audit Logs (read-only)
+	v1.HandleFunc("/audit-logs", auditLogHandler.ListAuditLogs).Methods("GET")
+	v1.HandleFunc("/audit-logs/{id}", auditLogHandler.GetAuditLog).Methods("GET")
+
+	// Top-level: Consents (cross-customer)
+	v1.HandleFunc("/consents", consentHandler.ListConsents).Methods("GET")
+	v1.HandleFunc("/consents/{id}", consentHandler.GetConsent).Methods("GET")
+
+	// Top-level: Users (staff management)
+	v1.HandleFunc("/users", h.ListUsers).Methods("GET")
+	v1.HandleFunc("/users/{id}", h.GetUser).Methods("GET")
+
+	// API Key protected routes
 	apiKeyRouter := router.PathPrefix("/api/v1").Subrouter()
 	apiKeyRouter.Use(middleware.APIKeyAuth(db))
-	
-	apiKeyRouter.HandleFunc("/posts", h.ListPosts).Methods("GET")
+	apiKeyRouter.HandleFunc("/customers", customerHandler.ListCustomers).Methods("GET")
 }
 
 // HealthCheck returns the API health status
@@ -102,7 +109,7 @@ func SetupRoutes(router *mux.Router, db *sql.DB) {
 // @Router /health [get]
 func (h *Handler) HealthCheck(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, map[string]string{
-		"status": "healthy",
+		"status":  "healthy",
 		"service": "go-api",
 	})
 }
@@ -365,6 +372,67 @@ func (h *Handler) OAuthCallback(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusNotImplemented, map[string]string{
 		"message": "OAuth callback implementation depends on your provider configuration",
 	})
+}
+
+// ListUsers returns all users (staff management)
+// @Summary List users
+// @Description Returns all registered users for staff management
+// @Tags users
+// @Produce json
+// @Success 200 {array} models.User
+// @Router /api/v1/users [get]
+func (h *Handler) ListUsers(w http.ResponseWriter, r *http.Request) {
+	rows, err := h.DB.Query(`
+		SELECT id, email, username, role, is_active, created_at, updated_at
+		FROM users
+		ORDER BY created_at DESC
+	`)
+	if err != nil {
+		respondError(w, http.StatusInternalServerError, "Failed to fetch users")
+		return
+	}
+	defer rows.Close()
+
+	var users []models.User
+	for rows.Next() {
+		var user models.User
+		err := rows.Scan(&user.ID, &user.Email, &user.Username, &user.Role, &user.IsActive, &user.CreatedAt, &user.UpdatedAt)
+		if err != nil {
+			continue
+		}
+		users = append(users, user)
+	}
+
+	if users == nil {
+		users = []models.User{}
+	}
+
+	respondJSON(w, http.StatusOK, users)
+}
+
+// GetUser returns a single user by ID
+// @Summary Get user
+// @Description Returns a single user by ID
+// @Tags users
+// @Produce json
+// @Param id path string true "User ID"
+// @Success 200 {object} models.User
+// @Router /api/v1/users/{id} [get]
+func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	var user models.User
+	query := `SELECT id, email, username, role, is_active, created_at, updated_at FROM users WHERE id = $1`
+	err := h.DB.QueryRow(query, id).Scan(
+		&user.ID, &user.Email, &user.Username, &user.Role, &user.IsActive, &user.CreatedAt, &user.UpdatedAt,
+	)
+	if err != nil {
+		respondError(w, http.StatusNotFound, "User not found")
+		return
+	}
+
+	respondJSON(w, http.StatusOK, user)
 }
 
 // Helper functions

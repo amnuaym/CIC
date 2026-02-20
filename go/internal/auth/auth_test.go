@@ -43,7 +43,7 @@ func TestGenerateJWT(t *testing.T) {
 	username := "testuser"
 	email := "test@example.com"
 
-	token, err := GenerateJWT(userID, username, email)
+	token, err := GenerateJWT(userID, username, email, "user")
 	if err != nil {
 		t.Fatalf("GenerateJWT failed: %v", err)
 	}
@@ -58,7 +58,7 @@ func TestValidateJWT(t *testing.T) {
 	username := "testuser"
 	email := "test@example.com"
 
-	token, err := GenerateJWT(userID, username, email)
+	token, err := GenerateJWT(userID, username, email, "user")
 	if err != nil {
 		t.Fatalf("GenerateJWT failed: %v", err)
 	}

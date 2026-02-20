@@ -1,5 +1,14 @@
 import request from 'supertest';
-import app from '../src/index';
+
+jest.mock('../src/config/database', () => ({
+  query: jest.fn(),
+  pool: {
+    end: jest.fn(),
+    on: jest.fn(),
+  },
+}));
+
+import app from '../src/app';
 
 describe('API Endpoints', () => {
   describe('GET /health', () => {

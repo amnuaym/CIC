@@ -1,40 +1,7 @@
-import express, { Application } from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
-import dotenv from 'dotenv';
+import app from './app';
 import { pool } from './config/database';
-import authRoutes from './routes/auth.routes';
-import postRoutes from './routes/post.routes';
-import userRoutes from './routes/user.routes';
 
-dotenv.config({ path: '../.env' });
-
-const app: Application = express();
 const PORT = process.env.TS_API_PORT || process.env.PORT || 3000;
-
-// Middleware
-app.use(helmet());
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'healthy', service: 'typescript-api' });
-});
-
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/posts', postRoutes);
-app.use('/api/users', userRoutes);
-
-// Error handler
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error(err.stack);
-  res.status(err.status || 500).json({
-    error: err.message || 'Internal server error',
-  });
-});
 
 // Start server
 const server = app.listen(PORT, () => {
@@ -52,5 +19,3 @@ process.on('SIGTERM', () => {
     });
   });
 });
-
-export default app;
