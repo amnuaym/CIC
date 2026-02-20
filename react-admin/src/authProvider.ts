@@ -47,7 +47,12 @@ export const authProvider: AuthProvider = {
   },
 
   getPermissions: () => {
-    return Promise.resolve();
+    try {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      return user.role ? Promise.resolve(user.role) : Promise.resolve('VIEWER');
+    } catch {
+      return Promise.resolve('VIEWER');
+    }
   },
 
   getIdentity: () => {

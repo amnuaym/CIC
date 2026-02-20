@@ -49,21 +49,12 @@ CREATE TABLE IF NOT EXISTS sessions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Example data table
-CREATE TABLE IF NOT EXISTS posts (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-    title VARCHAR(255) NOT NULL,
-    content TEXT,
-    status VARCHAR(20) DEFAULT 'draft',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 -- Insert default roles
 INSERT INTO roles (name, description) VALUES
-    ('admin', 'Administrator with full access'),
-    ('user', 'Regular user with limited access')
+    ('SUPER_ADMIN', 'System owner with full access including user management'),
+    ('ADMIN', 'Team lead with delete/restore and user viewing permissions'),
+    ('OPERATOR', 'Staff with customer CRUD permissions'),
+    ('VIEWER', 'Auditor/compliance with read-only access')
 ON CONFLICT (name) DO NOTHING;
 
 -- Create indexes
@@ -71,4 +62,3 @@ CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);
 CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
 CREATE INDEX IF NOT EXISTS idx_api_keys_user_id ON api_keys(user_id);
-CREATE INDEX IF NOT EXISTS idx_posts_user_id ON posts(user_id);

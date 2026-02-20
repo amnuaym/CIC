@@ -3,7 +3,9 @@ package api
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/amnuaym/cic/go/internal/adapter/handler"
 	"github.com/amnuaym/cic/go/internal/adapter/repository"
@@ -52,47 +54,48 @@ func SetupRoutes(router *mux.Router, db *sql.DB) {
 	auditLogHandler := handler.NewAuditLogHandler(auditRepo)
 	consentHandler := handler.NewConsentHandler(consentRepo)
 
-	// CIC Routes (v1)
+	// CIC Routes (v1) — JWT required for all
 	v1 := router.PathPrefix("/api/v1").Subrouter()
 	v1.Use(middleware.JWTAuth)
 
-	// Customers
+	// === Read-only routes (all authenticated users: VIEWER+) ===
 	v1.HandleFunc("/customers", customerHandler.ListCustomers).Methods("GET")
-	v1.HandleFunc("/customers", customerHandler.CreateCustomer).Methods("POST")
 	v1.HandleFunc("/customers/search", customerHandler.SearchCustomers).Methods("GET")
 	v1.HandleFunc("/customers/{id}", customerHandler.GetCustomer).Methods("GET")
-	v1.HandleFunc("/customers/{id}", customerHandler.UpdateCustomer).Methods("PATCH", "PUT")
-	v1.HandleFunc("/customers/{id}", customerHandler.DeleteCustomer).Methods("DELETE")
-	v1.HandleFunc("/customers/{id}/restore", customerHandler.RestoreCustomer).Methods("POST")
-	v1.HandleFunc("/customers/{id}/anonymize", customerHandler.AnonymizeCustomer).Methods("POST")
-
-	// Sub-resources: Addresses
-	v1.HandleFunc("/customers/{id}/addresses", customerHandler.AddAddress).Methods("POST")
 	v1.HandleFunc("/customers/{id}/addresses", customerHandler.GetAddresses).Methods("GET")
-
-	// Sub-resources: Identities
-	v1.HandleFunc("/customers/{id}/identities", customerHandler.AddIdentity).Methods("POST")
 	v1.HandleFunc("/customers/{id}/identities", customerHandler.GetIdentities).Methods("GET")
-
-	// Sub-resources: Relationships
-	v1.HandleFunc("/customers/{id}/relationships", customerHandler.AddRelationship).Methods("POST")
 	v1.HandleFunc("/customers/{id}/relationships", customerHandler.GetRelationships).Methods("GET")
-
-	// Sub-resources: Consents
-	v1.HandleFunc("/customers/{id}/consents", customerHandler.ManageConsent).Methods("POST")
 	v1.HandleFunc("/customers/{id}/consents", customerHandler.GetConsents).Methods("GET")
-
-	// Top-level: Audit Logs (read-only)
 	v1.HandleFunc("/audit-logs", auditLogHandler.ListAuditLogs).Methods("GET")
 	v1.HandleFunc("/audit-logs/{id}", auditLogHandler.GetAuditLog).Methods("GET")
-
-	// Top-level: Consents (cross-customer)
 	v1.HandleFunc("/consents", consentHandler.ListConsents).Methods("GET")
 	v1.HandleFunc("/consents/{id}", consentHandler.GetConsent).Methods("GET")
 
-	// Top-level: Users (staff management)
-	v1.HandleFunc("/users", h.ListUsers).Methods("GET")
-	v1.HandleFunc("/users/{id}", h.GetUser).Methods("GET")
+	// === Write routes (OPERATOR+) ===
+	operatorRoutes := v1.PathPrefix("").Subrouter()
+	operatorRoutes.Use(middleware.RequireRole(middleware.RoleSuperAdmin, middleware.RoleAdmin, middleware.RoleOperator))
+	operatorRoutes.HandleFunc("/customers", customerHandler.CreateCustomer).Methods("POST")
+	operatorRoutes.HandleFunc("/customers/{id}", customerHandler.UpdateCustomer).Methods("PATCH", "PUT")
+	operatorRoutes.HandleFunc("/customers/{id}/addresses", customerHandler.AddAddress).Methods("POST")
+	operatorRoutes.HandleFunc("/customers/{id}/identities", customerHandler.AddIdentity).Methods("POST")
+	operatorRoutes.HandleFunc("/customers/{id}/relationships", customerHandler.AddRelationship).Methods("POST")
+	operatorRoutes.HandleFunc("/customers/{id}/consents", customerHandler.ManageConsent).Methods("POST")
+
+	// === Admin routes (ADMIN+): delete, restore, anonymize ===
+	adminRoutes := v1.PathPrefix("").Subrouter()
+	adminRoutes.Use(middleware.RequireRole(middleware.RoleSuperAdmin, middleware.RoleAdmin))
+	adminRoutes.HandleFunc("/customers/{id}", customerHandler.DeleteCustomer).Methods("DELETE")
+	adminRoutes.HandleFunc("/customers/{id}/restore", customerHandler.RestoreCustomer).Methods("POST")
+	adminRoutes.HandleFunc("/customers/{id}/anonymize", customerHandler.AnonymizeCustomer).Methods("POST")
+	adminRoutes.HandleFunc("/users", h.ListUsers).Methods("GET")
+	adminRoutes.HandleFunc("/users/{id}", h.GetUser).Methods("GET")
+
+	// === Super Admin routes: user management ===
+	superAdminRoutes := v1.PathPrefix("").Subrouter()
+	superAdminRoutes.Use(middleware.RequireRole(middleware.RoleSuperAdmin))
+	superAdminRoutes.HandleFunc("/users", h.CreateUser).Methods("POST")
+	superAdminRoutes.HandleFunc("/users/{id}", h.UpdateUser).Methods("PUT")
+	superAdminRoutes.HandleFunc("/users/{id}", h.DeactivateUser).Methods("DELETE")
 
 	// API Key protected routes
 	apiKeyRouter := router.PathPrefix("/api/v1").Subrouter()
@@ -172,7 +175,7 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var userID uuid.UUID
-	defaultRole := "user"
+	defaultRole := "OPERATOR"
 	query := `INSERT INTO users (email, username, password_hash, role) VALUES ($1, $2, $3, $4) RETURNING id`
 	err = h.DB.QueryRow(query, req.Email, req.Username, passwordHash, defaultRole).Scan(&userID)
 	if err != nil {
@@ -206,9 +209,9 @@ func (h *Handler) GetCurrentUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var user models.User
-	query := `SELECT id, email, username, is_active, created_at, updated_at FROM users WHERE id = $1`
+	query := `SELECT id, email, username, role, is_active, created_at, updated_at FROM users WHERE id = $1`
 	err := h.DB.QueryRow(query, claims.UserID).Scan(
-		&user.ID, &user.Email, &user.Username, &user.IsActive, &user.CreatedAt, &user.UpdatedAt,
+		&user.ID, &user.Email, &user.Username, &user.Role, &user.IsActive, &user.CreatedAt, &user.UpdatedAt,
 	)
 	if err != nil {
 		respondError(w, http.StatusNotFound, "User not found")
@@ -218,143 +221,172 @@ func (h *Handler) GetCurrentUser(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, user)
 }
 
-// ListPosts returns all posts
-func (h *Handler) ListPosts(w http.ResponseWriter, r *http.Request) {
-	rows, err := h.DB.Query(`
-		SELECT id, user_id, title, content, status, created_at, updated_at 
-		FROM posts 
-		ORDER BY created_at DESC
-	`)
-	if err != nil {
-		respondError(w, http.StatusInternalServerError, "Failed to fetch posts")
+// CreateUser creates a new user account (SUPER_ADMIN only)
+// @Summary Create user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Router /api/v1/users [post]
+func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Email        string  `json:"email"`
+		Username     string  `json:"username"`
+		Password     string  `json:"password"`
+		Role         string  `json:"role"`
+		SupervisorID *string `json:"supervisor_id,omitempty"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		respondError(w, http.StatusBadRequest, "Invalid request body")
 		return
 	}
-	defer rows.Close()
 
-	var posts []models.Post
-	for rows.Next() {
-		var post models.Post
-		err := rows.Scan(&post.ID, &post.UserID, &post.Title, &post.Content, &post.Status, &post.CreatedAt, &post.UpdatedAt)
-		if err != nil {
-			continue
+	// Validate role
+	validRoles := map[string]bool{
+		middleware.RoleSuperAdmin: true,
+		middleware.RoleAdmin:      true,
+		middleware.RoleOperator:   true,
+		middleware.RoleViewer:     true,
+	}
+	if !validRoles[req.Role] {
+		respondError(w, http.StatusBadRequest, "Invalid role. Must be: SUPER_ADMIN, ADMIN, OPERATOR, or VIEWER")
+		return
+	}
+
+	passwordHash, err := auth.HashPassword(req.Password)
+	if err != nil {
+		respondError(w, http.StatusInternalServerError, "Failed to hash password")
+		return
+	}
+
+	var userID uuid.UUID
+	query := `INSERT INTO users (email, username, password_hash, role, supervisor_id) VALUES ($1, $2, $3, $4, $5) RETURNING id`
+	err = h.DB.QueryRow(query, req.Email, req.Username, passwordHash, req.Role, req.SupervisorID).Scan(&userID)
+	if err != nil {
+		respondError(w, http.StatusConflict, "User already exists or invalid supervisor")
+		return
+	}
+
+	respondJSON(w, http.StatusCreated, map[string]interface{}{
+		"id":       userID,
+		"email":    req.Email,
+		"username": req.Username,
+		"role":     req.Role,
+	})
+}
+
+// UpdateUser updates a user account (SUPER_ADMIN only)
+// @Summary Update user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param id path string true "User ID"
+// @Router /api/v1/users/{id} [put]
+func (h *Handler) UpdateUser(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	var req struct {
+		Email        *string `json:"email,omitempty"`
+		Role         *string `json:"role,omitempty"`
+		IsActive     *bool   `json:"is_active,omitempty"`
+		SupervisorID *string `json:"supervisor_id,omitempty"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		respondError(w, http.StatusBadRequest, "Invalid request body")
+		return
+	}
+
+	// Validate role if provided
+	if req.Role != nil {
+		validRoles := map[string]bool{
+			middleware.RoleSuperAdmin: true,
+			middleware.RoleAdmin:      true,
+			middleware.RoleOperator:   true,
+			middleware.RoleViewer:     true,
 		}
-		posts = append(posts, post)
+		if !validRoles[*req.Role] {
+			respondError(w, http.StatusBadRequest, "Invalid role")
+			return
+		}
 	}
 
-	respondJSON(w, http.StatusOK, posts)
-}
+	// Build dynamic update query
+	setClauses := []string{"updated_at = NOW()"}
+	args := []interface{}{}
+	argIdx := 1
 
-// CreatePost creates a new post
-func (h *Handler) CreatePost(w http.ResponseWriter, r *http.Request) {
-	claims, ok := r.Context().Value(middleware.UserContextKey).(*auth.JWTClaims)
-	if !ok {
-		respondError(w, http.StatusUnauthorized, "Unauthorized")
-		return
+	if req.Email != nil {
+		setClauses = append(setClauses, fmt.Sprintf("email = $%d", argIdx))
+		args = append(args, *req.Email)
+		argIdx++
+	}
+	if req.Role != nil {
+		setClauses = append(setClauses, fmt.Sprintf("role = $%d", argIdx))
+		args = append(args, *req.Role)
+		argIdx++
+	}
+	if req.IsActive != nil {
+		setClauses = append(setClauses, fmt.Sprintf("is_active = $%d", argIdx))
+		args = append(args, *req.IsActive)
+		argIdx++
+	}
+	if req.SupervisorID != nil {
+		setClauses = append(setClauses, fmt.Sprintf("supervisor_id = $%d", argIdx))
+		args = append(args, *req.SupervisorID)
+		argIdx++
 	}
 
-	var req struct {
-		Title   string  `json:"title"`
-		Content *string `json:"content"`
-		Status  string  `json:"status"`
-	}
+	args = append(args, id)
+	query := fmt.Sprintf("UPDATE users SET %s WHERE id = $%d", strings.Join(setClauses, ", "), argIdx)
 
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		respondError(w, http.StatusBadRequest, "Invalid request body")
-		return
-	}
-
-	var postID uuid.UUID
-	query := `INSERT INTO posts (user_id, title, content, status) VALUES ($1, $2, $3, $4) RETURNING id`
-	err := h.DB.QueryRow(query, claims.UserID, req.Title, req.Content, req.Status).Scan(&postID)
+	result, err := h.DB.Exec(query, args...)
 	if err != nil {
-		respondError(w, http.StatusInternalServerError, "Failed to create post")
-		return
-	}
-
-	respondJSON(w, http.StatusCreated, map[string]interface{}{"id": postID})
-}
-
-// GetPost returns a specific post
-func (h *Handler) GetPost(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
-
-	var post models.Post
-	query := `SELECT id, user_id, title, content, status, created_at, updated_at FROM posts WHERE id = $1`
-	err := h.DB.QueryRow(query, id).Scan(
-		&post.ID, &post.UserID, &post.Title, &post.Content, &post.Status, &post.CreatedAt, &post.UpdatedAt,
-	)
-	if err != nil {
-		respondError(w, http.StatusNotFound, "Post not found")
-		return
-	}
-
-	respondJSON(w, http.StatusOK, post)
-}
-
-// UpdatePost updates a post
-func (h *Handler) UpdatePost(w http.ResponseWriter, r *http.Request) {
-	claims, ok := r.Context().Value(middleware.UserContextKey).(*auth.JWTClaims)
-	if !ok {
-		respondError(w, http.StatusUnauthorized, "Unauthorized")
-		return
-	}
-
-	vars := mux.Vars(r)
-	id := vars["id"]
-
-	var req struct {
-		Title   string  `json:"title"`
-		Content *string `json:"content"`
-		Status  string  `json:"status"`
-	}
-
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		respondError(w, http.StatusBadRequest, "Invalid request body")
-		return
-	}
-
-	query := `UPDATE posts SET title = $1, content = $2, status = $3, updated_at = NOW() WHERE id = $4 AND user_id = $5`
-	result, err := h.DB.Exec(query, req.Title, req.Content, req.Status, id, claims.UserID)
-	if err != nil {
-		respondError(w, http.StatusInternalServerError, "Failed to update post")
+		respondError(w, http.StatusInternalServerError, "Failed to update user")
 		return
 	}
 
 	rowsAffected, _ := result.RowsAffected()
 	if rowsAffected == 0 {
-		respondError(w, http.StatusNotFound, "Post not found or unauthorized")
+		respondError(w, http.StatusNotFound, "User not found")
 		return
 	}
 
-	respondJSON(w, http.StatusOK, map[string]string{"message": "Post updated successfully"})
+	respondJSON(w, http.StatusOK, map[string]string{"message": "User updated successfully"})
 }
 
-// DeletePost deletes a post
-func (h *Handler) DeletePost(w http.ResponseWriter, r *http.Request) {
-	claims, ok := r.Context().Value(middleware.UserContextKey).(*auth.JWTClaims)
-	if !ok {
-		respondError(w, http.StatusUnauthorized, "Unauthorized")
-		return
-	}
-
+// DeactivateUser soft-disables a user account (SUPER_ADMIN only)
+// @Summary Deactivate user
+// @Tags users
+// @Produce json
+// @Param id path string true "User ID"
+// @Router /api/v1/users/{id} [delete]
+func (h *Handler) DeactivateUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	query := `DELETE FROM posts WHERE id = $1 AND user_id = $2`
-	result, err := h.DB.Exec(query, id, claims.UserID)
+	// Prevent self-deactivation
+	claims, ok := r.Context().Value(middleware.UserContextKey).(*auth.JWTClaims)
+	if ok && claims.UserID == id {
+		respondError(w, http.StatusBadRequest, "Cannot deactivate your own account")
+		return
+	}
+
+	query := `UPDATE users SET is_active = false, updated_at = NOW() WHERE id = $1`
+	result, err := h.DB.Exec(query, id)
 	if err != nil {
-		respondError(w, http.StatusInternalServerError, "Failed to delete post")
+		respondError(w, http.StatusInternalServerError, "Failed to deactivate user")
 		return
 	}
 
 	rowsAffected, _ := result.RowsAffected()
 	if rowsAffected == 0 {
-		respondError(w, http.StatusNotFound, "Post not found or unauthorized")
+		respondError(w, http.StatusNotFound, "User not found")
 		return
 	}
 
-	respondJSON(w, http.StatusOK, map[string]string{"message": "Post deleted successfully"})
+	respondJSON(w, http.StatusOK, map[string]string{"message": "User deactivated successfully"})
 }
 
 // OAuthGoogle initiates Google OAuth flow

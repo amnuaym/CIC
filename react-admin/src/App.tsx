@@ -10,7 +10,7 @@ import { IndividualList, IndividualEdit, IndividualCreate, IndividualShow } from
 import { JuristicList, JuristicEdit, JuristicCreate, JuristicShow } from './resources/juristic';
 import { ConsentList, ConsentShow } from './resources/consents';
 import { AuditLogList, AuditLogShow } from './resources/auditLogs';
-import { UserList, UserShow } from './resources/users';
+import { UserList, UserShow, UserCreate, UserEdit } from './resources/users';
 
 const App = () => (
   <Admin
@@ -18,45 +18,58 @@ const App = () => (
     authProvider={authProvider}
     title="CIC Admin"
   >
-    <Resource
-      name="individuals"
-      list={IndividualList}
-      edit={IndividualEdit}
-      create={IndividualCreate}
-      show={IndividualShow}
-      icon={PersonIcon}
-      options={{ label: 'Individuals' }}
-    />
-    <Resource
-      name="juristic"
-      list={JuristicList}
-      edit={JuristicEdit}
-      create={JuristicCreate}
-      show={JuristicShow}
-      icon={BusinessIcon}
-      options={{ label: 'Juristic' }}
-    />
-    <Resource
-      name="consents"
-      list={ConsentList}
-      show={ConsentShow}
-      icon={PrivacyTipIcon}
-      options={{ label: 'Consents' }}
-    />
-    <Resource
-      name="audit-logs"
-      list={AuditLogList}
-      show={AuditLogShow}
-      icon={HistoryIcon}
-      options={{ label: 'Audit Logs' }}
-    />
-    <Resource
-      name="users"
-      list={UserList}
-      show={UserShow}
-      icon={AdminPanelSettingsIcon}
-      options={{ label: 'Users' }}
-    />
+    {(permissions: string) => [
+      /* All authenticated users see customer menus */
+      <Resource
+        key="individuals"
+        name="individuals"
+        list={IndividualList}
+        edit={permissions !== 'VIEWER' ? IndividualEdit : undefined}
+        create={permissions !== 'VIEWER' ? IndividualCreate : undefined}
+        show={IndividualShow}
+        icon={PersonIcon}
+        options={{ label: 'Individuals' }}
+      />,
+      <Resource
+        key="juristic"
+        name="juristic"
+        list={JuristicList}
+        edit={permissions !== 'VIEWER' ? JuristicEdit : undefined}
+        create={permissions !== 'VIEWER' ? JuristicCreate : undefined}
+        show={JuristicShow}
+        icon={BusinessIcon}
+        options={{ label: 'Juristic' }}
+      />,
+      <Resource
+        key="consents"
+        name="consents"
+        list={ConsentList}
+        show={ConsentShow}
+        icon={PrivacyTipIcon}
+        options={{ label: 'Consents' }}
+      />,
+      <Resource
+        key="audit-logs"
+        name="audit-logs"
+        list={AuditLogList}
+        show={AuditLogShow}
+        icon={HistoryIcon}
+        options={{ label: 'Audit Logs' }}
+      />,
+      /* Users menu: ADMIN+ can see, SUPER_ADMIN gets full CRUD */
+      ...(permissions === 'SUPER_ADMIN' || permissions === 'ADMIN' ? [
+        <Resource
+          key="users"
+          name="users"
+          list={UserList}
+          show={UserShow}
+          create={permissions === 'SUPER_ADMIN' ? UserCreate : undefined}
+          edit={permissions === 'SUPER_ADMIN' ? UserEdit : undefined}
+          icon={AdminPanelSettingsIcon}
+          options={{ label: 'Users' }}
+        />,
+      ] : []),
+    ]}
   </Admin>
 );
 
