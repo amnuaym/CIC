@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Backend Template Quick Start Script
-# This script helps you get started quickly with the Backend Template
+# Customer Information Center (CIC) Quick Start Script
+# This script helps you get started quickly with the CIC API
 
 set -e
 
-echo "🚀 Backend Template Quick Start"
-echo "================================"
+echo "🚀 Customer Information Center (CIC) Quick Start"
+echo "==============================================="
 echo ""
 
 # Check if Docker is installed
@@ -38,12 +38,11 @@ echo ""
 
 # Choose which services to start
 echo "Which services would you like to start?"
-echo "1) All services (Go API + TypeScript API + React Admin + PostgreSQL)"
-echo "2) TypeScript stack (TypeScript API + React Admin + PostgreSQL)"
-echo "3) Go stack (Go API + PostgreSQL)"
-echo "4) Just PostgreSQL"
+echo "1) All services (Go CIC API + React Admin + Keycloak + Nginx)"
+echo "2) CIC API stack (Go CIC API + React Admin + Nginx)"
+echo "3) CIC API only (Go CIC API)"
 echo ""
-read -p "Enter your choice (1-4) [default: 1]: " choice
+read -p "Enter your choice (1-3) [default: 1]: " choice
 choice=${choice:-1}
 
 case $choice in
@@ -55,43 +54,35 @@ case $choice in
         echo "✅ All services are starting!"
         echo ""
         echo "📍 Services:"
-        echo "   - PostgreSQL: localhost:5432"
-        echo "   - Go API: http://localhost:8080"
-        echo "   - TypeScript API: http://localhost:3000"
-        echo "   - React Admin: http://localhost:3001"
+        echo "   - Go CIC API: http://localhost:8080"
+        echo "   - Swagger Docs: http://localhost:8080/swagger/"
+        echo "   - React Admin: http://localhost:3000 (via Nginx on port 80)"
+        echo "   - Keycloak: http://localhost:8081"
+        echo "   - Nginx Gateway: http://localhost:80"
         ;;
     2)
         echo ""
-        echo "🚀 Starting TypeScript stack..."
-        docker-compose up -d postgres ts-api react-admin
+        echo "🚀 Starting CIC API stack..."
+        docker-compose up -d cic-api react-admin nginx
         echo ""
-        echo "✅ TypeScript stack is starting!"
+        echo "✅ CIC API stack is starting!"
         echo ""
         echo "📍 Services:"
-        echo "   - PostgreSQL: localhost:5432"
-        echo "   - TypeScript API: http://localhost:3000"
-        echo "   - React Admin: http://localhost:3001"
+        echo "   - Go CIC API: http://localhost:8080"
+        echo "   - Swagger Docs: http://localhost:8080/swagger/"
+        echo "   - React Admin: http://localhost:3000 (via Nginx on port 80)"
+        echo "   - Nginx Gateway: http://localhost:80"
         ;;
     3)
         echo ""
-        echo "🚀 Starting Go stack..."
-        docker-compose up -d postgres go-api
+        echo "🚀 Starting CIC API..."
+        docker-compose up -d cic-api
         echo ""
-        echo "✅ Go stack is starting!"
-        echo ""
-        echo "📍 Services:"
-        echo "   - PostgreSQL: localhost:5432"
-        echo "   - Go API: http://localhost:8080"
-        ;;
-    4)
-        echo ""
-        echo "🚀 Starting PostgreSQL..."
-        docker-compose up -d postgres
-        echo ""
-        echo "✅ PostgreSQL is starting!"
+        echo "✅ CIC API is starting!"
         echo ""
         echo "📍 Services:"
-        echo "   - PostgreSQL: localhost:5432"
+        echo "   - Go CIC API: http://localhost:8080"
+        echo "   - Swagger Docs: http://localhost:8080/swagger/"
         ;;
     *)
         echo "Invalid choice. Exiting."
@@ -112,11 +103,13 @@ echo "✅ Setup complete!"
 echo ""
 echo "📚 Next steps:"
 echo "   1. Check service logs: docker-compose logs -f"
-echo "   2. Test API: curl http://localhost:3000/health"
-echo "   3. Access React Admin: http://localhost:3001"
-echo "   4. Read the docs: cat README.md"
+echo "   2. Test API health: curl http://localhost:8080/health"
+echo "   3. View Swagger docs: http://localhost:8080/swagger/"
+echo "   4. Access React Admin: http://localhost:3000"
+echo "   5. Read the docs: cat README.md"
+echo "   6. See example API usage: cat documentation/user_journey.md"
 echo ""
 echo "🛑 To stop services: docker-compose down"
 echo "🗑️  To remove all data: docker-compose down -v"
 echo ""
-echo "Happy coding! 🎉"
+echo "Welcome to CIC! 🛡️"
