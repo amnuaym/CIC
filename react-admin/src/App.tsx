@@ -28,7 +28,7 @@ const App = () => (
         create={permissions !== 'VIEWER' ? IndividualCreate : undefined}
         show={IndividualShow}
         icon={PersonIcon}
-        options={{ label: 'Individuals' }}
+        options={{ label: 'All Individuals' }}
       />,
       <Resource
         key="juristic"
@@ -38,7 +38,7 @@ const App = () => (
         create={permissions !== 'VIEWER' ? JuristicCreate : undefined}
         show={JuristicShow}
         icon={BusinessIcon}
-        options={{ label: 'Juristic' }}
+        options={{ label: 'All Juristics' }}
       />,
       <Resource
         key="consents"

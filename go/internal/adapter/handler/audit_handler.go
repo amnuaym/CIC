@@ -36,8 +36,9 @@ func (h *AuditLogHandler) ListAuditLogs(w http.ResponseWriter, r *http.Request) 
 	}
 	offset, _ := strconv.Atoi(r.URL.Query().Get("offset"))
 	action := r.URL.Query().Get("action")
+	entityID := r.URL.Query().Get("entity_id")
 
-	logs, err := h.repo.List(r.Context(), limit, offset, action)
+	logs, err := h.repo.List(r.Context(), limit, offset, action, entityID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

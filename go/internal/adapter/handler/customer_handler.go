@@ -2,8 +2,9 @@ package handler
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
-	
+
 	"github.com/amnuaym/cic/go/internal/auth"
 	"github.com/amnuaym/cic/go/internal/core/domain"
 	"github.com/amnuaym/cic/go/internal/core/ports"
@@ -27,44 +28,45 @@ func NewCustomerHandler(service ports.CustomerService) *CustomerHandler {
 // @Success 200 {array} domain.Customer
 // @Router /api/v1/customers [get]
 func (h *CustomerHandler) ListCustomers(w http.ResponseWriter, r *http.Request) {
-    // Parse pagination from query params (React Admin sends ?_end=10&_order=DESC&_sort=id&_start=0)
-    // Or just simple limits if we want strict compliance.
-    // React Admin Simple Rest uses: range=[0,9] (Content-Range header response)
-    // BUT ra-data-simple-rest expects X-Total-Count usually.
-    
-    // Let's implement basic limit/offset parsing
-    // limit := 10
-    // offset := 0
-    // ... logic to parse query ...
-    // For MVP, hardcode/default or parse simple params.
-    
-    // limit := 10 (omitted for now)
-    // offset := 0 (omitted for now)
-    
-    // React Admin ra-data-simple-rest sends: ?filter={}&range=[0,9]&sort=["id","ASC"]
-    // We need to support this or just standard limit/offset.
-    // Let's assume standard for now or parse "range".
-    
-    // Check for 'deleted' query param
-	showDeleted := r.URL.Query().Get("deleted") == "true"
-    
-    var customers []*domain.Customer
-    var err error
-    
-    if showDeleted {
-        customers, err = h.service.ListDeletedCustomers(r.Context(), 100, 0)
-    } else {
-        customers, err = h.service.ListCustomers(r.Context(), 100, 0)
-    }
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
+	// Parse pagination from query params (React Admin sends ?_end=10&_order=DESC&_sort=id&_start=0)
+	// Or just simple limits if we want strict compliance.
+	// React Admin Simple Rest uses: range=[0,9] (Content-Range header response)
+	// BUT ra-data-simple-rest expects X-Total-Count usually.
 
-    w.Header().Set("Content-Type", "application/json")
-    w.Header().Set("X-Total-Count", "100") // Mock total count for pagination to work
-    w.Header().Set("Access-Control-Expose-Headers", "X-Total-Count")
-    json.NewEncoder(w).Encode(customers)
+	// Let's implement basic limit/offset parsing
+	// limit := 10
+	// offset := 0
+	// ... logic to parse query ...
+	// For MVP, hardcode/default or parse simple params.
+
+	// limit := 10 (omitted for now)
+	// offset := 0 (omitted for now)
+
+	// React Admin ra-data-simple-rest sends: ?filter={}&range=[0,9]&sort=["id","ASC"]
+	// We need to support this or just standard limit/offset.
+	// Let's assume standard for now or parse "range".
+
+	// Check for 'deleted' query param
+	showDeleted := r.URL.Query().Get("deleted") == "true"
+
+	var customers []*domain.Customer
+	var err error
+
+	if showDeleted {
+		customers, err = h.service.ListDeletedCustomers(r.Context(), 100, 0)
+	} else {
+		customers, err = h.service.ListCustomers(r.Context(), 100, 0)
+	}
+	if err != nil {
+		log.Printf("ERROR ListCustomers: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("X-Total-Count", "100") // Mock total count for pagination to work
+	w.Header().Set("Access-Control-Expose-Headers", "X-Total-Count")
+	json.NewEncoder(w).Encode(customers)
 }
 
 // @Summary Create a new customer
@@ -351,6 +353,7 @@ func (h *CustomerHandler) AnonymizeCustomer(w http.ResponseWriter, r *http.Reque
 
 	w.WriteHeader(http.StatusNoContent)
 }
+
 // --- Relationships ---
 
 // @Summary Add a relationship

@@ -127,8 +127,17 @@ func (r *customerRepository) List(ctx context.Context, limit, offset int) ([]*do
 	var customers []*domain.Customer
 	for rows.Next() {
 		c := &domain.Customer{}
-		if err := rows.Scan(&c.ID, &c.Type, &c.FirstName, &c.LastName, &c.CompanyName, &c.Status, &c.CreatedAt, &c.DeletedAt, &c.DeletedBy); err != nil {
+		var firstName, lastName, companyName sql.NullString
+		var deletedBy sql.NullString
+		if err := rows.Scan(&c.ID, &c.Type, &firstName, &lastName, &companyName, &c.Status, &c.CreatedAt, &c.DeletedAt, &deletedBy); err != nil {
 			return nil, err
+		}
+		c.FirstName = firstName.String
+		c.LastName = lastName.String
+		c.CompanyName = companyName.String
+		if deletedBy.Valid {
+			uid, _ := uuid.Parse(deletedBy.String)
+			c.DeletedBy = &uid
 		}
 		customers = append(customers, c)
 	}
@@ -158,17 +167,19 @@ func (r *customerRepository) ListDeleted(ctx context.Context, limit, offset int)
 	var customers []*domain.Customer
 	for rows.Next() {
 		c := &domain.Customer{}
-		if err := rows.Scan(&c.ID, &c.Type, &c.FirstName, &c.LastName, &c.CompanyName, &c.Status, &c.CreatedAt, &c.DeletedAt); err != nil {
+		var firstName, lastName, companyName sql.NullString
+		if err := rows.Scan(&c.ID, &c.Type, &firstName, &lastName, &companyName, &c.Status, &c.CreatedAt, &c.DeletedAt); err != nil {
 			return nil, err
 		}
+		c.FirstName = firstName.String
+		c.LastName = lastName.String
+		c.CompanyName = companyName.String
 		customers = append(customers, c)
 	}
 	return customers, nil
 }
 
 func (r *customerRepository) Search(ctx context.Context, queryStr string) ([]*domain.Customer, error) {
-	// Simple search by name or company name
-	// In production, use Full Text Search or separate logic
 	sqlQuery := `
 		SELECT id, type, first_name, last_name, company_name, status, created_at, deleted_at
 		FROM customers
@@ -188,12 +199,14 @@ func (r *customerRepository) Search(ctx context.Context, queryStr string) ([]*do
 	var customers []*domain.Customer
 	for rows.Next() {
 		c := &domain.Customer{}
-		if err := rows.Scan(&c.ID, &c.Type, &c.FirstName, &c.LastName, &c.CompanyName, &c.Status, &c.CreatedAt, &c.DeletedAt); err != nil {
+		var firstName, lastName, companyName sql.NullString
+		if err := rows.Scan(&c.ID, &c.Type, &firstName, &lastName, &companyName, &c.Status, &c.CreatedAt, &c.DeletedAt); err != nil {
 			return nil, err
 		}
+		c.FirstName = firstName.String
+		c.LastName = lastName.String
+		c.CompanyName = companyName.String
 		customers = append(customers, c)
 	}
 	return customers, nil
 }
-
-

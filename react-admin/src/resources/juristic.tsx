@@ -2,15 +2,27 @@ import {
     List, Datagrid, TextField, DateField, SelectField, SearchInput,
     BooleanInput, useRecordContext, useDataProvider, useNotify, useRefresh,
     Button, Edit, TextInput, DateInput, SelectInput, required, TabbedForm, FormTab,
-    Create, SimpleForm, Show, TabbedShowLayout, Tab
+    Create, SimpleForm, Show, useShowContext, TopToolbar, ListButton, EditButton
 } from 'react-admin';
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
+import {
+    Card, CardContent, Typography, Grid, Chip, Box, Divider
+} from '@mui/material';
 import { AddressList } from './customers/components/AddressList';
 import { IdentityList } from './customers/components/IdentityList';
 import { RelationshipList } from './customers/components/RelationshipList';
 import { ConsentList as CustomerConsentList } from './customers/components/ConsentList';
+import { ActivityLog } from './customers/components/ActivityLog';
+
+// --- Status Config ---
+const statusConfig: Record<string, { color: 'success' | 'error' | 'warning' | 'info' | 'default'; label: string }> = {
+    ACTIVE: { color: 'success', label: 'Active' },
+    INACTIVE: { color: 'default', label: 'Inactive' },
+    SUSPENDED: { color: 'warning', label: 'Suspended' },
+    BLACKLISTED: { color: 'error', label: 'Blacklisted' },
+};
 
 // --- Restore Button ---
 const RestoreButton = () => {
@@ -24,7 +36,7 @@ const RestoreButton = () => {
     const handleClick = (e: any) => {
         e.stopPropagation();
         dataProvider.restore('juristic', { id: record.id })
-            .then(() => { notify('Customer restored'); refresh(); })
+            .then(() => { notify('Company restored'); refresh(); })
             .catch((e: any) => { notify('Error: ' + e.message, { type: 'warning' }); });
     };
 
@@ -58,7 +70,7 @@ const AnonymizeButton = () => {
     );
 };
 
-// --- Export Data Button (BRD §2.4) ---
+// --- Export Data Button ---
 const ExportDataButton = () => {
     const record = useRecordContext();
     const notify = useNotify();
@@ -89,17 +101,39 @@ const ExportDataButton = () => {
     );
 };
 
-const ShowActions = () => (
-    <div style={{ display: 'flex', gap: 8 }}>
-        <ExportDataButton />
-        <AnonymizeButton />
-    </div>
+// --- Helper: Detail Field ---
+const DetailField = ({ label, value }: { label: string; value: any }) => (
+    <Box sx={{ mb: 1.5 }}>
+        <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', fontSize: '0.7rem', letterSpacing: 0.5 }}>
+            {label}
+        </Typography>
+        <Typography variant="body1" sx={{ fontWeight: 500 }}>
+            {value || '—'}
+        </Typography>
+    </Box>
+);
+
+// --- Section Header ---
+const SectionHeader = ({ title }: { title: string }) => (
+    <Box sx={{ mb: 2, mt: 3 }}>
+        <Typography variant="h6" sx={{ fontWeight: 600, color: 'primary.main' }}>
+            {title}
+        </Typography>
+        <Divider sx={{ mt: 0.5 }} />
+    </Box>
 );
 
 // --- Filters ---
 const juristicFilters = [
     <SearchInput source="q" alwaysOn />,
     <BooleanInput source="deleted" label="Show Deleted (Trash)" />,
+];
+
+const statusChoices = [
+    { id: 'ACTIVE', name: 'Active' },
+    { id: 'INACTIVE', name: 'Inactive' },
+    { id: 'SUSPENDED', name: 'Suspended' },
+    { id: 'BLACKLISTED', name: 'Blacklisted' },
 ];
 
 // --- List ---
@@ -109,12 +143,7 @@ export const JuristicList = () => (
             <TextField source="id" />
             <TextField source="company_name" label="Company Name" />
             <TextField source="industry_code" label="Industry" />
-            <SelectField source="status" choices={[
-                { id: 'ACTIVE', name: 'Active' },
-                { id: 'INACTIVE', name: 'Inactive' },
-                { id: 'SUSPENDED', name: 'Suspended' },
-                { id: 'BLACKLISTED', name: 'Blacklisted' },
-            ]} />
+            <SelectField source="status" choices={statusChoices} />
             <DateField source="registration_date" label="Registered" />
             <DateField source="created_at" />
             <RestoreButton />
@@ -146,12 +175,7 @@ export const JuristicEdit = () => (
                 <TextInput source="company_name" label="Company Name" validate={required()} fullWidth />
                 <DateInput source="registration_date" label="Registration Date" />
                 <TextInput source="industry_code" label="Industry Code" />
-                <SelectInput source="status" choices={[
-                    { id: 'ACTIVE', name: 'Active' },
-                    { id: 'INACTIVE', name: 'Inactive' },
-                    { id: 'SUSPENDED', name: 'Suspended' },
-                    { id: 'BLACKLISTED', name: 'Blacklisted' },
-                ]} validate={required()} />
+                <SelectInput source="status" choices={statusChoices} validate={required()} />
             </FormTab>
             <FormTab label="Business Profile">
                 <TextInput source="membership_tier" />
@@ -164,43 +188,157 @@ export const JuristicEdit = () => (
     </Edit>
 );
 
-// --- Show ---
+// --- Show (Detail Page) ---
+const JuristicDetail = () => {
+    const { record, isLoading } = useShowContext();
+
+    if (isLoading || !record) return null;
+
+    const status = statusConfig[record.status] || { color: 'default' as const, label: record.status };
+
+    return (
+        <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
+            {/* === Company Header Card === */}
+            <Card sx={{ mb: 3 }}>
+                <CardContent sx={{ p: 3 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+                        <Box>
+                            <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5 }}>
+                                {record.company_name}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary" sx={{ fontFamily: 'monospace', fontSize: '0.8rem' }}>
+                                ID: {record.id}
+                            </Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                            <Chip label={status.label} color={status.color} size="medium" />
+                            {record.is_high_value && <Chip label="High Value" color="warning" size="small" variant="outlined" />}
+                        </Box>
+                    </Box>
+
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} sm={6} md={3}>
+                            <DetailField label="Industry Code" value={record.industry_code} />
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3}>
+                            <DetailField label="Registration Date" value={
+                                record.registration_date ? new Date(record.registration_date).toLocaleDateString() : null
+                            } />
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3}>
+                            <DetailField label="Created" value={new Date(record.created_at).toLocaleDateString()} />
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3}>
+                            <DetailField label="Last Updated" value={new Date(record.updated_at).toLocaleString()} />
+                        </Grid>
+                    </Grid>
+
+                    {/* Action buttons */}
+                    <Box sx={{ display: 'flex', gap: 1, mt: 2, pt: 2, borderTop: '1px solid', borderColor: 'divider' }}>
+                        <ExportDataButton />
+                        <AnonymizeButton />
+                    </Box>
+                </CardContent>
+            </Card>
+
+            {/* === Business Profile + Addresses === */}
+            <Grid container spacing={3} sx={{ mb: 3 }}>
+                <Grid item xs={12} md={6}>
+                    <Card sx={{ height: '100%' }}>
+                        <CardContent>
+                            <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
+                                Business Profile
+                            </Typography>
+                            <Grid container spacing={2}>
+                                <Grid item xs={6}>
+                                    <DetailField label="Membership Tier" value={record.membership_tier} />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <DetailField label="Points Balance" value={record.points_balance?.toLocaleString()} />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <DetailField label="Lifetime Value (CLV)" value={
+                                        record.clv ? `฿${record.clv.toLocaleString()}` : null
+                                    } />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <DetailField label="Portfolio Size" value={
+                                        record.portfolio_size ? `฿${record.portfolio_size.toLocaleString()}` : null
+                                    } />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <DetailField label="Preferred Channel" value={record.preferred_channel} />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <DetailField label="Last Transaction" value={
+                                        record.last_transaction_date ? new Date(record.last_transaction_date).toLocaleDateString() : null
+                                    } />
+                                </Grid>
+                            </Grid>
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Card sx={{ height: '100%' }}>
+                        <CardContent>
+                            <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
+                                Addresses
+                            </Typography>
+                            <AddressList />
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
+
+            <Grid container spacing={3} sx={{ mb: 3 }}>
+                <Grid item xs={12} md={4}>
+                    <Card sx={{ height: '100%' }}>
+                        <CardContent>
+                            <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
+                                Identity Documents
+                            </Typography>
+                            <IdentityList />
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <Card sx={{ height: '100%' }}>
+                        <CardContent>
+                            <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
+                                Related Individuals
+                            </Typography>
+                            <RelationshipList />
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <Card sx={{ height: '100%' }}>
+                        <CardContent>
+                            <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
+                                Consents (PDPA)
+                            </Typography>
+                            <CustomerConsentList />
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
+
+            {/* === Recent Activity === */}
+            <SectionHeader title="Recent Activity" />
+            <ActivityLog />
+        </Box>
+    );
+};
+
+const JuristicShowActions = () => (
+    <TopToolbar>
+        <ListButton label="Back to List" />
+        <EditButton />
+    </TopToolbar>
+);
+
 export const JuristicShow = () => (
-    <Show actions={<ShowActions />}>
-        <TabbedShowLayout>
-            <Tab label="Company Info">
-                <TextField source="id" />
-                <TextField source="company_name" label="Company Name" />
-                <TextField source="industry_code" label="Industry Code" />
-                <DateField source="registration_date" label="Registration Date" />
-                <SelectField source="status" choices={[
-                    { id: 'ACTIVE', name: 'Active' },
-                    { id: 'INACTIVE', name: 'Inactive' },
-                    { id: 'SUSPENDED', name: 'Suspended' },
-                    { id: 'BLACKLISTED', name: 'Blacklisted' },
-                ]} />
-                <DateField source="created_at" />
-                <DateField source="updated_at" />
-            </Tab>
-            <Tab label="Business Profile">
-                <TextField source="membership_tier" />
-                <TextField source="points_balance" />
-                <TextField source="clv" label="Lifetime Value" />
-                <TextField source="portfolio_size" />
-                <DateField source="last_transaction_date" />
-            </Tab>
-            <Tab label="Addresses">
-                <AddressList />
-            </Tab>
-            <Tab label="Identities">
-                <IdentityList />
-            </Tab>
-            <Tab label="Related Individuals">
-                <RelationshipList />
-            </Tab>
-            <Tab label="Consents (PDPA)">
-                <CustomerConsentList />
-            </Tab>
-        </TabbedShowLayout>
+    <Show component="div" actions={<JuristicShowActions />}>
+        <JuristicDetail />
     </Show>
 );
