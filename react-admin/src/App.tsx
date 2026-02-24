@@ -1,4 +1,4 @@
-import { Admin, Resource } from 'react-admin';
+import { Admin, Resource, Layout, LayoutProps } from 'react-admin';
 import { dataProvider } from './dataProvider';
 import { authProvider } from './authProvider';
 import PersonIcon from '@mui/icons-material/Person';
@@ -12,11 +12,15 @@ import { ConsentList, ConsentShow } from './resources/consents';
 import { AuditLogList, AuditLogShow } from './resources/auditLogs';
 import { UserList, UserShow, UserCreate, UserEdit } from './resources/users';
 
+// Custom layout with collapsible sidebar
+const CICLayout = (props: LayoutProps) => <Layout {...props} />;
+
 const App = () => (
   <Admin
     dataProvider={dataProvider}
     authProvider={authProvider}
-    title="CIC Admin"
+    title="CIC Platform v2.0"
+    layout={CICLayout}
   >
     {(permissions: string) => [
       /* All authenticated users see customer menus */
@@ -28,17 +32,17 @@ const App = () => (
         create={permissions !== 'VIEWER' ? IndividualCreate : undefined}
         show={IndividualShow}
         icon={PersonIcon}
-        options={{ label: 'All Individuals' }}
+        options={{ label: 'Individuals' }}
       />,
       <Resource
-        key="juristic"
-        name="juristic"
+        key="juristics"
+        name="juristics"
         list={JuristicList}
         edit={permissions !== 'VIEWER' ? JuristicEdit : undefined}
         create={permissions !== 'VIEWER' ? JuristicCreate : undefined}
         show={JuristicShow}
         icon={BusinessIcon}
-        options={{ label: 'All Juristics' }}
+        options={{ label: 'Juristics' }}
       />,
       <Resource
         key="consents"

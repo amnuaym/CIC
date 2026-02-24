@@ -2,7 +2,8 @@ import {
     List, Datagrid, TextField, DateField, SelectField, SearchInput,
     BooleanInput, useRecordContext, useDataProvider, useNotify, useRefresh,
     Button, Edit, TextInput, DateInput, SelectInput, required, TabbedForm, FormTab,
-    Create, SimpleForm, Show, useShowContext, TopToolbar, ListButton, EditButton
+    Create, SimpleForm, Show, useShowContext, TopToolbar, ListButton, EditButton,
+    CreateButton, ExportButton, FilterLiveSearch
 } from 'react-admin';
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -59,7 +60,11 @@ const AnonymizeButton = () => {
     const handleClick = () => {
         if (!window.confirm('Are you sure you want to ANONYMIZE this customer? This cannot be undone.')) return;
         const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
-        fetch(`${apiUrl}/customers/${record.id}/anonymize`, { method: 'POST' })
+        const token = localStorage.getItem('token');
+        fetch(`${apiUrl}/customers/${record.id}/anonymize`, {
+            method: 'POST',
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+        })
             .then(() => { notify('Customer Anonymized', { type: 'success' }); refresh(); })
             .catch((e) => { notify('Error: ' + e.message, { type: 'error' }); });
     };
@@ -80,7 +85,10 @@ const ExportDataButton = () => {
 
     const handleClick = () => {
         const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
-        fetch(`${apiUrl}/customers/${record.id}/export`)
+        const token = localStorage.getItem('token');
+        fetch(`${apiUrl}/customers/${record.id}/export`, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+        })
             .then(res => res.json())
             .then(data => {
                 const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -126,7 +134,7 @@ const SectionHeader = ({ title }: { title: string }) => (
 
 // --- Filters ---
 const individualFilters = [
-    <SearchInput source="q" alwaysOn />,
+    <SearchInput source="q" />,
     <BooleanInput source="deleted" label="Show Deleted (Trash)" />,
 ];
 
@@ -138,10 +146,37 @@ const statusChoices = [
     { id: 'DECEASED', name: 'Deceased' },
 ];
 
+// --- Empty State ---
+const EmptyList = () => (
+    <Box sx={{ textAlign: 'center', py: 12, border: '1px dashed', borderColor: 'divider', borderRadius: 2, bgcolor: 'background.paper', mt: 2 }}>
+        <Typography variant="h6" color="primary" gutterBottom sx={{ fontWeight: 700 }}>
+            Individuals: Start by searching (V2.1)
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+            Use the search box in the top-left toolbar to find records, or use <strong>*</strong> to show all.
+        </Typography>
+    </Box>
+);
+
+// --- List Actions (Toolbar) ---
+const IndividualListActions = () => (
+    <TopToolbar sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <FilterLiveSearch source="q" label="Search Individuals..." sx={{ minWidth: 300 }} />
+        <Box sx={{ display: 'flex', gap: 1 }}>
+            <CreateButton />
+            <ExportButton />
+        </Box>
+    </TopToolbar>
+);
+
 // --- List ---
 export const IndividualList = () => (
-    <List filters={individualFilters} filter={{ type: 'PERSONAL' }}>
-        <Datagrid rowClick="show">
+    <List 
+        actions={<IndividualListActions />} 
+        filters={individualFilters}
+        filter={{ type: 'PERSONAL' }}
+    >
+        <Datagrid rowClick="show" empty={<EmptyList />}>
             <TextField source="id" />
             <TextField source="title" label="Title" />
             <TextField source="first_name" label="First Name" />
@@ -205,7 +240,7 @@ const IndividualDetail = () => {
     const status = statusConfig[record.status] || { color: 'default' as const, label: record.status };
 
     return (
-        <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
+        <Box sx={{ width: '100%' }}>
             {/* === Profile Header Card === */}
             <Card sx={{ mb: 3, position: 'relative' }}>
                 <CardContent sx={{ p: 3 }}>
@@ -290,7 +325,9 @@ const IndividualDetail = () => {
                             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
                                 Addresses
                             </Typography>
-                            <AddressList />
+                            <Box sx={{ maxHeight: 300, overflow: 'auto' }}>
+                                <AddressList />
+                            </Box>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -303,7 +340,9 @@ const IndividualDetail = () => {
                             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
                                 Identity Documents
                             </Typography>
-                            <IdentityList />
+                            <Box sx={{ maxHeight: 300, overflow: 'auto' }}>
+                                <IdentityList />
+                            </Box>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -313,7 +352,9 @@ const IndividualDetail = () => {
                             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
                                 Relationships
                             </Typography>
-                            <RelationshipList />
+                            <Box sx={{ maxHeight: 300, overflow: 'auto' }}>
+                                <RelationshipList />
+                            </Box>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -323,7 +364,9 @@ const IndividualDetail = () => {
                             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
                                 Consents (PDPA)
                             </Typography>
-                            <CustomerConsentList />
+                            <Box sx={{ maxHeight: 300, overflow: 'auto' }}>
+                                <CustomerConsentList />
+                            </Box>
                         </CardContent>
                     </Card>
                 </Grid>

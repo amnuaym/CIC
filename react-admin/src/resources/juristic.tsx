@@ -2,7 +2,8 @@ import {
     List, Datagrid, TextField, DateField, SelectField, SearchInput,
     BooleanInput, useRecordContext, useDataProvider, useNotify, useRefresh,
     Button, Edit, TextInput, DateInput, SelectInput, required, TabbedForm, FormTab,
-    Create, SimpleForm, Show, useShowContext, TopToolbar, ListButton, EditButton
+    Create, SimpleForm, Show, useShowContext, TopToolbar, ListButton, EditButton,
+    CreateButton, ExportButton, FilterLiveSearch
 } from 'react-admin';
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -35,7 +36,7 @@ const RestoreButton = () => {
 
     const handleClick = (e: any) => {
         e.stopPropagation();
-        dataProvider.restore('juristic', { id: record.id })
+        dataProvider.restore('juristics', { id: record.id })
             .then(() => { notify('Company restored'); refresh(); })
             .catch((e: any) => { notify('Error: ' + e.message, { type: 'warning' }); });
     };
@@ -58,7 +59,11 @@ const AnonymizeButton = () => {
     const handleClick = () => {
         if (!window.confirm('Are you sure you want to ANONYMIZE this company? This cannot be undone.')) return;
         const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
-        fetch(`${apiUrl}/customers/${record.id}/anonymize`, { method: 'POST' })
+        const token = localStorage.getItem('token');
+        fetch(`${apiUrl}/customers/${record.id}/anonymize`, {
+            method: 'POST',
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+        })
             .then(() => { notify('Company Anonymized', { type: 'success' }); refresh(); })
             .catch((e) => { notify('Error: ' + e.message, { type: 'error' }); });
     };
@@ -79,7 +84,10 @@ const ExportDataButton = () => {
 
     const handleClick = () => {
         const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
-        fetch(`${apiUrl}/customers/${record.id}/export`)
+        const token = localStorage.getItem('token');
+        fetch(`${apiUrl}/customers/${record.id}/export`, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+        })
             .then(res => res.json())
             .then(data => {
                 const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -125,7 +133,7 @@ const SectionHeader = ({ title }: { title: string }) => (
 
 // --- Filters ---
 const juristicFilters = [
-    <SearchInput source="q" alwaysOn />,
+    <SearchInput source="q" />,
     <BooleanInput source="deleted" label="Show Deleted (Trash)" />,
 ];
 
@@ -136,10 +144,37 @@ const statusChoices = [
     { id: 'BLACKLISTED', name: 'Blacklisted' },
 ];
 
+// --- Empty State ---
+const EmptyList = () => (
+    <Box sx={{ textAlign: 'center', py: 12, border: '1px dashed', borderColor: 'divider', borderRadius: 2, bgcolor: 'background.paper', mt: 2 }}>
+        <Typography variant="h6" color="primary" gutterBottom sx={{ fontWeight: 700 }}>
+            Juristics: Start by searching (V2.1)
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+            Use the search box in the top-left toolbar to find records, or use <strong>*</strong> to show all.
+        </Typography>
+    </Box>
+);
+
+// --- List Actions (Toolbar) ---
+const JuristicListActions = () => (
+    <TopToolbar sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <FilterLiveSearch source="q" label="Search Companies..." sx={{ minWidth: 300 }} />
+        <Box sx={{ display: 'flex', gap: 1 }}>
+            <CreateButton />
+            <ExportButton />
+        </Box>
+    </TopToolbar>
+);
+
 // --- List ---
 export const JuristicList = () => (
-    <List filters={juristicFilters} filter={{ type: 'JURISTIC' }}>
-        <Datagrid rowClick="show">
+    <List 
+        actions={<JuristicListActions />} 
+        filters={juristicFilters}
+        filter={{ type: 'JURISTIC' }}
+    >
+        <Datagrid rowClick="show" empty={<EmptyList />}>
             <TextField source="id" />
             <TextField source="company_name" label="Company Name" />
             <TextField source="industry_code" label="Industry" />
@@ -197,7 +232,7 @@ const JuristicDetail = () => {
     const status = statusConfig[record.status] || { color: 'default' as const, label: record.status };
 
     return (
-        <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
+        <Box sx={{ width: '100%' }}>
             {/* === Company Header Card === */}
             <Card sx={{ mb: 3 }}>
                 <CardContent sx={{ p: 3 }}>
@@ -284,7 +319,9 @@ const JuristicDetail = () => {
                             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
                                 Addresses
                             </Typography>
-                            <AddressList />
+                            <Box sx={{ maxHeight: 300, overflow: 'auto' }}>
+                                <AddressList />
+                            </Box>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -297,7 +334,9 @@ const JuristicDetail = () => {
                             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
                                 Identity Documents
                             </Typography>
-                            <IdentityList />
+                            <Box sx={{ maxHeight: 300, overflow: 'auto' }}>
+                                <IdentityList />
+                            </Box>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -307,7 +346,9 @@ const JuristicDetail = () => {
                             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
                                 Related Individuals
                             </Typography>
-                            <RelationshipList />
+                            <Box sx={{ maxHeight: 300, overflow: 'auto' }}>
+                                <RelationshipList />
+                            </Box>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -317,7 +358,9 @@ const JuristicDetail = () => {
                             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
                                 Consents (PDPA)
                             </Typography>
-                            <CustomerConsentList />
+                            <Box sx={{ maxHeight: 300, overflow: 'auto' }}>
+                                <CustomerConsentList />
+                            </Box>
                         </CardContent>
                     </Card>
                 </Grid>

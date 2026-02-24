@@ -12,7 +12,10 @@ export const ConsentList = () => {
         async () => {
             if (!record) return [];
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
-            const response = await fetch(`${apiUrl}/customers/${record.id}/consents`);
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${apiUrl}/customers/${record.id}/consents`, {
+                headers: token ? { Authorization: `Bearer ${token}` } : {},
+            });
             if (!response.ok) throw new Error('Network response was not ok');
             return response.json();
         },

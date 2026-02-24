@@ -53,14 +53,18 @@ func (r *customerRepository) GetByID(ctx context.Context, id uuid.UUID) (*domain
 		WHERE id = $1 AND deleted_at IS NULL
 	`
 	c := &domain.Customer{}
-	var dob, regDate sql.NullTime
-	var lastTx sql.NullTime
+	var firstName, lastName, title, nationality sql.NullString
+	var companyName, industryCode sql.NullString
+	var status, membershipTier, preferredChannel sql.NullString
+	var pointsBalance, clv, portfolioSize sql.NullFloat64
+	var isHighValue sql.NullBool
+	var dob, regDate, lastTx sql.NullTime
 
 	err := r.db.QueryRowContext(ctx, query, id).Scan(
-		&c.ID, &c.Type, &c.FirstName, &c.LastName, &c.Title, &dob, &c.Nationality,
-		&c.CompanyName, &regDate, &c.IndustryCode,
-		&c.Status, &c.MembershipTier, &c.PointsBalance, &c.CLV, &c.PortfolioSize,
-		&lastTx, &c.PreferredChannel, &c.IsHighValue,
+		&c.ID, &c.Type, &firstName, &lastName, &title, &dob, &nationality,
+		&companyName, &regDate, &industryCode,
+		&status, &membershipTier, &pointsBalance, &clv, &portfolioSize,
+		&lastTx, &preferredChannel, &isHighValue,
 		&c.CreatedAt, &c.UpdatedAt, &c.DeletedAt,
 	)
 	if err == sql.ErrNoRows {
@@ -69,6 +73,20 @@ func (r *customerRepository) GetByID(ctx context.Context, id uuid.UUID) (*domain
 	if err != nil {
 		return nil, err
 	}
+
+	c.FirstName = firstName.String
+	c.LastName = lastName.String
+	c.Title = title.String
+	c.Nationality = nationality.String
+	c.CompanyName = companyName.String
+	c.IndustryCode = industryCode.String
+	c.Status = domain.CustomerStatus(status.String)
+	c.MembershipTier = membershipTier.String
+	c.PreferredChannel = preferredChannel.String
+	c.PointsBalance = pointsBalance.Float64
+	c.CLV = clv.Float64
+	c.PortfolioSize = portfolioSize.Float64
+	c.IsHighValue = isHighValue.Bool
 
 	if dob.Valid {
 		c.DateOfBirth = dob.Time

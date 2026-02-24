@@ -18,7 +18,7 @@ const httpClient = (url: string, options: fetchUtils.Options = {}) => {
 // Both individuals and juristic use the /customers endpoint with type filter
 const resourceConfig: Record<string, { apiResource: string; extraParams?: Record<string, string> }> = {
   individuals: { apiResource: 'customers', extraParams: { type: 'PERSONAL' } },
-  juristic:    { apiResource: 'customers', extraParams: { type: 'JURISTIC' } },
+  juristics:    { apiResource: 'customers', extraParams: { type: 'JURISTIC' } },
   consents:    { apiResource: 'consents' },
   'audit-logs': { apiResource: 'audit-logs' },
   users:       { apiResource: 'users' },
@@ -38,6 +38,13 @@ export const dataProvider: DataProvider = {
       Object.entries(config.extraParams).forEach(([key, value]) => {
         url.searchParams.set(key, value);
       });
+    }
+
+    // Search-first: for customer and consent resources, require a search query
+    const isSearchFirstResource = resource === 'individuals' || resource === 'juristics' || resource === 'consents';
+    const searchQuery = params.filter?.q;
+    if (isSearchFirstResource && (!searchQuery || searchQuery.toString().trim() === '')) {
+      return Promise.resolve({ data: [], total: 0 });
     }
 
     // Apply react-admin filters
@@ -67,7 +74,7 @@ export const dataProvider: DataProvider = {
     // Auto-inject type for individuals/juristic
     const body = { ...params.data };
     if (resource === 'individuals') body.type = 'PERSONAL';
-    if (resource === 'juristic') body.type = 'JURISTIC';
+    if (resource === 'juristics') body.type = 'JURISTIC';
 
     return httpClient(`${API_URL}/${config.apiResource}`, {
       method: 'POST',

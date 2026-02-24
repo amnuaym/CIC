@@ -115,7 +115,7 @@ func TestListCustomers(t *testing.T) {
 
 	h := NewCustomerHandler(mockService)
 
-	req, _ := http.NewRequest("GET", "/api/v1/customers", nil)
+	req, _ := http.NewRequest("GET", "/api/v1/customers?q=*", nil)
 	rr := httptest.NewRecorder()
 
 	h.ListCustomers(rr, req)
