@@ -77,7 +77,7 @@ export const login = async (req: AuthRequest, res: Response): Promise<void> => {
         username: user.username,
       },
     });
-  } catch (error) {
+  } catch {
     res.status(500).json({ error: 'Failed to login' });
   }
 };

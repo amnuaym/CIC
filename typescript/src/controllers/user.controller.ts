@@ -20,7 +20,7 @@ export const getCurrentUser = async (req: AuthRequest, res: Response): Promise<v
     }
 
     res.json(result.rows[0]);
-  } catch (error) {
+  } catch {
     res.status(500).json({ error: 'Failed to fetch user' });
   }
 };

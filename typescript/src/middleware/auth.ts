@@ -30,7 +30,7 @@ export const jwtAuth = (req: AuthRequest, res: Response, next: NextFunction): vo
     
     req.user = payload;
     next();
-  } catch (error) {
+  } catch {
     res.status(401).json({ error: 'Invalid token' });
   }
 };
@@ -58,7 +58,7 @@ export const apiKeyAuth = async (req: AuthRequest, res: Response, next: NextFunc
 
     req.user = { userId: result.rows[0].user_id, username: '', email: '' };
     next();
-  } catch (error) {
+  } catch {
     res.status(401).json({ error: 'Invalid API key' });
   }
 };

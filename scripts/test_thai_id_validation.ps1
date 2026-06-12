@@ -1,5 +1,15 @@
 $ErrorActionPreference = "Stop"
-$BaseUrl = "http://localhost/api/v1"
+$BaseUrl = "http://localhost:8080/api/v1"
+
+# Login to get Bearer token for all requests
+$LoginBody = @{
+    username = "superadmin"
+    password = "Super!Secret.2024"
+} | ConvertTo-Json
+$AuthRes = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/api/auth/login" -Body $LoginBody -ContentType "application/json"
+$Headers = @{
+    Authorization = "Bearer $($AuthRes.token)"
+}
 
 function Test-Step {
     param($Name, $ScriptBlock, $ExpectError = $false)
@@ -33,7 +43,7 @@ Test-Step "Create Test User" {
         status     = "ACTIVE"
     } | ConvertTo-Json
 
-    $global:User = Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers" -Body $body -ContentType "application/json"
+    $global:User = Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers" -Body $body -ContentType "application/json" -Headers $Headers
     if (-not $User.id) { throw "No ID returned" }
 }
 
@@ -45,7 +55,7 @@ Test-Step "Add Invalid Format ID (Short)" {
         issuance_country = "Thailand"
     } | ConvertTo-Json
 
-    Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers/$($User.id)/identities" -Body $body -ContentType "application/json"
+    Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers/$($User.id)/identities" -Body $body -ContentType "application/json" -Headers $Headers
 } -ExpectError $true
 
 # 3. Invalid Checksum
@@ -56,7 +66,7 @@ Test-Step "Add Invalid Checksum ID (1234567890120)" {
         issuance_country = "Thailand"
     } | ConvertTo-Json
 
-    Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers/$($User.id)/identities" -Body $body -ContentType "application/json"
+    Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers/$($User.id)/identities" -Body $body -ContentType "application/json" -Headers $Headers
 } -ExpectError $true
 
 function Generate-ThaiID {
@@ -78,7 +88,7 @@ Test-Step "Add Valid ID ($ValidID)" {
         issuance_country = "Thailand"
     } | ConvertTo-Json
 
-    Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers/$($User.id)/identities" -Body $body -ContentType "application/json"
+    Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers/$($User.id)/identities" -Body $body -ContentType "application/json" -Headers $Headers
 }
 
 Write-Host "`n[DONE] Validation Tests Completed Successfully!" -ForegroundColor Cyan

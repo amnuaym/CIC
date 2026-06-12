@@ -1,4 +1,4 @@
-$BaseUrl = "http://localhost/api/v1"
+$BaseUrl = "http://localhost:8080/api/v1"
 $ErrorActionPreference = "Stop"
 
 function Create-User {
@@ -6,8 +6,7 @@ function Create-User {
     Write-Host "[->] Creating User: $Username ($Role)..." -NoNewline
     
     # 0. Cleanup: Delete existing user to allow re-seeding with new password
-    $Env:PGPASSWORD = "veo;pMek"
-    docker run --rm --add-host=host.docker.internal:host-gateway -e PGPASSWORD=$Env:PGPASSWORD postgres:alpine psql -h host.docker.internal -U postgres -d cic_dev -c "DELETE FROM users WHERE username = '$Username';" | Out-Null
+    docker exec -i central-postgres psql -U postgres -d cic_dev -c "DELETE FROM users WHERE username = '$Username';" | Out-Null
 
     # 1. Register via API (Handles Password Hashing)
     $body = @{
@@ -17,14 +16,12 @@ function Create-User {
     } | ConvertTo-Json
 
     try {
-        $res = Invoke-RestMethod -Method Post -Uri "http://localhost/api/auth/register" -Body $body -ContentType "application/json"
+        $res = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/api/auth/register" -Body $body -ContentType "application/json"
         
         # 2. Update Role via SQL (Since API doesn't support setting role yet)
         $sql = "UPDATE users SET role = '$Role' WHERE username = '$Username';"
         # Use simple docker connection string assuming psql is available in postgres container
-        # We use the same technique as migration apply
-        $Env:PGPASSWORD = "veo;pMek"
-        docker run --rm --add-host=host.docker.internal:host-gateway -e PGPASSWORD=$Env:PGPASSWORD postgres:alpine psql -h host.docker.internal -U postgres -d cic_dev -c $sql | Out-Null
+        docker exec -i central-postgres psql -U postgres -d cic_dev -c "$sql" | Out-Null
         
         Write-Host " [OK]" -ForegroundColor Green
     }

@@ -1,4 +1,4 @@
-$BaseUrl = "http://localhost/api"
+$BaseUrl = "http://localhost:8080/api"
 $ErrorActionPreference = "Stop"
 
 function Test-Login {

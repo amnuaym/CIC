@@ -1,0 +1,8 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: cic-managed-cert
+  namespace: cic-prod
+spec:
+  domains:
+    - cic.local

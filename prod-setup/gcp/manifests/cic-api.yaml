@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cic-api-sa
+  namespace: cic-prod
+  annotations:
+    # Binds this K8s SA to a GCP IAM Service Account with Cloud SQL Client role
+    iam.gke.io/gcp-service-account: cic-api-sa@YOUR_GCP_PROJECT.iam.gserviceaccount.com
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cic-api
+  namespace: cic-prod
+  annotations:
+    # Tells GKE Ingress to use the custom health check configuration
+    cloud.google.com/backend-config: '{"default": "cic-api-backend-config"}'
+spec:
+  type: ClusterIP
+  selector:
+    app: cic-api
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cic-api
+  namespace: cic-prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cic-api
+  template:
+    metadata:
+      labels:
+        app: cic-api
+    spec:
+      serviceAccountName: cic-api-sa
+      containers:
+        # Main Go API Container
+        - name: api
+          image: us-central1-docker.pkg.dev/YOUR_GCP_PROJECT/cic-repo/cic-api:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: "8080"
+            - name: DATABASE_URL
+              # Connects via Cloud SQL Auth Proxy listening on localhost
+              value: "postgres://db_user:db_password@127.0.0.1:5432/cic?sslmode=disable"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: cic-secrets
+                  key: jwt-secret
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 20
+
+        # Cloud SQL Auth Proxy sidecar container (GCP Best Practice)
+        - name: cloud-sql-proxy
+          image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.8.2
+          args:
+            # Replace with your Cloud SQL connection name (project:region:instance)
+            - "YOUR_GCP_PROJECT:us-central1:cic-postgres-instance"
+            # If using private IP connection within VPC
+            - "--private-ip"
+            - "--port=5432"
+          securityContext:
+            runAsNonRoot: true
+          resources:
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
+            requests:
+              cpu: "50m"
+              memory: "64Mi"

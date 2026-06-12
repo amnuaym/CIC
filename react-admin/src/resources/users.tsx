@@ -21,6 +21,7 @@ import {
   CreateButton,
   EditButton,
 } from 'react-admin';
+import PasswordInput from '../components/PasswordInput';
 
 // Role choices matching Go backend constants
 const roleChoices = [
@@ -84,7 +85,7 @@ export const UserCreate = () => (
     <SimpleForm>
       <TextInput source="username" required />
       <TextInput source="email" type="email" required />
-      <TextInput source="password" type="password" required />
+      <PasswordInput source="password" label="Password" required />
       <SelectInput source="role" choices={roleChoices} required />
       <ReferenceInput source="supervisor_id" reference="users" allowEmpty>
         <AutocompleteInput optionText="username" />

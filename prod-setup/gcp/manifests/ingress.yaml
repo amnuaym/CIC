@@ -1,0 +1,55 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cic-ingress
+  namespace: cic-prod
+  annotations:
+    kubernetes.io/ingress.class: gce
+    # Provisions static public IP from GCP (reserved beforehand)
+    kubernetes.io/ingress.global-static-ip-name: cic-static-ip
+    networking.gke.io/managed-certificates: cic-managed-cert
+spec:
+  tls:
+    - hosts:
+        - cic.local
+  rules:
+    - http:
+        paths:
+          # Route API endpoints (including swagger & v1) to the API service
+          - path: /health
+            pathType: Prefix
+            backend:
+              service:
+                name: cic-api
+                port:
+                  number: 8080
+          - path: /swagger
+            pathType: Prefix
+            backend:
+              service:
+                name: cic-api
+                port:
+                  number: 8080
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: cic-api
+                port:
+                  number: 8080
+          # Keycloak endpoints
+          - path: /auth
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 8080
+          # Catch-all routes to Frontend React app
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: react-admin
+                port:
+                  number: 80

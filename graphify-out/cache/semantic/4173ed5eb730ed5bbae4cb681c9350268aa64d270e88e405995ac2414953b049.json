@@ -1,0 +1,1 @@
+{"nodes": [{"id": "manifests_managed_certificate_cert", "label": "GKE ManagedCertificate (cic-managed-cert)", "file_type": "code", "source_file": "prod-setup/gcp/manifests/managed-certificate.yaml", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}], "edges": [], "hyperedges": []}

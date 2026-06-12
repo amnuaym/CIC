@@ -30,7 +30,7 @@ import (
 // @BasePath /
 func main() {
 	// Load environment variables
-	godotenv.Load()
+	godotenv.Load("../.env", ".env")
 
 	// Initialize database
 	db, err := database.NewDB()
@@ -55,9 +55,10 @@ func main() {
 
 	// Setup CORS
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"},
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedOrigins:   []string{"https://cic.local", "http://localhost:3000", "http://localhost:8080"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Content-Type", "Authorization", "X-API-Key"},
+		ExposedHeaders:   []string{"X-Total-Count"},
 		AllowCredentials: true,
 	})
 

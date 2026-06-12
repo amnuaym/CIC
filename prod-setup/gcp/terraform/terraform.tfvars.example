@@ -1,0 +1,7 @@
+project_id       = "your-gcp-project-id"
+region           = "us-central1"
+environment      = "dev"
+db_tier          = "db-f1-micro"
+api_image        = "gcr.io/your-gcp-project-id/cic-api:latest"
+admin_image      = "gcr.io/your-gcp-project-id/cic-admin:latest"
+jwt_secret_value = "production-ready-jwt-signing-secret"

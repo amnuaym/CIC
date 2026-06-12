@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-admin
+  namespace: cic-prod
+spec:
+  type: ClusterIP
+  selector:
+    app: react-admin
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-admin
+  namespace: cic-prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: react-admin
+  template:
+    metadata:
+      labels:
+        app: react-admin
+    spec:
+      containers:
+        - name: web
+          image: us-central1-docker.pkg.dev/YOUR_GCP_PROJECT/cic-repo/react-admin:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 15

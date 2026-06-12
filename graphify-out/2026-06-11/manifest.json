@@ -1,0 +1,1347 @@
+{
+  "D:\\Github\\CIC\\client_consolidate.sql": {
+    "mtime": 1780307131.5736818,
+    "ast_hash": "22d98ee0c85c1b0681095c5674ad9858",
+    "semantic_hash": "22d98ee0c85c1b0681095c5674ad9858"
+  },
+  "D:\\Github\\CIC\\client_consolidate_th.sql": {
+    "mtime": 1780307131.5746837,
+    "ast_hash": "a0f187364f8f605b0df07cad862c7893",
+    "semantic_hash": "a0f187364f8f605b0df07cad862c7893"
+  },
+  "D:\\Github\\CIC\\e2e-tests\\package.json": {
+    "mtime": 1780307131.5773637,
+    "ast_hash": "5d6cf96fc48c45583b950a0d7d4c522d",
+    "semantic_hash": "5d6cf96fc48c45583b950a0d7d4c522d"
+  },
+  "D:\\Github\\CIC\\e2e-tests\\playwright.config.ts": {
+    "mtime": 1780993350.2048092,
+    "ast_hash": "27a2da7f18caa34ce57e257e7c95e4e5",
+    "semantic_hash": "27a2da7f18caa34ce57e257e7c95e4e5"
+  },
+  "D:\\Github\\CIC\\e2e-tests\\tests\\admin.spec.ts": {
+    "mtime": 1780307131.578364,
+    "ast_hash": "dcd0c581388f0fa797a1c1ae4c8c1a4b",
+    "semantic_hash": "dcd0c581388f0fa797a1c1ae4c8c1a4b"
+  },
+  "D:\\Github\\CIC\\e2e-tests\\tests\\api.spec.ts": {
+    "mtime": 1780307131.578364,
+    "ast_hash": "603f978320dbd4f2c4fb986be7ab1b96",
+    "semantic_hash": "603f978320dbd4f2c4fb986be7ab1b96"
+  },
+  "D:\\Github\\CIC\\gcp-key.json": {
+    "mtime": 1780913484.9033484,
+    "ast_hash": "c46f91313c7592d04ce3f4110e4e823c",
+    "semantic_hash": "c46f91313c7592d04ce3f4110e4e823c"
+  },
+  "D:\\Github\\CIC\\go\\docs\\docs.go": {
+    "mtime": 1780307131.5793638,
+    "ast_hash": "a2aa0d343cc9a1829c89ebcfdf748c2f",
+    "semantic_hash": "a2aa0d343cc9a1829c89ebcfdf748c2f"
+  },
+  "D:\\Github\\CIC\\go\\docs\\swagger.json": {
+    "mtime": 1780307131.5793638,
+    "ast_hash": "5ea6618d7aa2bf811e4ef5327e346a0d",
+    "semantic_hash": "5ea6618d7aa2bf811e4ef5327e346a0d"
+  },
+  "D:\\Github\\CIC\\go\\internal\\adapter\\handler\\audit_handler.go": {
+    "mtime": 1780307131.5803635,
+    "ast_hash": "274d9b2efb773ce816cf659252c4c0dd",
+    "semantic_hash": "274d9b2efb773ce816cf659252c4c0dd"
+  },
+  "D:\\Github\\CIC\\go\\internal\\adapter\\handler\\consent_handler.go": {
+    "mtime": 1780307131.5803635,
+    "ast_hash": "349e4285f86004c6142d3f993f1ce273",
+    "semantic_hash": "349e4285f86004c6142d3f993f1ce273"
+  },
+  "D:\\Github\\CIC\\go\\internal\\adapter\\handler\\customer_handler.go": {
+    "mtime": 1780307131.5813644,
+    "ast_hash": "4efdaccf2fe8fceb51c32cd3fdecd06b",
+    "semantic_hash": "4efdaccf2fe8fceb51c32cd3fdecd06b"
+  },
+  "D:\\Github\\CIC\\go\\internal\\adapter\\handler\\customer_handler_test.go": {
+    "mtime": 1780307131.5813644,
+    "ast_hash": "e68a398f0275be59eece37646545ab53",
+    "semantic_hash": "e68a398f0275be59eece37646545ab53"
+  },
+  "D:\\Github\\CIC\\go\\internal\\adapter\\repository\\audit_repo.go": {
+    "mtime": 1780307131.5813644,
+    "ast_hash": "ebee9ac3e0741a2c91d8508dfe6faf70",
+    "semantic_hash": "ebee9ac3e0741a2c91d8508dfe6faf70"
+  },
+  "D:\\Github\\CIC\\go\\internal\\adapter\\repository\\customer_repo.go": {
+    "mtime": 1780307131.5823677,
+    "ast_hash": "1b23f7a48d812699f57a4aa49d373f0c",
+    "semantic_hash": "1b23f7a48d812699f57a4aa49d373f0c"
+  },
+  "D:\\Github\\CIC\\go\\internal\\adapter\\repository\\sub_resources.go": {
+    "mtime": 1780307131.5823677,
+    "ast_hash": "f6d4257f2492f4239c1e80bffae4c9e6",
+    "semantic_hash": "f6d4257f2492f4239c1e80bffae4c9e6"
+  },
+  "D:\\Github\\CIC\\go\\internal\\adapter\\repository\\user_repo.go": {
+    "mtime": 1780307131.5823677,
+    "ast_hash": "9d95f764dc07614995d2176e851c5489",
+    "semantic_hash": "9d95f764dc07614995d2176e851c5489"
+  },
+  "D:\\Github\\CIC\\go\\internal\\api\\handlers.go": {
+    "mtime": 1780307131.5833688,
+    "ast_hash": "0bacd1a3de301f7a33e8a9653d48576d",
+    "semantic_hash": "0bacd1a3de301f7a33e8a9653d48576d"
+  },
+  "D:\\Github\\CIC\\go\\internal\\api\\handlers_test.go": {
+    "mtime": 1780307131.5833688,
+    "ast_hash": "1615b8652c2e38c0c204f666867d40f5",
+    "semantic_hash": "1615b8652c2e38c0c204f666867d40f5"
+  },
+  "D:\\Github\\CIC\\go\\internal\\auth\\auth.go": {
+    "mtime": 1780307131.5833688,
+    "ast_hash": "136a92693950c1e9082edf789a910476",
+    "semantic_hash": "136a92693950c1e9082edf789a910476"
+  },
+  "D:\\Github\\CIC\\go\\internal\\auth\\auth_test.go": {
+    "mtime": 1780307131.5843675,
+    "ast_hash": "a8fe4d34aef896f439146ae57c7ebeb2",
+    "semantic_hash": "a8fe4d34aef896f439146ae57c7ebeb2"
+  },
+  "D:\\Github\\CIC\\go\\internal\\core\\domain\\customer.go": {
+    "mtime": 1780307131.5843675,
+    "ast_hash": "26dcc6273af5eec8e2486696dcead8f9",
+    "semantic_hash": "26dcc6273af5eec8e2486696dcead8f9"
+  },
+  "D:\\Github\\CIC\\go\\internal\\core\\ports\\repositories.go": {
+    "mtime": 1780307131.5843675,
+    "ast_hash": "15f4ed75087c42b26601bfdcaee1e5b2",
+    "semantic_hash": "15f4ed75087c42b26601bfdcaee1e5b2"
+  },
+  "D:\\Github\\CIC\\go\\internal\\core\\ports\\services.go": {
+    "mtime": 1780307131.5843675,
+    "ast_hash": "a1a259b6ad93efe96ee23a798df53da5",
+    "semantic_hash": "a1a259b6ad93efe96ee23a798df53da5"
+  },
+  "D:\\Github\\CIC\\go\\internal\\core\\service\\audit_service.go": {
+    "mtime": 1780307131.585368,
+    "ast_hash": "934edc0aced3fd2e4985d11498a6f9d7",
+    "semantic_hash": "934edc0aced3fd2e4985d11498a6f9d7"
+  },
+  "D:\\Github\\CIC\\go\\internal\\core\\service\\customer_service.go": {
+    "mtime": 1780307131.585368,
+    "ast_hash": "c482f9a2cf80662229c7899c603f2b49",
+    "semantic_hash": "c482f9a2cf80662229c7899c603f2b49"
+  },
+  "D:\\Github\\CIC\\go\\internal\\core\\service\\customer_service_test.go": {
+    "mtime": 1780307131.585368,
+    "ast_hash": "c7b99e40b5ac86914b4f1bec1d90115e",
+    "semantic_hash": "c7b99e40b5ac86914b4f1bec1d90115e"
+  },
+  "D:\\Github\\CIC\\go\\internal\\database\\db.go": {
+    "mtime": 1780307131.586367,
+    "ast_hash": "02f8d70f460d5b36447c74daa7fb3ce6",
+    "semantic_hash": "02f8d70f460d5b36447c74daa7fb3ce6"
+  },
+  "D:\\Github\\CIC\\go\\internal\\middleware\\middleware.go": {
+    "mtime": 1780307131.586367,
+    "ast_hash": "aabb498d6228ce8880c7c807752e082f",
+    "semantic_hash": "aabb498d6228ce8880c7c807752e082f"
+  },
+  "D:\\Github\\CIC\\go\\internal\\middleware\\rbac.go": {
+    "mtime": 1780307131.586367,
+    "ast_hash": "9da0b06a8653937e15e7d92d1c1c743d",
+    "semantic_hash": "9da0b06a8653937e15e7d92d1c1c743d"
+  },
+  "D:\\Github\\CIC\\go\\internal\\middleware\\rbac_test.go": {
+    "mtime": 1780307131.5873685,
+    "ast_hash": "9ea6ba7646c92f89fb020be82b737fbc",
+    "semantic_hash": "9ea6ba7646c92f89fb020be82b737fbc"
+  },
+  "D:\\Github\\CIC\\go\\internal\\models\\models.go": {
+    "mtime": 1780307131.5873685,
+    "ast_hash": "68a415d1f26ef6a88f9bd4a21d631c00",
+    "semantic_hash": "68a415d1f26ef6a88f9bd4a21d631c00"
+  },
+  "D:\\Github\\CIC\\go\\internal\\utils\\validation\\thai_id_validator.go": {
+    "mtime": 1780307131.5873685,
+    "ast_hash": "d2cf4e57eebccd36bcf3328f54ffd7dd",
+    "semantic_hash": "d2cf4e57eebccd36bcf3328f54ffd7dd"
+  },
+  "D:\\Github\\CIC\\go\\main.go": {
+    "mtime": 1780905819.8047647,
+    "ast_hash": "7ac40085ffebabb962b477d070552724",
+    "semantic_hash": "7ac40085ffebabb962b477d070552724"
+  },
+  "D:\\Github\\CIC\\go\\migrations\\000001_init_schema.down.sql": {
+    "mtime": 1780307131.5883682,
+    "ast_hash": "da4bd84df4e6bc91a2c1e836aa5f7b8f",
+    "semantic_hash": "da4bd84df4e6bc91a2c1e836aa5f7b8f"
+  },
+  "D:\\Github\\CIC\\go\\migrations\\000001_init_schema.up.sql": {
+    "mtime": 1780307131.5883682,
+    "ast_hash": "95972070ff476f9ee9937c1f7208efe7",
+    "semantic_hash": "95972070ff476f9ee9937c1f7208efe7"
+  },
+  "D:\\Github\\CIC\\go\\migrations\\000002_add_rbac_fields.up.sql": {
+    "mtime": 1780307131.5883682,
+    "ast_hash": "1e2eadbe08b907a593d372620aa09b57",
+    "semantic_hash": "1e2eadbe08b907a593d372620aa09b57"
+  },
+  "D:\\Github\\CIC\\go\\migrations\\000002_add_users_table.down.sql": {
+    "mtime": 1780307131.5883682,
+    "ast_hash": "ee43ce1cbd3e288000d412147fbc8272",
+    "semantic_hash": "ee43ce1cbd3e288000d412147fbc8272"
+  },
+  "D:\\Github\\CIC\\go\\migrations\\000002_add_users_table.up.sql": {
+    "mtime": 1780307131.5893657,
+    "ast_hash": "08c3ce914ca5ed03b663c03bc7107c2e",
+    "semantic_hash": "08c3ce914ca5ed03b663c03bc7107c2e"
+  },
+  "D:\\Github\\CIC\\go\\migrations\\000003_update_roles.up.sql": {
+    "mtime": 1780307131.5893657,
+    "ast_hash": "b25e145145b5174366298de0db25640e",
+    "semantic_hash": "b25e145145b5174366298de0db25640e"
+  },
+  "D:\\Github\\CIC\\prod-setup\\gcp\\deploy.ps1": {
+    "mtime": 1780993803.2350934,
+    "ast_hash": "fed5297a6385c1f079136f731ab5c217",
+    "semantic_hash": "fed5297a6385c1f079136f731ab5c217"
+  },
+  "D:\\Github\\CIC\\prod-setup\\gcp\\deploy.sh": {
+    "mtime": 1780993800.7613218,
+    "ast_hash": "6a238b940c15646c948ba8fbb330d466",
+    "semantic_hash": "6a238b940c15646c948ba8fbb330d466"
+  },
+  "D:\\Github\\CIC\\prod-setup\\gcp\\terraform\\main.tf": {
+    "mtime": 1780993793.8440802,
+    "ast_hash": "889b7e003f992f94ab5eb500c783bd8a",
+    "semantic_hash": "889b7e003f992f94ab5eb500c783bd8a"
+  },
+  "D:\\Github\\CIC\\prod-setup\\gcp\\terraform\\outputs.tf": {
+    "mtime": 1780913495.8026347,
+    "ast_hash": "94a119a356ea24d9e7199454614fe792",
+    "semantic_hash": "94a119a356ea24d9e7199454614fe792"
+  },
+  "D:\\Github\\CIC\\prod-setup\\gcp\\terraform\\providers.tf": {
+    "mtime": 1780913486.6045456,
+    "ast_hash": "610dc7c5d8982754a833823e86a03d2c",
+    "semantic_hash": "610dc7c5d8982754a833823e86a03d2c"
+  },
+  "D:\\Github\\CIC\\prod-setup\\gcp\\terraform\\variables.tf": {
+    "mtime": 1780913488.479481,
+    "ast_hash": "d348fefa9dbcb408c9c5c61128b87695",
+    "semantic_hash": "d348fefa9dbcb408c9c5c61128b87695"
+  },
+  "D:\\Github\\CIC\\prod-setup\\nginx\\rotate-certs.ps1": {
+    "mtime": 1780993836.340047,
+    "ast_hash": "7c69b53b894e7d5d1100e606e913f4b8",
+    "semantic_hash": "7c69b53b894e7d5d1100e606e913f4b8"
+  },
+  "D:\\Github\\CIC\\prod-setup\\nginx\\rotate-certs.sh": {
+    "mtime": 1780993830.3069365,
+    "ast_hash": "9e69114aed7299dbaca333dfb95bdcdb",
+    "semantic_hash": "9e69114aed7299dbaca333dfb95bdcdb"
+  },
+  "D:\\Github\\CIC\\react-admin\\package.json": {
+    "mtime": 1780307131.5923655,
+    "ast_hash": "4842f834de37792d22e8e4f0dce2fe20",
+    "semantic_hash": "4842f834de37792d22e8e4f0dce2fe20"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\App.tsx": {
+    "mtime": 1780307131.5923655,
+    "ast_hash": "e434f297209b52d54beb247d0a3e5ca5",
+    "semantic_hash": "e434f297209b52d54beb247d0a3e5ca5"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\authProvider.ts": {
+    "mtime": 1780307131.593369,
+    "ast_hash": "b9498c83d0f6139c89b8e4c3d43d54df",
+    "semantic_hash": "b9498c83d0f6139c89b8e4c3d43d54df"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\dataProvider.ts": {
+    "mtime": 1780307131.593369,
+    "ast_hash": "21a8248395014fd829a9a8931d38308b",
+    "semantic_hash": "21a8248395014fd829a9a8931d38308b"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\index.tsx": {
+    "mtime": 1780307131.593369,
+    "ast_hash": "4f5b4b407ae45eb3ee08b0815d89738f",
+    "semantic_hash": "4f5b4b407ae45eb3ee08b0815d89738f"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\resources\\auditLogs.tsx": {
+    "mtime": 1780307131.593369,
+    "ast_hash": "0e28a1d5bc70c588192820c5bb4e50bd",
+    "semantic_hash": "0e28a1d5bc70c588192820c5bb4e50bd"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\resources\\consents.tsx": {
+    "mtime": 1780307131.5943692,
+    "ast_hash": "66e767f78c0d38d1240667854d5eb3cb",
+    "semantic_hash": "66e767f78c0d38d1240667854d5eb3cb"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\resources\\customers\\CustomerCreate.tsx": {
+    "mtime": 1780307131.5943692,
+    "ast_hash": "a08b06cea75a8d262b497d86c44538d5",
+    "semantic_hash": "a08b06cea75a8d262b497d86c44538d5"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\resources\\customers\\CustomerEdit.tsx": {
+    "mtime": 1780307131.5943692,
+    "ast_hash": "a37239ba1f6f1d8704a27eeb3d3e7cbf",
+    "semantic_hash": "a37239ba1f6f1d8704a27eeb3d3e7cbf"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\resources\\customers\\CustomerList.tsx": {
+    "mtime": 1780307131.5953693,
+    "ast_hash": "59a38e126fc4b0a5bcfad649cd7b43f0",
+    "semantic_hash": "59a38e126fc4b0a5bcfad649cd7b43f0"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\resources\\customers\\CustomerShow.tsx": {
+    "mtime": 1780307131.5953693,
+    "ast_hash": "321103e82049934214ac7d4df099b0c2",
+    "semantic_hash": "321103e82049934214ac7d4df099b0c2"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\resources\\customers\\components\\ActivityLog.tsx": {
+    "mtime": 1780307131.5953693,
+    "ast_hash": "035bdd6e42148eea3306877865d6cade",
+    "semantic_hash": "035bdd6e42148eea3306877865d6cade"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\resources\\customers\\components\\AddressList.tsx": {
+    "mtime": 1780307131.5953693,
+    "ast_hash": "c4fe8f413193008ec9f09a6c4ded0f74",
+    "semantic_hash": "c4fe8f413193008ec9f09a6c4ded0f74"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\resources\\customers\\components\\ConsentList.tsx": {
+    "mtime": 1780307131.5963688,
+    "ast_hash": "13a56d8836ee20078f7e25ea2bc09503",
+    "semantic_hash": "13a56d8836ee20078f7e25ea2bc09503"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\resources\\customers\\components\\IdentityList.tsx": {
+    "mtime": 1780307131.5963688,
+    "ast_hash": "93721bd0b6c93f9b4f88a3a4f8c0ae90",
+    "semantic_hash": "93721bd0b6c93f9b4f88a3a4f8c0ae90"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\resources\\customers\\components\\RelationshipList.tsx": {
+    "mtime": 1780307131.5963688,
+    "ast_hash": "4eb562315bb7f00a6029420d1d824b7a",
+    "semantic_hash": "4eb562315bb7f00a6029420d1d824b7a"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\resources\\customers\\index.ts": {
+    "mtime": 1780307131.5963688,
+    "ast_hash": "dc3b83261b00a7addcbd61d4c9af6edd",
+    "semantic_hash": "dc3b83261b00a7addcbd61d4c9af6edd"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\resources\\individuals.tsx": {
+    "mtime": 1780307131.597369,
+    "ast_hash": "685f2c8100109827a1529ba95aeed4cb",
+    "semantic_hash": "685f2c8100109827a1529ba95aeed4cb"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\resources\\juristic.tsx": {
+    "mtime": 1780307131.597369,
+    "ast_hash": "11a60342d4dd2f8892f43b19ea535699",
+    "semantic_hash": "11a60342d4dd2f8892f43b19ea535699"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\resources\\users.tsx": {
+    "mtime": 1780307131.597369,
+    "ast_hash": "2d4eb7232e2828ea1fe6447b0b64c428",
+    "semantic_hash": "2d4eb7232e2828ea1fe6447b0b64c428"
+  },
+  "D:\\Github\\CIC\\react-admin\\src\\vite-env.d.ts": {
+    "mtime": 1780307131.597369,
+    "ast_hash": "851df6b574883dc0f3ab28c5fb63cd90",
+    "semantic_hash": "851df6b574883dc0f3ab28c5fb63cd90"
+  },
+  "D:\\Github\\CIC\\react-admin\\tsconfig.json": {
+    "mtime": 1780307131.5983686,
+    "ast_hash": "7a931cf665b999dd157ba517f5cbd820",
+    "semantic_hash": "7a931cf665b999dd157ba517f5cbd820"
+  },
+  "D:\\Github\\CIC\\react-admin\\tsconfig.node.json": {
+    "mtime": 1780307131.5983686,
+    "ast_hash": "281e378713152cccc7860c818db55849",
+    "semantic_hash": "281e378713152cccc7860c818db55849"
+  },
+  "D:\\Github\\CIC\\react-admin\\vite.config.ts": {
+    "mtime": 1780307131.5983686,
+    "ast_hash": "727541d2fdb495f2ed0cea3dc1dbbf0c",
+    "semantic_hash": "727541d2fdb495f2ed0cea3dc1dbbf0c"
+  },
+  "D:\\Github\\CIC\\scripts\\apply_migration.ps1": {
+    "mtime": 1780307131.5993688,
+    "ast_hash": "a96c37d01d164a78acdfcbda46b8c885",
+    "semantic_hash": "a96c37d01d164a78acdfcbda46b8c885"
+  },
+  "D:\\Github\\CIC\\scripts\\cleanup-data.sql": {
+    "mtime": 1780307131.5993688,
+    "ast_hash": "6cd33be47edbb2893100f32d925b120e",
+    "semantic_hash": "6cd33be47edbb2893100f32d925b120e"
+  },
+  "D:\\Github\\CIC\\scripts\\convert-cas-oracle-to-postgres.ps1": {
+    "mtime": 1780307131.5993688,
+    "ast_hash": "93fb680628a41913e48211b3105b1c37",
+    "semantic_hash": "93fb680628a41913e48211b3105b1c37"
+  },
+  "D:\\Github\\CIC\\scripts\\generated\\cas_app_schema.indexes.pg.sql": {
+    "mtime": 1780307131.6003685,
+    "ast_hash": "0b49aa08a205db33e5f3a1821eaf7f6d",
+    "semantic_hash": "0b49aa08a205db33e5f3a1821eaf7f6d"
+  },
+  "D:\\Github\\CIC\\scripts\\generated\\cas_app_schema.tables.pg.sql": {
+    "mtime": 1780307131.6173728,
+    "ast_hash": "49530cac87413a62956c42501abbb774",
+    "semantic_hash": "49530cac87413a62956c42501abbb774"
+  },
+  "D:\\Github\\CIC\\scripts\\generated\\cas_master_data_inserts.pg.sql": {
+    "mtime": 1780307131.656889,
+    "ast_hash": "9d6998faba8c21839b7d5d77deadf465",
+    "semantic_hash": "9d6998faba8c21839b7d5d77deadf465"
+  },
+  "D:\\Github\\CIC\\scripts\\generated\\cleanup_cas_database.sql": {
+    "mtime": 1780307131.656889,
+    "ast_hash": "6dacd229e6691d423f7349c30b97889b",
+    "semantic_hash": "6dacd229e6691d423f7349c30b97889b"
+  },
+  "D:\\Github\\CIC\\scripts\\generated\\client_consolidate_th.pg.sql": {
+    "mtime": 1780908122.9206886,
+    "ast_hash": "5d109f614ac1026e7e2a2ad3a8042af4",
+    "semantic_hash": "5d109f614ac1026e7e2a2ad3a8042af4"
+  },
+  "D:\\Github\\CIC\\scripts\\generated\\deploy_cas.ps1": {
+    "mtime": 1780307131.6578908,
+    "ast_hash": "e1a505ad1a10676798ee34e11ae31009",
+    "semantic_hash": "e1a505ad1a10676798ee34e11ae31009"
+  },
+  "D:\\Github\\CIC\\scripts\\generated\\deploy_cas.sh": {
+    "mtime": 1780307131.6578908,
+    "ast_hash": "0c3071756015bbfa8ab9604e97223489",
+    "semantic_hash": "0c3071756015bbfa8ab9604e97223489"
+  },
+  "D:\\Github\\CIC\\scripts\\generated\\deploy_cas_data.sql": {
+    "mtime": 1780307131.6948884,
+    "ast_hash": "5df3c7c443d23076711fe7e1a37c9132",
+    "semantic_hash": "5df3c7c443d23076711fe7e1a37c9132"
+  },
+  "D:\\Github\\CIC\\scripts\\generated\\deploy_cas_full.sql": {
+    "mtime": 1780307131.7334032,
+    "ast_hash": "2b92e57cdaed4b18c59b6c7600c75918",
+    "semantic_hash": "2b92e57cdaed4b18c59b6c7600c75918"
+  },
+  "D:\\Github\\CIC\\scripts\\generated\\deploy_cas_schema.sql": {
+    "mtime": 1780307131.7354014,
+    "ast_hash": "eed46a2f36e06d2ef8ad0567bb39bfe5",
+    "semantic_hash": "eed46a2f36e06d2ef8ad0567bb39bfe5"
+  },
+  "D:\\Github\\CIC\\scripts\\generated\\validate_cas_deployment.sql": {
+    "mtime": 1780307131.7354014,
+    "ast_hash": "985e299086ed5fced9764ef6b6793344",
+    "semantic_hash": "985e299086ed5fced9764ef6b6793344"
+  },
+  "D:\\Github\\CIC\\scripts\\init-cas-db-postgres.sql": {
+    "mtime": 1780307131.7364044,
+    "ast_hash": "88c87686b311effff66109943acd1165",
+    "semantic_hash": "88c87686b311effff66109943acd1165"
+  },
+  "D:\\Github\\CIC\\scripts\\init-db.sql": {
+    "mtime": 1780307131.7364044,
+    "ast_hash": "84c1824992e9da41ccb79fd795b8f29c",
+    "semantic_hash": "84c1824992e9da41ccb79fd795b8f29c"
+  },
+  "D:\\Github\\CIC\\scripts\\seed-data.sql": {
+    "mtime": 1780307131.7364044,
+    "ast_hash": "0ccaadc244827c10aae67a18b19e0dc9",
+    "semantic_hash": "0ccaadc244827c10aae67a18b19e0dc9"
+  },
+  "D:\\Github\\CIC\\scripts\\seed_users.ps1": {
+    "mtime": 1780906217.2743406,
+    "ast_hash": "faba69ebaeffcf85242a060719f7d082",
+    "semantic_hash": "faba69ebaeffcf85242a060719f7d082"
+  },
+  "D:\\Github\\CIC\\scripts\\test_api_access.ps1": {
+    "mtime": 1780307131.7374043,
+    "ast_hash": "2d8c9295b5180dce668dc5b033eec21a",
+    "semantic_hash": "2d8c9295b5180dce668dc5b033eec21a"
+  },
+  "D:\\Github\\CIC\\scripts\\test_journey.ps1": {
+    "mtime": 1780907220.1551983,
+    "ast_hash": "befed1864bc8825c87ef322966f29adf",
+    "semantic_hash": "befed1864bc8825c87ef322966f29adf"
+  },
+  "D:\\Github\\CIC\\scripts\\test_thai_id_validation.ps1": {
+    "mtime": 1780907281.0740652,
+    "ast_hash": "2226d4953a00233512fa5aaab42ac907",
+    "semantic_hash": "2226d4953a00233512fa5aaab42ac907"
+  },
+  "D:\\Github\\CIC\\scripts\\test_user_login.ps1": {
+    "mtime": 1780906953.6158803,
+    "ast_hash": "54a0e6dd7e45938a949027919e8eb68f",
+    "semantic_hash": "54a0e6dd7e45938a949027919e8eb68f"
+  },
+  "D:\\Github\\CIC\\start.sh": {
+    "mtime": 1780307131.7374043,
+    "ast_hash": "31b44eabbb8f53594a774c889be2e8f4",
+    "semantic_hash": "31b44eabbb8f53594a774c889be2e8f4"
+  },
+  "D:\\Github\\CIC\\typescript\\__tests__\\api.test.ts": {
+    "mtime": 1780307131.7384167,
+    "ast_hash": "a620da34c37bbc7829f4291ed678d24a",
+    "semantic_hash": "a620da34c37bbc7829f4291ed678d24a"
+  },
+  "D:\\Github\\CIC\\typescript\\__tests__\\app.test.ts": {
+    "mtime": 1780307131.7384167,
+    "ast_hash": "eb251e515576030f4308ed695e6dcefa",
+    "semantic_hash": "eb251e515576030f4308ed695e6dcefa"
+  },
+  "D:\\Github\\CIC\\typescript\\__tests__\\auth.test.ts": {
+    "mtime": 1780307131.7400086,
+    "ast_hash": "ed0d9d1e2bed12e236de961e0d56a630",
+    "semantic_hash": "ed0d9d1e2bed12e236de961e0d56a630"
+  },
+  "D:\\Github\\CIC\\typescript\\__tests__\\controllers\\auth.controller.test.ts": {
+    "mtime": 1780307131.7400086,
+    "ast_hash": "45cbd7129595b0d58bb9c834f0a54593",
+    "semantic_hash": "45cbd7129595b0d58bb9c834f0a54593"
+  },
+  "D:\\Github\\CIC\\typescript\\__tests__\\controllers\\user.controller.test.ts": {
+    "mtime": 1780307131.7400086,
+    "ast_hash": "7eb5e5e92af343aa1eeb38a683904cf4",
+    "semantic_hash": "7eb5e5e92af343aa1eeb38a683904cf4"
+  },
+  "D:\\Github\\CIC\\typescript\\__tests__\\middleware\\auth.test.ts": {
+    "mtime": 1780307131.7400086,
+    "ast_hash": "9a64c0ea01d6a716d1308f8ecf5311aa",
+    "semantic_hash": "9a64c0ea01d6a716d1308f8ecf5311aa"
+  },
+  "D:\\Github\\CIC\\typescript\\jest.config.js": {
+    "mtime": 1780307131.741015,
+    "ast_hash": "aa3dc9fa51b82e7d76b0d9f1bafd8aa7",
+    "semantic_hash": "aa3dc9fa51b82e7d76b0d9f1bafd8aa7"
+  },
+  "D:\\Github\\CIC\\typescript\\package.json": {
+    "mtime": 1780307131.7420137,
+    "ast_hash": "f953ce9fc5023fb8097c35cd1d2d9a0f",
+    "semantic_hash": "f953ce9fc5023fb8097c35cd1d2d9a0f"
+  },
+  "D:\\Github\\CIC\\typescript\\src\\app.ts": {
+    "mtime": 1780307131.7420137,
+    "ast_hash": "613ae8b06c52f2d7f58ca5af7aebd1ca",
+    "semantic_hash": "613ae8b06c52f2d7f58ca5af7aebd1ca"
+  },
+  "D:\\Github\\CIC\\typescript\\src\\config\\database.ts": {
+    "mtime": 1780307131.7430143,
+    "ast_hash": "39e385340be4692b3ca6d9741d262af0",
+    "semantic_hash": "39e385340be4692b3ca6d9741d262af0"
+  },
+  "D:\\Github\\CIC\\typescript\\src\\controllers\\auth.controller.ts": {
+    "mtime": 1780908228.179345,
+    "ast_hash": "f04ff5c77b9b20f598c6dfeb366ae51a",
+    "semantic_hash": "f04ff5c77b9b20f598c6dfeb366ae51a"
+  },
+  "D:\\Github\\CIC\\typescript\\src\\controllers\\user.controller.ts": {
+    "mtime": 1780908231.3926933,
+    "ast_hash": "442eaa5f504fbbef3e12afcfb4f78378",
+    "semantic_hash": "442eaa5f504fbbef3e12afcfb4f78378"
+  },
+  "D:\\Github\\CIC\\typescript\\src\\index.ts": {
+    "mtime": 1780307131.7430143,
+    "ast_hash": "0e19bf4e394a28cda77ee68ba4882b67",
+    "semantic_hash": "0e19bf4e394a28cda77ee68ba4882b67"
+  },
+  "D:\\Github\\CIC\\typescript\\src\\middleware\\auth.ts": {
+    "mtime": 1780908234.734115,
+    "ast_hash": "b61c4674e0162cf8c9aab2578b922fda",
+    "semantic_hash": "b61c4674e0162cf8c9aab2578b922fda"
+  },
+  "D:\\Github\\CIC\\typescript\\src\\routes\\auth.routes.ts": {
+    "mtime": 1780307131.7440152,
+    "ast_hash": "18b94a31950ef69b02b127b8fe9f3028",
+    "semantic_hash": "18b94a31950ef69b02b127b8fe9f3028"
+  },
+  "D:\\Github\\CIC\\typescript\\src\\routes\\user.routes.ts": {
+    "mtime": 1780307131.7440152,
+    "ast_hash": "8afb65d23a59598afad47a1c3af31c62",
+    "semantic_hash": "8afb65d23a59598afad47a1c3af31c62"
+  },
+  "D:\\Github\\CIC\\typescript\\src\\types\\index.ts": {
+    "mtime": 1780307131.7450156,
+    "ast_hash": "59c10939f9166cc8a08773b96c7ba302",
+    "semantic_hash": "59c10939f9166cc8a08773b96c7ba302"
+  },
+  "D:\\Github\\CIC\\typescript\\src\\utils\\auth.ts": {
+    "mtime": 1780307131.7450156,
+    "ast_hash": "094e9e054508833d774a62a627ec18d3",
+    "semantic_hash": "094e9e054508833d774a62a627ec18d3"
+  },
+  "D:\\Github\\CIC\\typescript\\tsconfig.json": {
+    "mtime": 1780307131.7460146,
+    "ast_hash": "76af5f38040c99f299ad1c7fce6ba616",
+    "semantic_hash": "76af5f38040c99f299ad1c7fce6ba616"
+  },
+  "D:\\Github\\CIC\\verify_rbac.ps1": {
+    "mtime": 1780307131.7460146,
+    "ast_hash": "e7ab6b86f77da3c59887bcdc0122e0a1",
+    "semantic_hash": "e7ab6b86f77da3c59887bcdc0122e0a1"
+  },
+  "D:\\Github\\CIC\\..agents\\auditor_m4\\handoff.md": {
+    "mtime": 1780993564.6214917,
+    "ast_hash": "702639081dea94cbd122e9739d878f79",
+    "semantic_hash": "702639081dea94cbd122e9739d878f79"
+  },
+  "D:\\Github\\CIC\\..agents\\victory_auditor_verification_gen2\\progress.md": {
+    "mtime": 1780994667.2782307,
+    "ast_hash": "9f3662eccf3dd5485ca3af473266ac35",
+    "semantic_hash": "9f3662eccf3dd5485ca3af473266ac35"
+  },
+  "D:\\Github\\CIC\\.agent\\req\\Business requirements.md": {
+    "mtime": 1780307131.5636785,
+    "ast_hash": "9b661c8a4e1aac44bb4f50310ec8bd7b",
+    "semantic_hash": "9b661c8a4e1aac44bb4f50310ec8bd7b"
+  },
+  "D:\\Github\\CIC\\.agent\\req\\CIC Project Plan.md": {
+    "mtime": 1780307131.5646782,
+    "ast_hash": "a106abe427db19a7b4d1a059027601bc",
+    "semantic_hash": "a106abe427db19a7b4d1a059027601bc"
+  },
+  "D:\\Github\\CIC\\.agent\\workflows\\api_update.md": {
+    "mtime": 1780307131.5706818,
+    "ast_hash": "1e794f8c179b87897446b5f0a6327036",
+    "semantic_hash": "1e794f8c179b87897446b5f0a6327036"
+  },
+  "D:\\Github\\CIC\\.agent\\workflows\\quality_check.md": {
+    "mtime": 1780307131.5706818,
+    "ast_hash": "1743c91c040c9e798f8752bb3ccc6e55",
+    "semantic_hash": "1743c91c040c9e798f8752bb3ccc6e55"
+  },
+  "D:\\Github\\CIC\\.agent\\workflows\\snapshot_artifacts.md": {
+    "mtime": 1780307131.5706818,
+    "ast_hash": "6db04a33140ff20c6613a2039786b510",
+    "semantic_hash": "6db04a33140ff20c6613a2039786b510"
+  },
+  "D:\\Github\\CIC\\.agent\\workflows\\update_documentation.md": {
+    "mtime": 1780307131.5716834,
+    "ast_hash": "49f5e030bb088edd3b96d3e2294200e5",
+    "semantic_hash": "49f5e030bb088edd3b96d3e2294200e5"
+  },
+  "D:\\Github\\CIC\\.agents\\BRIEFING.md": {
+    "mtime": 1780994688.7022624,
+    "ast_hash": "42f3820210ac1fddcb95c7bed30b8bf7",
+    "semantic_hash": "42f3820210ac1fddcb95c7bed30b8bf7"
+  },
+  "D:\\Github\\CIC\\.agents\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780912944.1061213,
+    "ast_hash": "28cdcc742332d7a64a3f23d00a9a3e9e",
+    "semantic_hash": "28cdcc742332d7a64a3f23d00a9a3e9e"
+  },
+  "D:\\Github\\CIC\\.agents\\auditor_m4\\BRIEFING.md": {
+    "mtime": 1780993556.1100914,
+    "ast_hash": "c1ac0f67dc0fbca77f3ef7aa4bf5bfbd",
+    "semantic_hash": "c1ac0f67dc0fbca77f3ef7aa4bf5bfbd"
+  },
+  "D:\\Github\\CIC\\.agents\\auditor_m4\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780993372.944771,
+    "ast_hash": "51325a5b5cc3a89660cfa48ea393b9ac",
+    "semantic_hash": "51325a5b5cc3a89660cfa48ea393b9ac"
+  },
+  "D:\\Github\\CIC\\.agents\\auditor_m4\\handoff.md": {
+    "mtime": 1780993569.1245992,
+    "ast_hash": "702639081dea94cbd122e9739d878f79",
+    "semantic_hash": "702639081dea94cbd122e9739d878f79"
+  },
+  "D:\\Github\\CIC\\.agents\\auditor_m4\\progress.md": {
+    "mtime": 1780993557.8105688,
+    "ast_hash": "96fe71add3f50588cdf03e6da4621236",
+    "semantic_hash": "96fe71add3f50588cdf03e6da4621236"
+  },
+  "D:\\Github\\CIC\\.agents\\auditor_m4_gen2\\BRIEFING.md": {
+    "mtime": 1780994028.8739116,
+    "ast_hash": "b68d530a85e8f42bb9cee33829bd1a47",
+    "semantic_hash": "b68d530a85e8f42bb9cee33829bd1a47"
+  },
+  "D:\\Github\\CIC\\.agents\\auditor_m4_gen2\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780993751.772966,
+    "ast_hash": "846e2c5f8c0a9478e17a24364b3cf9e8",
+    "semantic_hash": "846e2c5f8c0a9478e17a24364b3cf9e8"
+  },
+  "D:\\Github\\CIC\\.agents\\auditor_m4_gen2\\handoff.md": {
+    "mtime": 1780994035.2146847,
+    "ast_hash": "031f4b21c1ba6504ad35fcf93ca68ec7",
+    "semantic_hash": "031f4b21c1ba6504ad35fcf93ca68ec7"
+  },
+  "D:\\Github\\CIC\\.agents\\auditor_m4_gen2\\progress.md": {
+    "mtime": 1780994025.9449053,
+    "ast_hash": "7656f49f37e64f59e26096324325cbe3",
+    "semantic_hash": "7656f49f37e64f59e26096324325cbe3"
+  },
+  "D:\\Github\\CIC\\.agents\\auditor_m4_gen3\\BRIEFING.md": {
+    "mtime": 1780994135.08136,
+    "ast_hash": "f46ae6c16e43c98e997b08fe8fe9155c",
+    "semantic_hash": "f46ae6c16e43c98e997b08fe8fe9155c"
+  },
+  "D:\\Github\\CIC\\.agents\\auditor_m4_gen3\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780994131.6482904,
+    "ast_hash": "95a171ca73d922d1fb9bc3f9927376e9",
+    "semantic_hash": "95a171ca73d922d1fb9bc3f9927376e9"
+  },
+  "D:\\Github\\CIC\\.agents\\auditor_m4_gen3\\progress.md": {
+    "mtime": 1780994138.2708452,
+    "ast_hash": "f81ea9507451288ffbbf342f0a3450a8",
+    "semantic_hash": "f81ea9507451288ffbbf342f0a3450a8"
+  },
+  "D:\\Github\\CIC\\.agents\\auditor_m4_gen4\\BRIEFING.md": {
+    "mtime": 1780994716.8125126,
+    "ast_hash": "fd62ffbbbfd728ad18a9823592587d04",
+    "semantic_hash": "fd62ffbbbfd728ad18a9823592587d04"
+  },
+  "D:\\Github\\CIC\\.agents\\auditor_m4_gen4\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780994407.6587422,
+    "ast_hash": "1d6e80d7166ea814f018c0b314419e4b",
+    "semantic_hash": "1d6e80d7166ea814f018c0b314419e4b"
+  },
+  "D:\\Github\\CIC\\.agents\\auditor_m4_gen4\\handoff.md": {
+    "mtime": 1780994712.0416167,
+    "ast_hash": "a488f5854036658bc919aede04589775",
+    "semantic_hash": "a488f5854036658bc919aede04589775"
+  },
+  "D:\\Github\\CIC\\.agents\\auditor_m4_gen4\\progress.md": {
+    "mtime": 1780994714.9276085,
+    "ast_hash": "486478cfb105cf2034f35b3800690eeb",
+    "semantic_hash": "486478cfb105cf2034f35b3800690eeb"
+  },
+  "D:\\Github\\CIC\\.agents\\challenger_m4_1\\BRIEFING.md": {
+    "mtime": 1780993519.3395865,
+    "ast_hash": "d79dda2e4c3141814a11481700816372",
+    "semantic_hash": "d79dda2e4c3141814a11481700816372"
+  },
+  "D:\\Github\\CIC\\.agents\\challenger_m4_1\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780993372.2667859,
+    "ast_hash": "e33446ac4bc521ea1aa30b7a91ec1024",
+    "semantic_hash": "e33446ac4bc521ea1aa30b7a91ec1024"
+  },
+  "D:\\Github\\CIC\\.agents\\challenger_m4_1\\handoff.md": {
+    "mtime": 1780993515.2660348,
+    "ast_hash": "5a8192bfc7923eea3153b77427453588",
+    "semantic_hash": "5a8192bfc7923eea3153b77427453588"
+  },
+  "D:\\Github\\CIC\\.agents\\challenger_m4_1\\progress.md": {
+    "mtime": 1780993522.1558688,
+    "ast_hash": "94a10052f165f33f938387e7111836d0",
+    "semantic_hash": "94a10052f165f33f938387e7111836d0"
+  },
+  "D:\\Github\\CIC\\.agents\\challenger_m4_2\\BRIEFING.md": {
+    "mtime": 1780993627.8016267,
+    "ast_hash": "0678a06495f09c90894a92a66203b191",
+    "semantic_hash": "0678a06495f09c90894a92a66203b191"
+  },
+  "D:\\Github\\CIC\\.agents\\challenger_m4_2\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780993371.190547,
+    "ast_hash": "3a04c088bb056f83cf0c2e3687203630",
+    "semantic_hash": "3a04c088bb056f83cf0c2e3687203630"
+  },
+  "D:\\Github\\CIC\\.agents\\challenger_m4_2\\handoff.md": {
+    "mtime": 1780993621.9732695,
+    "ast_hash": "4611dd8346c451c88e8667333dd2a8d3",
+    "semantic_hash": "4611dd8346c451c88e8667333dd2a8d3"
+  },
+  "D:\\Github\\CIC\\.agents\\challenger_m4_2\\progress.md": {
+    "mtime": 1780993629.4591095,
+    "ast_hash": "e52eb18f383c12323948df9248cfb673",
+    "semantic_hash": "e52eb18f383c12323948df9248cfb673"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m1_1\\BRIEFING.md": {
+    "mtime": 1780913061.2775552,
+    "ast_hash": "004401298940167d2c60c5da00b10571",
+    "semantic_hash": "004401298940167d2c60c5da00b10571"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m1_1\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780913019.588092,
+    "ast_hash": "7478eff7efbfd788c9bc03759b32ab42",
+    "semantic_hash": "7478eff7efbfd788c9bc03759b32ab42"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m1_1\\handoff.md": {
+    "mtime": 1780913067.044405,
+    "ast_hash": "fc6d33af894ae8d2825c266e4764a8c7",
+    "semantic_hash": "fc6d33af894ae8d2825c266e4764a8c7"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m1_1\\progress.md": {
+    "mtime": 1780913069.951044,
+    "ast_hash": "3d3dca4cd0e35970fb8d0ce0abad7347",
+    "semantic_hash": "3d3dca4cd0e35970fb8d0ce0abad7347"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m1_2\\BRIEFING.md": {
+    "mtime": 1780913086.4529407,
+    "ast_hash": "4b5498d67e45c7439ea6339b58cffde3",
+    "semantic_hash": "4b5498d67e45c7439ea6339b58cffde3"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m1_2\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780913015.263946,
+    "ast_hash": "8c53720a47509d6c923ce58136084f69",
+    "semantic_hash": "8c53720a47509d6c923ce58136084f69"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m1_2\\handoff.md": {
+    "mtime": 1780913098.6223497,
+    "ast_hash": "49336637c55f6cdbaeb4139c3e49125b",
+    "semantic_hash": "49336637c55f6cdbaeb4139c3e49125b"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m1_2\\progress.md": {
+    "mtime": 1780913082.8507755,
+    "ast_hash": "f6cf84ddc4b23d0d0d0f591ea0f67f3f",
+    "semantic_hash": "f6cf84ddc4b23d0d0d0f591ea0f67f3f"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m1_3\\BRIEFING.md": {
+    "mtime": 1780913063.5809755,
+    "ast_hash": "63c348f2623bbaebc6a47ba36cdc83e9",
+    "semantic_hash": "63c348f2623bbaebc6a47ba36cdc83e9"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m1_3\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780913015.5775702,
+    "ast_hash": "f3061e4bf4b81c0aab1bcaff4b82e2ae",
+    "semantic_hash": "f3061e4bf4b81c0aab1bcaff4b82e2ae"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m1_3\\handoff.md": {
+    "mtime": 1780913069.8766818,
+    "ast_hash": "378b0410b7d983b06f960c3e2f0458f2",
+    "semantic_hash": "378b0410b7d983b06f960c3e2f0458f2"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m1_3\\progress.md": {
+    "mtime": 1780913060.6744623,
+    "ast_hash": "77854eaf8b4d656465162391f5fe2547",
+    "semantic_hash": "77854eaf8b4d656465162391f5fe2547"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m2_1\\BRIEFING.md": {
+    "mtime": 1780913379.1287327,
+    "ast_hash": "1baa593dcfc00359258725a20ea3d4ff",
+    "semantic_hash": "1baa593dcfc00359258725a20ea3d4ff"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m2_1\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780913321.960343,
+    "ast_hash": "e8e4c977dae61dd2e41f140a9ca05665",
+    "semantic_hash": "e8e4c977dae61dd2e41f140a9ca05665"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m2_1\\handoff.md": {
+    "mtime": 1780913376.1532166,
+    "ast_hash": "15e0ce18d9c8d73a08a8e2b92845edec",
+    "semantic_hash": "15e0ce18d9c8d73a08a8e2b92845edec"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m2_1\\progress.md": {
+    "mtime": 1780913380.6401813,
+    "ast_hash": "2a0b1b9a7652652ff91231b32f481c3f",
+    "semantic_hash": "2a0b1b9a7652652ff91231b32f481c3f"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m2_2\\BRIEFING.md": {
+    "mtime": 1780913439.5916193,
+    "ast_hash": "3a9b82550f731ac263e926aa160782da",
+    "semantic_hash": "3a9b82550f731ac263e926aa160782da"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m2_2\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780913327.6025877,
+    "ast_hash": "e239a4cf5abdec51f6ce225cb28c2147",
+    "semantic_hash": "e239a4cf5abdec51f6ce225cb28c2147"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m2_2\\handoff.md": {
+    "mtime": 1780913450.1131399,
+    "ast_hash": "b8842f1613509026bb43e3d592eef67a",
+    "semantic_hash": "b8842f1613509026bb43e3d592eef67a"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m2_2\\progress.md": {
+    "mtime": 1780913451.8367362,
+    "ast_hash": "3f4d0762a36e6c16f2382ff9f231bc13",
+    "semantic_hash": "3f4d0762a36e6c16f2382ff9f231bc13"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_1\\BRIEFING.md": {
+    "mtime": 1780913671.0368378,
+    "ast_hash": "35f82cbbea2f5880899327454c8b12d3",
+    "semantic_hash": "35f82cbbea2f5880899327454c8b12d3"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_1\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780913633.2365499,
+    "ast_hash": "a505f8d7a44155f2e152f03230d81160",
+    "semantic_hash": "a505f8d7a44155f2e152f03230d81160"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_1\\progress.md": {
+    "mtime": 1780913673.1857648,
+    "ast_hash": "af01a86aba9a4fa2713dd5021ad1777e",
+    "semantic_hash": "af01a86aba9a4fa2713dd5021ad1777e"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_1_gen2\\BRIEFING.md": {
+    "mtime": 1780993126.293108,
+    "ast_hash": "68fdb154a077d92f018a10a21db0192b",
+    "semantic_hash": "68fdb154a077d92f018a10a21db0192b"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_1_gen2\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780993072.0771534,
+    "ast_hash": "556ee43c1af8ed87362fbdd09513c8eb",
+    "semantic_hash": "556ee43c1af8ed87362fbdd09513c8eb"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_1_gen2\\handoff.md": {
+    "mtime": 1780993134.9158812,
+    "ast_hash": "72e53ff61f638fb7cca700f5694cdcbb",
+    "semantic_hash": "72e53ff61f638fb7cca700f5694cdcbb"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_1_gen2\\progress.md": {
+    "mtime": 1780993196.4047093,
+    "ast_hash": "258082ce99437b21e5e56f0d55255152",
+    "semantic_hash": "258082ce99437b21e5e56f0d55255152"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_1_gen2\\proposed_docker-compose.yml": {
+    "mtime": 1780993121.639815,
+    "ast_hash": "7759480c4ac29a9e199124d83b0d6160",
+    "semantic_hash": "7759480c4ac29a9e199124d83b0d6160"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_2\\BRIEFING.md": {
+    "mtime": 1780913636.9612372,
+    "ast_hash": "c1a0dd8a0e274af2ea207f2fd98e0b0c",
+    "semantic_hash": "c1a0dd8a0e274af2ea207f2fd98e0b0c"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_2\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780913633.2639344,
+    "ast_hash": "2295877421d917066bf4437181b54a44",
+    "semantic_hash": "2295877421d917066bf4437181b54a44"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_2\\progress.md": {
+    "mtime": 1780913639.0854597,
+    "ast_hash": "8f1a15634f22241b366b667459269fa6",
+    "semantic_hash": "8f1a15634f22241b366b667459269fa6"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_2_gen2\\BRIEFING.md": {
+    "mtime": 1780993197.462758,
+    "ast_hash": "0bd459d44f40ee421e7672647187a78e",
+    "semantic_hash": "0bd459d44f40ee421e7672647187a78e"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_2_gen2\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780993085.0996299,
+    "ast_hash": "b62a7a6d044475a9733a88cff05e28d4",
+    "semantic_hash": "b62a7a6d044475a9733a88cff05e28d4"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_2_gen2\\handoff.md": {
+    "mtime": 1780993206.553121,
+    "ast_hash": "595488bd7e095ce8db8571f711d27a63",
+    "semantic_hash": "595488bd7e095ce8db8571f711d27a63"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_2_gen2\\progress.md": {
+    "mtime": 1780993208.4071426,
+    "ast_hash": "253555de1f45693df61a7551e537b2e5",
+    "semantic_hash": "253555de1f45693df61a7551e537b2e5"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_3_gen2\\BRIEFING.md": {
+    "mtime": 1780993166.2477646,
+    "ast_hash": "ab1bdd5fc855cc2cf39f9f9db45a5f75",
+    "semantic_hash": "ab1bdd5fc855cc2cf39f9f9db45a5f75"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_3_gen2\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780993082.162877,
+    "ast_hash": "32ea3a9b438eb7ab46b8e1cc86187aae",
+    "semantic_hash": "32ea3a9b438eb7ab46b8e1cc86187aae"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_3_gen2\\handoff.md": {
+    "mtime": 1780993161.4813182,
+    "ast_hash": "bca9cb5b20f1ce11ea87c09f8f04e01e",
+    "semantic_hash": "bca9cb5b20f1ce11ea87c09f8f04e01e"
+  },
+  "D:\\Github\\CIC\\.agents\\explorer_m3_3_gen2\\progress.md": {
+    "mtime": 1780993170.8506026,
+    "ast_hash": "fdf0a18145a99838ca50ac9bc5d7b5ee",
+    "semantic_hash": "fdf0a18145a99838ca50ac9bc5d7b5ee"
+  },
+  "D:\\Github\\CIC\\.agents\\handoff.md": {
+    "mtime": 1780912960.405393,
+    "ast_hash": "6a3e59163959d433e9c0c5dfd7fba24c",
+    "semantic_hash": "6a3e59163959d433e9c0c5dfd7fba24c"
+  },
+  "D:\\Github\\CIC\\.agents\\reviewer_m3_1_gen2\\BRIEFING.md": {
+    "mtime": 1780993632.961865,
+    "ast_hash": "91fade9572106f8aa85b40d6fb8e370b",
+    "semantic_hash": "91fade9572106f8aa85b40d6fb8e370b"
+  },
+  "D:\\Github\\CIC\\.agents\\reviewer_m3_1_gen2\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780993466.3746197,
+    "ast_hash": "9fcd47ed0cc559b78d2461a2e45b36de",
+    "semantic_hash": "9fcd47ed0cc559b78d2461a2e45b36de"
+  },
+  "D:\\Github\\CIC\\.agents\\reviewer_m3_1_gen2\\handoff.md": {
+    "mtime": 1780993628.669727,
+    "ast_hash": "6e60ae466cfd0b67a84c5e1f574df5c3",
+    "semantic_hash": "6e60ae466cfd0b67a84c5e1f574df5c3"
+  },
+  "D:\\Github\\CIC\\.agents\\reviewer_m3_1_gen2\\progress.md": {
+    "mtime": 1780993630.5069673,
+    "ast_hash": "bc61f0b6d5b706332cea2b5961d66281",
+    "semantic_hash": "bc61f0b6d5b706332cea2b5961d66281"
+  },
+  "D:\\Github\\CIC\\.agents\\reviewer_m3_2_gen2\\BRIEFING.md": {
+    "mtime": 1780993715.0105162,
+    "ast_hash": "c1fff22149e00df3fd55c791178c87b7",
+    "semantic_hash": "c1fff22149e00df3fd55c791178c87b7"
+  },
+  "D:\\Github\\CIC\\.agents\\reviewer_m3_2_gen2\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780993463.367577,
+    "ast_hash": "b0e0dabede7d9e842280d501039892c7",
+    "semantic_hash": "b0e0dabede7d9e842280d501039892c7"
+  },
+  "D:\\Github\\CIC\\.agents\\reviewer_m3_2_gen2\\handoff.md": {
+    "mtime": 1780993710.9283252,
+    "ast_hash": "c1e1f18da083a52ed9ddd6a906a2b0fa",
+    "semantic_hash": "c1e1f18da083a52ed9ddd6a906a2b0fa"
+  },
+  "D:\\Github\\CIC\\.agents\\reviewer_m3_2_gen2\\progress.md": {
+    "mtime": 1780993712.5961785,
+    "ast_hash": "b4a54f2867e6771420df16b5e3ba076c",
+    "semantic_hash": "b4a54f2867e6771420df16b5e3ba076c"
+  },
+  "D:\\Github\\CIC\\.agents\\reviewer_m4_1\\BRIEFING.md": {
+    "mtime": 1780993507.9515915,
+    "ast_hash": "bc0658fdd66ad641fcee66ad9b42d8c0",
+    "semantic_hash": "bc0658fdd66ad641fcee66ad9b42d8c0"
+  },
+  "D:\\Github\\CIC\\.agents\\reviewer_m4_1\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780993377.3871155,
+    "ast_hash": "bd6e0bde4df6938f6e8a414f30ad7fdb",
+    "semantic_hash": "bd6e0bde4df6938f6e8a414f30ad7fdb"
+  },
+  "D:\\Github\\CIC\\.agents\\reviewer_m4_1\\handoff.md": {
+    "mtime": 1780993502.9743476,
+    "ast_hash": "5154423dd95a0bc1872b5d18165a50f2",
+    "semantic_hash": "5154423dd95a0bc1872b5d18165a50f2"
+  },
+  "D:\\Github\\CIC\\.agents\\reviewer_m4_1\\progress.md": {
+    "mtime": 1780993504.6801708,
+    "ast_hash": "a665908bdf71cab3a7befe1ca745a497",
+    "semantic_hash": "a665908bdf71cab3a7befe1ca745a497"
+  },
+  "D:\\Github\\CIC\\.agents\\reviewer_m4_2\\BRIEFING.md": {
+    "mtime": 1780993508.3553598,
+    "ast_hash": "4123aad8e82cdd49ff6bdc0eab008f53",
+    "semantic_hash": "4123aad8e82cdd49ff6bdc0eab008f53"
+  },
+  "D:\\Github\\CIC\\.agents\\reviewer_m4_2\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780993375.4243057,
+    "ast_hash": "6f4c0a62e9e3dfab54c11cdd0ae56a60",
+    "semantic_hash": "6f4c0a62e9e3dfab54c11cdd0ae56a60"
+  },
+  "D:\\Github\\CIC\\.agents\\reviewer_m4_2\\handoff.md": {
+    "mtime": 1780993505.8864467,
+    "ast_hash": "e04072449ee267346de6d9e0fa5ca29f",
+    "semantic_hash": "e04072449ee267346de6d9e0fa5ca29f"
+  },
+  "D:\\Github\\CIC\\.agents\\reviewer_m4_2\\progress.md": {
+    "mtime": 1780993509.7360091,
+    "ast_hash": "2d0ace4d01580578f51377eaba62899a",
+    "semantic_hash": "2d0ace4d01580578f51377eaba62899a"
+  },
+  "D:\\Github\\CIC\\.agents\\rules\\graphify.md": {
+    "mtime": 1781068473.4892294,
+    "ast_hash": "a0e4d192b9e2e17256124dbfc8e24e6a",
+    "semantic_hash": "a0e4d192b9e2e17256124dbfc8e24e6a"
+  },
+  "D:\\Github\\CIC\\.agents\\sub_orch_prod_setup\\BRIEFING.md": {
+    "mtime": 1780994740.2358532,
+    "ast_hash": "4a69d0d9b44f76d9ff1ab5fdafe16ade",
+    "semantic_hash": "4a69d0d9b44f76d9ff1ab5fdafe16ade"
+  },
+  "D:\\Github\\CIC\\.agents\\sub_orch_prod_setup\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780912966.471812,
+    "ast_hash": "b5273689d359d4f25fddb7758f9c16db",
+    "semantic_hash": "b5273689d359d4f25fddb7758f9c16db"
+  },
+  "D:\\Github\\CIC\\.agents\\sub_orch_prod_setup\\handoff.md": {
+    "mtime": 1780994743.3334157,
+    "ast_hash": "423e9ac5822b504fde2d8e1770f352b3",
+    "semantic_hash": "423e9ac5822b504fde2d8e1770f352b3"
+  },
+  "D:\\Github\\CIC\\.agents\\sub_orch_prod_setup\\progress.md": {
+    "mtime": 1780994726.304672,
+    "ast_hash": "2968ade68f10288962d41619f1d8811c",
+    "semantic_hash": "2968ade68f10288962d41619f1d8811c"
+  },
+  "D:\\Github\\CIC\\.agents\\sub_orch_prod_setup_gen2\\BRIEFING.md": {
+    "mtime": 1780994055.5419939,
+    "ast_hash": "256ee86b5a13a9c75a6f9e9c2084d727",
+    "semantic_hash": "256ee86b5a13a9c75a6f9e9c2084d727"
+  },
+  "D:\\Github\\CIC\\.agents\\sub_orch_prod_setup_gen2\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780992995.7666585,
+    "ast_hash": "7ffd6808e11cb27ad6c712a620ba52e2",
+    "semantic_hash": "7ffd6808e11cb27ad6c712a620ba52e2"
+  },
+  "D:\\Github\\CIC\\.agents\\sub_orch_prod_setup_gen2\\handoff.md": {
+    "mtime": 1780994059.0945892,
+    "ast_hash": "3dba7e1d86bbff613267b8ed2423afc8",
+    "semantic_hash": "3dba7e1d86bbff613267b8ed2423afc8"
+  },
+  "D:\\Github\\CIC\\.agents\\sub_orch_prod_setup_gen2\\progress.md": {
+    "mtime": 1780994045.759842,
+    "ast_hash": "2e856b9436213675a0d5bb0514b2fbfd",
+    "semantic_hash": "2e856b9436213675a0d5bb0514b2fbfd"
+  },
+  "D:\\Github\\CIC\\.agents\\victory_auditor_verification\\BRIEFING.md": {
+    "mtime": 1780994081.9384704,
+    "ast_hash": "0ec0143419ac579cc773336800740130",
+    "semantic_hash": "0ec0143419ac579cc773336800740130"
+  },
+  "D:\\Github\\CIC\\.agents\\victory_auditor_verification\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780994079.2702932,
+    "ast_hash": "172e60096592724bf5fb52a154aa1e48",
+    "semantic_hash": "172e60096592724bf5fb52a154aa1e48"
+  },
+  "D:\\Github\\CIC\\.agents\\victory_auditor_verification_gen2\\BRIEFING.md": {
+    "mtime": 1780994678.5874217,
+    "ast_hash": "099cc2d0aa65cb5c67e013395c254eac",
+    "semantic_hash": "099cc2d0aa65cb5c67e013395c254eac"
+  },
+  "D:\\Github\\CIC\\.agents\\victory_auditor_verification_gen2\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780994427.3990033,
+    "ast_hash": "d203b07b8fd35a99ddf3d774033cb8fc",
+    "semantic_hash": "d203b07b8fd35a99ddf3d774033cb8fc"
+  },
+  "D:\\Github\\CIC\\.agents\\victory_auditor_verification_gen2\\handoff.md": {
+    "mtime": 1780994675.4007068,
+    "ast_hash": "03858e6e0bc4e8a4f7c1f6c2022ae96c",
+    "semantic_hash": "03858e6e0bc4e8a4f7c1f6c2022ae96c"
+  },
+  "D:\\Github\\CIC\\.agents\\victory_auditor_verification_gen2\\progress.md": {
+    "mtime": 1780994670.2009885,
+    "ast_hash": "6678e0495b9ba42fbf5e3e12445a3321",
+    "semantic_hash": "6678e0495b9ba42fbf5e3e12445a3321"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_m1\\BRIEFING.md": {
+    "mtime": 1780913259.9171972,
+    "ast_hash": "ba64356f5cdce67073b6b0eb44241ffd",
+    "semantic_hash": "ba64356f5cdce67073b6b0eb44241ffd"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_m1\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780913130.4768155,
+    "ast_hash": "88295a04a9cceeee4da1908a2f23aeec",
+    "semantic_hash": "88295a04a9cceeee4da1908a2f23aeec"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_m1\\handoff.md": {
+    "mtime": 1780913268.7106621,
+    "ast_hash": "5a3e839ea792ff5ef601e9361fbd0b9c",
+    "semantic_hash": "5a3e839ea792ff5ef601e9361fbd0b9c"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_m1\\progress.md": {
+    "mtime": 1780913262.7169857,
+    "ast_hash": "95a8756af95d21686a165957a7b1f368",
+    "semantic_hash": "95a8756af95d21686a165957a7b1f368"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_m2\\BRIEFING.md": {
+    "mtime": 1780913587.8105273,
+    "ast_hash": "5ffbef9efffcaf7eeae37a5e6b20c16a",
+    "semantic_hash": "5ffbef9efffcaf7eeae37a5e6b20c16a"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_m2\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780913469.7659898,
+    "ast_hash": "3e8f7788976080562a0872dcb8fd138a",
+    "semantic_hash": "3e8f7788976080562a0872dcb8fd138a"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_m2\\handoff.md": {
+    "mtime": 1780913592.7637756,
+    "ast_hash": "82cd043e953545dae2b97497cdc59559",
+    "semantic_hash": "82cd043e953545dae2b97497cdc59559"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_m2\\progress.md": {
+    "mtime": 1780913583.3187375,
+    "ast_hash": "23b784d7359d8e65732e59239c890433",
+    "semantic_hash": "23b784d7359d8e65732e59239c890433"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_m3\\BRIEFING.md": {
+    "mtime": 1780993309.6732554,
+    "ast_hash": "09ae3d4390b403f06da1e283cfec1be0",
+    "semantic_hash": "09ae3d4390b403f06da1e283cfec1be0"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_m3\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780993208.8457913,
+    "ast_hash": "d121eacd9e894713aedeaee8d51d77c3",
+    "semantic_hash": "d121eacd9e894713aedeaee8d51d77c3"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_m3\\handoff.md": {
+    "mtime": 1780993314.2766645,
+    "ast_hash": "ee44d0a96d06f2a1ba73f7d0133cc72b",
+    "semantic_hash": "ee44d0a96d06f2a1ba73f7d0133cc72b"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_m3\\progress.md": {
+    "mtime": 1780993310.9060335,
+    "ast_hash": "5860b4ee8bbee4c19f16565788b53201",
+    "semantic_hash": "5860b4ee8bbee4c19f16565788b53201"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_m3_gen2\\BRIEFING.md": {
+    "mtime": 1780993431.4694834,
+    "ast_hash": "edec5d659ddcc3cb28e6ba1c3949e1d2",
+    "semantic_hash": "edec5d659ddcc3cb28e6ba1c3949e1d2"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_m3_gen2\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780993232.7101643,
+    "ast_hash": "061cbc5049187983f1864d07b14c0ed5",
+    "semantic_hash": "061cbc5049187983f1864d07b14c0ed5"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_m3_gen2\\handoff.md": {
+    "mtime": 1780993441.5195482,
+    "ast_hash": "50cc89159da1be33c47fdcd0d55fcee3",
+    "semantic_hash": "50cc89159da1be33c47fdcd0d55fcee3"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_m3_gen2\\progress.md": {
+    "mtime": 1780993437.296685,
+    "ast_hash": "316933c42f2954d505f5f8adad99b259",
+    "semantic_hash": "316933c42f2954d505f5f8adad99b259"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_remediation\\BRIEFING.md": {
+    "mtime": 1780993852.0095766,
+    "ast_hash": "27c15402f09716f83d998de3fd3b141b",
+    "semantic_hash": "27c15402f09716f83d998de3fd3b141b"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_remediation\\ORIGINAL_REQUEST.md": {
+    "mtime": 1780993652.9481943,
+    "ast_hash": "b8b2060ddbfb22a48c878d8cf3c49452",
+    "semantic_hash": "b8b2060ddbfb22a48c878d8cf3c49452"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_remediation\\handoff.md": {
+    "mtime": 1780993849.9557912,
+    "ast_hash": "6249b696a5fd79ffa14823104d41f26d",
+    "semantic_hash": "6249b696a5fd79ffa14823104d41f26d"
+  },
+  "D:\\Github\\CIC\\.agents\\worker_remediation\\progress.md": {
+    "mtime": 1780993838.0309267,
+    "ast_hash": "6fa29c1afc93669f6fc37dd4138c8aec",
+    "semantic_hash": "6fa29c1afc93669f6fc37dd4138c8aec"
+  },
+  "D:\\Github\\CIC\\.agents\\workflows\\graphify.md": {
+    "mtime": 1781068473.4892294,
+    "ast_hash": "637776aa6f7496d069afe7520c845c8a",
+    "semantic_hash": "637776aa6f7496d069afe7520c845c8a"
+  },
+  "D:\\Github\\CIC\\.github\\workflows\\ci-cd.yml": {
+    "mtime": 1780307131.5716834,
+    "ast_hash": "4a0fc78ca2e751d84594514b358b1328",
+    "semantic_hash": "4a0fc78ca2e751d84594514b358b1328"
+  },
+  "D:\\Github\\CIC\\CONTRIBUTING.md": {
+    "mtime": 1780307131.5726833,
+    "ast_hash": "11fc079b6172c5fe80bd66f54e9074a4",
+    "semantic_hash": "11fc079b6172c5fe80bd66f54e9074a4"
+  },
+  "D:\\Github\\CIC\\PROJECT.md": {
+    "mtime": 1780994043.8598778,
+    "ast_hash": "8fc8060aa297b5b4ebf1bf18bfe727cd",
+    "semantic_hash": "8fc8060aa297b5b4ebf1bf18bfe727cd"
+  },
+  "D:\\Github\\CIC\\README.md": {
+    "mtime": 1780307131.5736818,
+    "ast_hash": "49a3040ada270fd4d2b2ef28e4fe2bb5",
+    "semantic_hash": "49a3040ada270fd4d2b2ef28e4fe2bb5"
+  },
+  "D:\\Github\\CIC\\diff.txt": {
+    "mtime": 1780307131.5753589,
+    "ast_hash": "a4ad5e47871d3908d031f212d961ac1f",
+    "semantic_hash": "a4ad5e47871d3908d031f212d961ac1f"
+  },
+  "D:\\Github\\CIC\\docker-compose.yml": {
+    "mtime": 1780993335.4061396,
+    "ast_hash": "c35caba0878e3078a38bfd54e15af05a",
+    "semantic_hash": "c35caba0878e3078a38bfd54e15af05a"
+  },
+  "D:\\Github\\CIC\\documentation\\data_dictionary.md": {
+    "mtime": 1780307131.5753589,
+    "ast_hash": "ebdbe9daaeff64540f6fdebb02614db5",
+    "semantic_hash": "ebdbe9daaeff64540f6fdebb02614db5"
+  },
+  "D:\\Github\\CIC\\documentation\\project_overview.md": {
+    "mtime": 1780307131.5763638,
+    "ast_hash": "395ca8d06d6ac437fef45d7f5f5fce06",
+    "semantic_hash": "395ca8d06d6ac437fef45d7f5f5fce06"
+  },
+  "D:\\Github\\CIC\\documentation\\test_strategy.md": {
+    "mtime": 1780307131.5763638,
+    "ast_hash": "2f29477f3b9548f8050786fd03a0bdf3",
+    "semantic_hash": "2f29477f3b9548f8050786fd03a0bdf3"
+  },
+  "D:\\Github\\CIC\\documentation\\user_journey.md": {
+    "mtime": 1780307131.5763638,
+    "ast_hash": "1c6ad897990fc61ba9a47235c5b0ac0d",
+    "semantic_hash": "1c6ad897990fc61ba9a47235c5b0ac0d"
+  },
+  "D:\\Github\\CIC\\e2e-tests\\README.md": {
+    "mtime": 1780307131.5773637,
+    "ast_hash": "8dae59cf0b9d556308a1355413a198d4",
+    "semantic_hash": "8dae59cf0b9d556308a1355413a198d4"
+  },
+  "D:\\Github\\CIC\\go\\README.md": {
+    "mtime": 1780307131.578364,
+    "ast_hash": "5490992532788981f8bded3cb40312ad",
+    "semantic_hash": "5490992532788981f8bded3cb40312ad"
+  },
+  "D:\\Github\\CIC\\go\\docs\\swagger.yaml": {
+    "mtime": 1780307131.5793638,
+    "ast_hash": "010caad8c4112298b9d8d2013da3a8f3",
+    "semantic_hash": "010caad8c4112298b9d8d2013da3a8f3"
+  },
+  "D:\\Github\\CIC\\prod-setup\\gcp\\gcp_key_setup_guide.md": {
+    "mtime": 1780993226.462432,
+    "ast_hash": "80829d17c31247f09325ee35bcf5b581",
+    "semantic_hash": "80829d17c31247f09325ee35bcf5b581"
+  },
+  "D:\\Github\\CIC\\prod-setup\\gcp\\manifests\\backend-config.yaml": {
+    "mtime": 1780913563.5633132,
+    "ast_hash": "8a5ec1aea404f85a41769d0d3c877633",
+    "semantic_hash": "8a5ec1aea404f85a41769d0d3c877633"
+  },
+  "D:\\Github\\CIC\\prod-setup\\gcp\\manifests\\cic-api.yaml": {
+    "mtime": 1780913568.3635488,
+    "ast_hash": "4469412b7417825c860b3325ce67b44f",
+    "semantic_hash": "4469412b7417825c860b3325ce67b44f"
+  },
+  "D:\\Github\\CIC\\prod-setup\\gcp\\manifests\\ingress.yaml": {
+    "mtime": 1780993779.401858,
+    "ast_hash": "d5751d0df9db1ad02df698f0f215b47e",
+    "semantic_hash": "d5751d0df9db1ad02df698f0f215b47e"
+  },
+  "D:\\Github\\CIC\\prod-setup\\gcp\\manifests\\keycloak.yaml": {
+    "mtime": 1780993789.0990796,
+    "ast_hash": "d210ba6e38efdc9561394d24f0d38887",
+    "semantic_hash": "d210ba6e38efdc9561394d24f0d38887"
+  },
+  "D:\\Github\\CIC\\prod-setup\\gcp\\manifests\\managed-certificate.yaml": {
+    "mtime": 1780993777.6071072,
+    "ast_hash": "d9c780e9eb844353e4376d4c7ade2edf",
+    "semantic_hash": "d9c780e9eb844353e4376d4c7ade2edf"
+  },
+  "D:\\Github\\CIC\\prod-setup\\gcp\\manifests\\react-admin.yaml": {
+    "mtime": 1780913570.4649048,
+    "ast_hash": "290df3302c1e02be8012ad8a323f9598",
+    "semantic_hash": "290df3302c1e02be8012ad8a323f9598"
+  },
+  "D:\\Github\\CIC\\prod-setup\\jenkins\\docker-compose.yml": {
+    "mtime": 1780993764.6984098,
+    "ast_hash": "4e69d9663198824b7e737b1f8296a010",
+    "semantic_hash": "4e69d9663198824b7e737b1f8296a010"
+  },
+  "D:\\Github\\CIC\\react-admin\\README.md": {
+    "mtime": 1780307131.5903695,
+    "ast_hash": "0a7742055603864ac6fdc297acfbf5a8",
+    "semantic_hash": "0a7742055603864ac6fdc297acfbf5a8"
+  },
+  "D:\\Github\\CIC\\react-admin\\index.html": {
+    "mtime": 1780307131.5903695,
+    "ast_hash": "d6883dfd0939acbd75547997ce367b6d",
+    "semantic_hash": "d6883dfd0939acbd75547997ce367b6d"
+  },
+  "D:\\Github\\CIC\\scripts\\generated\\DEPLOYMENT_GUIDE.md": {
+    "mtime": 1780307131.5993688,
+    "ast_hash": "dbb6186d44efad7397d001d5a0f57a0e",
+    "semantic_hash": "dbb6186d44efad7397d001d5a0f57a0e"
+  },
+  "D:\\Github\\CIC\\scripts\\generated\\README.md": {
+    "mtime": 1780307131.6003685,
+    "ast_hash": "e9ce5b75b65edb90378d167dd646619e",
+    "semantic_hash": "e9ce5b75b65edb90378d167dd646619e"
+  },
+  "D:\\Github\\CIC\\typescript\\README.md": {
+    "mtime": 1780307131.7384167,
+    "ast_hash": "6506a4f5dd6d388e309544046bb248a6",
+    "semantic_hash": "6506a4f5dd6d388e309544046bb248a6"
+  },
+  "D:\\Github\\CIC\\typescript\\test_output.txt": {
+    "mtime": 1780307131.7450156,
+    "ast_hash": "5c6951d7997b6a5f83b1cf9a56ddf641",
+    "semantic_hash": "5c6951d7997b6a5f83b1cf9a56ddf641"
+  },
+  "D:\\Github\\CIC\\typescript\\test_output_auth.txt": {
+    "mtime": 1780307131.7450156,
+    "ast_hash": "b7f12585e78fc7d76d0a3ddb026aec92",
+    "semantic_hash": "b7f12585e78fc7d76d0a3ddb026aec92"
+  },
+  "D:\\Github\\CIC\\.agent\\G9rnUzEasAElFcN.png": {
+    "mtime": 1780307131.5626793,
+    "ast_hash": "7fb10b33efc65d0cc538e2fcbd8e866b",
+    "semantic_hash": "7fb10b33efc65d0cc538e2fcbd8e866b"
+  }
+}

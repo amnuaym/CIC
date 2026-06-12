@@ -1,5 +1,25 @@
 $ErrorActionPreference = "Stop"
-$BaseUrl = "http://localhost/api/v1"
+$BaseUrl = "http://localhost:8080/api/v1"
+
+# Login to get Bearer token for all requests
+$LoginBody = @{
+    username = "superadmin"
+    password = "Super!Secret.2024"
+} | ConvertTo-Json
+$AuthRes = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/api/auth/login" -Body $LoginBody -ContentType "application/json"
+$Headers = @{
+    Authorization = "Bearer $($AuthRes.token)"
+}
+
+function Generate-ThaiID {
+    $digits = 1..12 | ForEach-Object { Get-Random -Minimum 0 -Maximum 10 }
+    $sum = 0
+    for ($i = 0; $i -lt 12; $i++) {
+        $sum += $digits[$i] * (13 - $i)
+    }
+    $check = (11 - ($sum % 11)) % 10
+    return ($digits -join "") + $check
+}
 
 function Test-Step {
     param($Name, $ScriptBlock)
@@ -26,7 +46,7 @@ Test-Step "Create John Doe" {
         nationality = "Thai"
     } | ConvertTo-Json
 
-    $global:John = Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers" -Body $body -ContentType "application/json"
+    $global:John = Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers" -Body $body -ContentType "application/json" -Headers $Headers
     if (-not $John.id) { throw "No ID returned" }
 }
 
@@ -40,19 +60,20 @@ Test-Step "Add Address" {
         country = "Thailand"
     } | ConvertTo-Json
 
-    Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers/$($John.id)/addresses" -Body $body -ContentType "application/json"
+    Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers/$($John.id)/addresses" -Body $body -ContentType "application/json" -Headers $Headers
 }
 
 # 3. Add Identity
 Test-Step "Add Identity" {
+    $ValidID = Generate-ThaiID
     $body = @{
         type = "National ID"
-        number = "1-2345-67890-12-3"
+        number = $ValidID
         issuance_country = "Thailand"
         expiry_date = "2030-12-31T00:00:00Z"
     } | ConvertTo-Json
 
-    Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers/$($John.id)/identities" -Body $body -ContentType "application/json"
+    Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers/$($John.id)/identities" -Body $body -ContentType "application/json" -Headers $Headers
 }
 
 # 4. Grant Consent
@@ -63,7 +84,7 @@ Test-Step "Grant Consent" {
         is_granted = $true
     } | ConvertTo-Json
 
-    Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers/$($John.id)/consents" -Body $body -ContentType "application/json"
+    Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers/$($John.id)/consents" -Body $body -ContentType "application/json" -Headers $Headers
 }
 
 # 5. Create Juristic Customer
@@ -76,7 +97,7 @@ Test-Step "Create Acme Corp" {
         industry_code = "TECH001"
     } | ConvertTo-Json
 
-    $global:Acme = Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers" -Body $body -ContentType "application/json"
+    $global:Acme = Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers" -Body $body -ContentType "application/json" -Headers $Headers
     if (-not $Acme.id) { throw "No ID returned" }
 }
 
@@ -87,17 +108,17 @@ Test-Step "Link John as Director" {
         role = "Director"
     } | ConvertTo-Json
 
-    Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers/$($John.id)/relationships" -Body $body -ContentType "application/json"
+    Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers/$($John.id)/relationships" -Body $body -ContentType "application/json" -Headers $Headers
 }
 
 # 7. Anonymize John (Right to be Forgotten)
 Test-Step "Anonymize John" {
-    Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers/$($John.id)/anonymize"
+    Invoke-RestMethod -Method Post -Uri "$BaseUrl/customers/$($John.id)/anonymize" -Headers $Headers
 }
 
 # 8. Verify Anonymization
 Test-Step "Verify Anonymization" {
-    $UpdatedJohn = Invoke-RestMethod -Method Get -Uri "$BaseUrl/customers/$($John.id)"
+    $UpdatedJohn = Invoke-RestMethod -Method Get -Uri "$BaseUrl/customers/$($John.id)" -Headers $Headers
     if ($UpdatedJohn.first_name -notmatch "Deleted_User_") {
         throw "FirstName not anonymized: $($UpdatedJohn.first_name)"
     }
